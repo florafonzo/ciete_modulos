@@ -23,6 +23,12 @@ use Mail;
 class PreinscripcionController extends Controller {
 
     //
+    public function showProcedimiento(){
+        $data['errores'] = '';
+        return view('preinscripcion.procedimiento', $data);
+    }
+
+
     public function index(){
         try{
 
@@ -96,6 +102,7 @@ class PreinscripcionController extends Controller {
             return view('errors.error')->with('error',$e->getMessage());
         }
     }
+
 
     public function mostrarPreinscripcionCurso(){
 

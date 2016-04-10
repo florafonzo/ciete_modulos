@@ -34,6 +34,8 @@ Route::get('Contacto','InformacionController@getcontacto');
 Route::post('Contacto','InformacionController@postContacto');
 
 //Ruta prenscripcion
+Route::get('preinscripcion/procedimiento','PreinscripcionController@showProcedimiento');
+
 Route::get('/preinscripcion/cursos', 'PreinscripcionController@mostrarPreinscripcionCurso');
 Route::get('/preinscripcion/webinars', 'PreinscripcionController@mostrarPreinscripcionWebinar');
 Route::post('preinscripcion/cursos','PreinscripcionController@storePreinscripcionCurso');

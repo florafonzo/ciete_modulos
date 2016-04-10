@@ -53,6 +53,9 @@
                     <a class="lista-menu dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Preinscripciones <span class="caret"></span></a>
                     <ul class="dropdown-menu menu_bajo">
                         <li >
+                            <a href="{{URL::to('/')}}/preinscripcion/procedimiento">Procedimiento</a>
+                        </li>
+                        <li >
                             <a href="{{URL::to('/')}}/preinscripcion/cursos">Cápsulas y Diplomados</a>
                         </li>
                         <li>

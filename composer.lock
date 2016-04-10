@@ -2542,16 +2542,16 @@
         },
         {
             "name": "thujohn/twitter",
-            "version": "2.1.3",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thujohn/twitter.git",
-                "reference": "7a921187081aa2250abb1c5bea3c4c3103b8b4f9"
+                "reference": "137dfa006ad06b956d579ff3ce0ffa5d03506188"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thujohn/twitter/zipball/7a921187081aa2250abb1c5bea3c4c3103b8b4f9",
-                "reference": "7a921187081aa2250abb1c5bea3c4c3103b8b4f9",
+                "url": "https://api.github.com/repos/thujohn/twitter/zipball/137dfa006ad06b956d579ff3ce0ffa5d03506188",
+                "reference": "137dfa006ad06b956d579ff3ce0ffa5d03506188",
                 "shasum": ""
             },
             "require": {
@@ -2582,7 +2582,7 @@
                 "laravel5",
                 "twitter"
             ],
-            "time": "2015-09-28 21:01:35"
+            "time": "2016-04-08 11:43:15"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
