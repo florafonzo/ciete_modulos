@@ -1,22 +1,21 @@
-<?php namespace App\Models;
+<?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Nota extends Model {
+class Pago extends Model {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'notas';
+    protected $table = 'pagos';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['id_part_prof_modulo','calificacion','evaluacion', 'porcentaje'];
-
+    protected $fillable = ['id_participante','id_curso','por_partes', 'monto'];
 
 }

@@ -1,21 +1,21 @@
-<?php namespace App\Models;
+<?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProfesorCurso extends Model {
+class Modulo extends Model {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'profesor_cursos';
+    protected $table = 'modulos';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['id_profesor','id_curso'];
+    protected $fillable = ['id_curso','nombre','fecha_inicio', 'fecha_fin'];
 
 }

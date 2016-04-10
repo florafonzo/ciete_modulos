@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateParticipanteCursosTable extends Migration {
+class CreateModulosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,20 +12,18 @@ class CreateParticipanteCursosTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('participante_cursos', function(Blueprint $table)
+		Schema::create('modulos', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('id_participante')->unsigned();
+
 			$table->integer('id_curso')->unsigned();
-			$table->string('seccion');
+			$table->string('nombre');
+			$table->date('fecha_inicio');
+			$table->date('fecha_fin');
 			$table->timestamps();
 
-
-			$table->foreign('id_participante')->references('id')->on('participantes')
-				->onUpdate('cascade')->onDelete('cascade');
 			$table->foreign('id_curso')->references('id')->on('cursos')
 				->onUpdate('cascade')->onDelete('cascade');
-
 		});
 	}
 
@@ -36,7 +34,7 @@ class CreateParticipanteCursosTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('participante_cursos');
+		Schema::drop('modulos');
 	}
 
 }

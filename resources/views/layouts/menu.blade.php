@@ -75,7 +75,7 @@
                     </ul>
                 </li>
                 <li class="fondo borde_no">
-                    <a class="lista-menu" href="{{URL::to('/')}}{{URL::to('/')}}/Créditos">Créditos</a>
+                    <a class="lista-menu" href="{{URL::to('/')}}/Créditos">Créditos</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

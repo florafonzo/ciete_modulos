@@ -69,20 +69,20 @@ $(document).ready(function() {
     if ($('#activo_carrusel:checkbox:checked').length <= 0) {
         //alert("dgwxfgwxf");
         $('#descripcion_carrusel').hide();
-        $('#imagen_carrusel').hide();
+        //$('#imagen_carrusel').hide();
     }else{
         $('#descripcion_carrusel').show();
-        $('#imagen_carrusel').show();
+        //$('#imagen_carrusel').show();
     }
 
     $( '#activo_carrusel' ).change(function() {
         if($(this).is(":checked")) {
             $('#descripcion_carrusel').show();
-            $('#imagen_carrusel').show();
+            //$('#imagen_carrusel').show();
             return;
         }
         $('#descripcion_carrusel').hide();
-        $('#imagen_carrusel').hide();
+        //$('#imagen_carrusel').hide();
     });
 
 

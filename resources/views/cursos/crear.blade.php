@@ -13,18 +13,8 @@
                 @include('partials.mensajes')
                 {!! Form::open(array('method' => 'POST', 'action' => 'CursosController@store', 'class' => 'form-horizontal col-md-10')) !!}
 
-                <div class="form-group">
-                    {!!Form::label('activo_carrusel', 'Curso activo en el carrusel?',  array( 'class' => 'col-md-4 '))!!}
-                    <div class="col-sm-8">
-                        @if($activo_)
-                            {!! Form::checkbox('activo_carrusel',null, true)!!}
-                        @else
-                            {!! Form::checkbox('activo_carrusel',null, false)!!}
-                        @endif
-                    </div>
-                </div>
                 <div class="form-group" id="imagen_carrusel">
-                    {!!Form::label('imagen_carrusel', 'Imagen carrusel: ',  array( 'class' => 'col-md-4 '))!!}
+                    {!!Form::label('imagen_carrusel', 'Imagen curso: ',  array( 'class' => 'col-md-4 '))!!}
                     <div class="col-sm-8" id="borde">
                         @if(!(Session::has('img_carg')))
                             {!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
@@ -49,13 +39,6 @@
                     </div>
                 </div>
                 <img class="" id="imagen2" src="" alt="">
-                <div class="form-group" id="descripcion_carrusel">
-                    {!!Form::label('desc_carrusel', 'Titulo de la imagen en el carrusel:',  array( 'class' => 'col-md-4 '))!!}
-                    <div class="col-sm-8">
-                        {!! Form::text('descripcion_carrusel', Session::get('descripcion_carrusel'), array('class' => 'form-control'))!!}
-                    </div>
-                </div>
-
                 <div class="form-group">
                     {!!Form::label('nombre', 'Nombre:', array( 'class' => 'col-md-4')) !!}
                     <div class="col-sm-8">
@@ -109,6 +92,12 @@
                     {!!Form::textarea('especificaciones', Session::get('especificaciones') ,array('required','class' => 'form-control ckeditor'))!!}
                 </div>
                 <div class="form-group">
+                    {!!Form::label('modulos', 'Cantidad de módulos:',  array( 'class' => 'col-md-4 '))!!}
+                    <div class="col-sm-8">
+                        {!!Form::text('modulos', Session::get('modulos') ,array('required','class' => 'form-control'))!!}
+                    </div>
+                </div>
+                <div class="form-group">
                     {!!Form::label('costo', 'Costo:',  array( 'class' => 'col-md-4 '))!!}
                     <div class="col-sm-8">
                         {!! Form::text('costo', Session::get('costo'), array('required','class' => 'form-control'))!!}
@@ -120,6 +109,22 @@
                         @foreach($modalidad_pago as $modalidad)
                            {!! Form::checkbox('modalidades_pago[]', $modalidad, false) !!} {{$modalidad}} <br>
                         @endforeach
+                    </div>
+                </div>
+                <div class="form-group">
+                    {!!Form::label('activo_carrusel', 'Curso activo en el carrusel?',  array( 'class' => 'col-md-4 '))!!}
+                    <div class="col-sm-8">
+                        @if($activo_)
+                            {!! Form::checkbox('activo_carrusel',null, true)!!}
+                        @else
+                            {!! Form::checkbox('activo_carrusel',null, false)!!}
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group" id="descripcion_carrusel">
+                    {!!Form::label('desc_carrusel', 'Titulo de la imagen en el carrusel:',  array( 'class' => 'col-md-4 '))!!}
+                    <div class="col-sm-8">
+                        {!! Form::text('descripcion_carrusel', Session::get('descripcion_carrusel'), array('class' => 'form-control'))!!}
                     </div>
                 </div>
                 <a href="{{URL::to("/")}}/cursos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
