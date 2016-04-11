@@ -86,7 +86,7 @@
                                         </td>
                                         <td class="boton_">
                                             @if(Entrust::can('profesores_curso'))
-                                                {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/profesores",  "method" => "GET" ])!!}
+                                                {!!Form::open(["url"=>"cursos/".$curso->id."/modulos/profesores",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Profesores">
                                                     <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
                                                 </button>

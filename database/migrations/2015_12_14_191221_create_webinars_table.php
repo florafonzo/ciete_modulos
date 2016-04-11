@@ -29,6 +29,7 @@ class CreateWebinarsTable extends Migration {
 			$table->boolean('activo_carrusel');
 			$table->string('imagen_carrusel');
 			$table->text('descripcion_carrusel');
+			$table->boolean('activo_preinscripcion');
             $table->timestamps();
 
 		});

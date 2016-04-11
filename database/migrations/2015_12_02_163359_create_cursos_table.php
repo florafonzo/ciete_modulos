@@ -42,6 +42,7 @@ class CreateCursosTable extends Migration {
 			$table->string('imagen_carrusel');
 			$table->text('descripcion_carrusel');
 			$table->boolean('activo_carrusel');
+			$table->boolean('activo_preinscripcion');
 			$table->timestamps();
 
 			$table->foreign('id_tipo')->references('id')->on('tipo_cursos')

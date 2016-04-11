@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Secciones del curso {{$curso->nombre}}
+                Módulos del curso {{$curso->nombre}}
             </h3>
         </div>
 
@@ -22,14 +22,14 @@
                             <th></th>
                         </tr>
                         </thead>
-                        @if($secciones != null)
+                        @if($modulos != null)
                             <tbody>
-                            @foreach($secciones as $seccion)
+                            @foreach($modulos as $modulo)
                                 <tr>
-                                    <td>{{ $seccion }}</td>
+                                    <td>{{ $modulo->nombre }}</td>
                                     <td>
                                         @if(Entrust::can('listar_alumnos'))
-                                            {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/profesores",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"cursos/".$curso->id."/modulos/".$modulo->id."/profesores",  "method" => "GET" ])!!}
                                             <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="profesores">
                                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                             </button>

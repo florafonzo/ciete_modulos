@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Profesores que dictan {{$curso->nombre}}
+                Profesores que dictan el módulo {{$modulo->nombre}}
             </h3>
         </div>
 
@@ -15,7 +15,7 @@
                 @include('partials.mensajes'){{--Errores--}}
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/profesores/buscar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"cursos/".$curso->id."/modulos/".$modulo->id."/profesores/buscar",  "method" => "GET" ])!!}
                         {{--{!! Form::open(array('method' => 'get', 'route' => array('usuarios.buscar'), 'id' => 'form_busq')) !!}--}}
                         <div class="buscador">
                             <select class="form-control " name="parametro">
@@ -52,7 +52,7 @@
                                         <td>{{ $profesor->documento_identidad }}</td>
                                         <td>
                                             @if(Entrust::can('eliminar_prof_curso'))
-                                                {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/profesores/".$profesor->id."/eliminar",  "method" => "delete", "id" => "form_eliminar_prof".$profesor->id ])!!}
+                                                {!!Form::open(["url"=>"cursos/".$curso->id."/modulos/".$modulo->id."/profesores/".$profesor->id."/eliminar",  "method" => "delete", "id" => "form_eliminar_prof".$profesor->id ])!!}
                                                 <button type="button" onclick="eliminarProf('{{$profesor->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar">
                                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                 </button>
@@ -68,7 +68,7 @@
                                         <td>{{ $profesor[0]->documento_identidad }}</td>
                                         <td>
                                             @if(Entrust::can('eliminar_prof_curso'))
-                                                {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/profesores/".$profesor[0]->id."/eliminar",  "method" => "delete", "id" => "form_eliminar_prof".$profesor[0]->id ])!!}
+                                                {!!Form::open(["url"=>"cursos/".$curso->id."/modulos/".$modulo->id."/profesores/".$profesor[0]->id."/eliminar",  "method" => "delete", "id" => "form_eliminar_prof".$profesor[0]->id ])!!}
                                                 <button type="button" onclick="eliminarProf('{{$profesor[0]->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar">
                                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                 </button>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('agregar_prof_curso'))
-                        {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/profesores/agregar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"cursos/".$curso->id."/modulos/".$modulo->id."/profesores/agregar",  "method" => "GET" ])!!}
                         <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Agregar profesor al curso" >
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar
                         </button>

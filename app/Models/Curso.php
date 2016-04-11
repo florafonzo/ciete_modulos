@@ -17,7 +17,7 @@ class Curso extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id_tipo','id_modalidad_pago','id_modalidad_curso','curso_activo','cupos','nombre','fecha_inicio','fecha_fin', 'especificaciones','costo' , 'imagen_carrusel', 'descripcion_carrusel', 'activo_carrusel'];
+    protected $fillable = ['id_tipo','id_modalidad_pago','id_modalidad_curso','curso_activo','cupos','nombre','fecha_inicio','fecha_fin', 'especificaciones','costo' , 'imagen_carrusel', 'descripcion_carrusel', 'activo_carrusel','activo_preinscripcion'];
 
     public function tipo_curso(){
         return $this->belongsTo('App\Models\TipoCurso','id_tipo');

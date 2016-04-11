@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePartProfModulosTable extends Migration {
+class CreateParticipanteCursosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,26 +12,22 @@ class CreatePartProfModulosTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('part_prof_modulos', function(Blueprint $table)
+		Schema::create('participante_cursos', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('id_participante')->unsigned();
-			$table->integer('id_profesor')->unsigned();
-			$table->integer('id_modulo')->unsigned();
-			$table->string('evaluacion');
-			$table->integer('calificacion');
-			$table->integer('porcentaje');
-
+//			$table->integer('id_modulo')->unsigned();
+			$table->integer('id_curso')->unsigned();
+			$table->string('seccion');
 			$table->timestamps();
 
 
 			$table->foreign('id_participante')->references('id')->on('participantes')
 				->onUpdate('cascade')->onDelete('cascade');
-			$table->foreign('id_profesor')->references('id')->on('profesores')
+//			$table->foreign('id_modulo')->references('id')->on('modulos')
+//				->onUpdate('cascade')->onDelete('cascade');
+			$table->foreign('id_curso')->references('id')->on('cursos')
 				->onUpdate('cascade')->onDelete('cascade');
-			$table->foreign('id_modulo')->references('id')->on('modulos')
-				->onUpdate('cascade')->onDelete('cascade');
-
 
 		});
 	}
@@ -43,7 +39,7 @@ class CreatePartProfModulosTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('part_prof_modulos');
+		Schema::drop('participante_cursos');
 	}
 
 }

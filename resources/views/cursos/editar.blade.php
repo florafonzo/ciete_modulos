@@ -14,19 +14,8 @@
                 @include('partials.mensajes')
                 @if($cursos->count())
                     {!! Form::open(array('method' => 'PUT', 'route' => array('cursos.update', $cursos->id), 'class' => 'form-horizontal col-md-12')) !!}
-
-                    <div class="form-group">
-                        {!!Form::label('activo_carrusel', 'Curso activo en el carrusel?:',  array( 'class' => 'col-md-4 '))!!}
-                        <div class="col-sm-8">
-                            @if($activo_)
-                                {!! Form::checkbox('activo_carrusel',null, true)!!}
-                            @else
-                                {!! Form::checkbox('activo_carrusel',null, $cursos->activo_carrusel)!!}
-                            @endif
-                        </div>
-                    </div>
                     <div class="form-group" id="imagen_carrusel">
-                        {!!Form::label('imagen_perfil', 'Imagen de Perfil: ',  array( 'class' => 'col-md-4 '))!!}
+                        {!!Form::label('imagen_carrusel', 'Imagen curso: ',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8" id="borde">
                             @if($cursos->imagen_carrusel == null && !(Session::has('img_carg')))
                                 {!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
@@ -63,12 +52,6 @@
                     </div>
                     <img class="" id="imagen2" src="" alt="">
                     {!!Form::hidden('file_viejo',$cursos->imagen_carrusel)!!}
-                    <div class="form-group" id="descripcion_carrusel">
-                        {!!Form::label('desc_carrusel_l', 'Titulo de la imagen en el carrusel:',  array( 'class' => 'col-md-4 '))!!}
-                        <div class="col-sm-8">
-                            {!! Form::text('descripcion_carrusel', $cursos->descripcion_carrusel, array('class' => 'form-control'))!!}
-                        </div>
-                    </div>
                     <div class="form-group">
                         {!!Form::label('nombre_l', 'Nombre:', array( 'class' => 'col-md-4 ')) !!}
                         <div class="col-sm-8">
@@ -122,6 +105,34 @@
                         {!!Form::textarea('especificaciones', $cursos->especificaciones ,array('required','class' => 'form-control ckeditor'))!!}
                     </div>
                     <div class="form-group">
+                        {!!Form::label('modulos', 'Cantidad de módulos:',  array( 'class' => 'col-md-4 '))!!}
+                        <div class="col-sm-8">
+                            {!!Form::text('modulos', $cant_modulos, array('required','class' => 'form-control', "id" => "modulos1"))!!}
+                        </div>
+                    </div>
+                    <div id="desc_modulos1">
+                        @foreach($modulos as $index1 => $modulo)
+                            <div class="form-group">
+                                {!!Form::label('nombre_modulo', 'Nombre módulo:',  array( 'class' => 'col-md-4 '))!!}
+                                <div class="col-sm-8">
+                                    {!!Form::text('nombre_'.$index1, $modulo->nombre, array('required','class' => 'form-control'))!!}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {!!Form::label('fecha_i', 'Fecha inicio módulo:',  array( 'class' => 'col-md-4 '))!!}
+                                <div class="col-sm-8">
+                                    {!!Form::input('date','fecha_i_'.$index1, $modulo->fecha_inicio, array('required','class' => 'form-control'))!!}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {!!Form::label('fecha_f', 'Fecha fin módulo:',  array( 'class' => 'col-md-4 '))!!}
+                                <div class="col-sm-8">
+                                    {!!Form::input('date','fecha_f_'.$index1, $modulo->fecha_fin, array('required','class' => 'form-control'))!!}
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="form-group">
                         {!!Form::label('costo_l', 'Costo:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
                             {!! Form::text('costo', $cursos->costo, array('required','class' => 'form-control'))!!}
@@ -137,6 +148,22 @@
                                     {!! Form::checkbox('modalidades_pago[]', $modalidad, false) !!} {{$modalidad}} <br>
                                 @endif
                             @endforeach
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {!!Form::label('activo_carrusel', 'Curso activo en el carrusel?:',  array( 'class' => 'col-md-4 '))!!}
+                        <div class="col-sm-8">
+                            @if($activo_)
+                                {!! Form::checkbox('activo_carrusel',null, true)!!}
+                            @else
+                                {!! Form::checkbox('activo_carrusel',null, $cursos->activo_carrusel)!!}
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group" id="descripcion_carrusel">
+                        {!!Form::label('desc_carrusel_l', 'Titulo de la imagen en el carrusel:',  array( 'class' => 'col-md-4 '))!!}
+                        <div class="col-sm-8">
+                            {!! Form::text('descripcion_carrusel', $cursos->descripcion_carrusel, array('class' => 'form-control'))!!}
                         </div>
                     </div>
                     <a href="{{URL::to("/")}}/cursos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>

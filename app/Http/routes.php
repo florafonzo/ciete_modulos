@@ -87,17 +87,17 @@ Route::group([
         ]);
     Route::get('cursos/{id_curso}/secciones/{seccion}/participantes/{id_part}/agregar', 'CursosController@cursoParticipantesGuardar');
     Route::delete('cursos/{id_curso}/secciones/{seccion}/participantes/{id_part}/eliminar', 'CursosController@cursoParticipantesEliminar');
-    Route::get('cursos/{id}/secciones/profesores', 'CursosController@cursoSeccionesProfes');
-    Route::get('cursos/{id}/secciones/{seccion}/profesores', 'CursosController@cursoProfesores');
-        Route::get('cursos/{id_curso}/secciones/{seccion}/profesores/buscar', [
+    Route::get('cursos/{id}/modulos/profesores', 'CursosController@cursoModulosProfes');
+    Route::get('cursos/{id}/modulos/{modulo}/profesores', 'CursosController@cursoProfesores');
+        Route::get('cursos/{id_curso}/modulos/{modulo}/profesores/buscar', [
             'as' => 'cursos.profesores.buscar', 'uses' => 'CursosController@buscarProfesor'
         ]);
-    Route::get('cursos/{id}/secciones/{seccion}/profesores/agregar', 'CursosController@cursoProfesoresAgregar');
-        Route::get('cursos/{id_curso}/secciones/{seccion}/profesores/agregar/buscar', [
+    Route::get('cursos/{id}/modulos/{modulo}/profesores/agregar', 'CursosController@cursoProfesoresAgregar');
+        Route::get('cursos/{id_curso}/modulos/{modulo}/profesores/agregar/buscar', [
             'as' => 'cursos.participantes.buscar', 'uses' => 'CursosController@buscarProfesorAgregar'
         ]);
-    Route::get('cursos/{id_curso}/secciones/{seccion}/profesores/{id_part}/agregar', 'CursosController@cursoProfesoresGuardar');
-    Route::delete('cursos/{id_curso}/secciones/{seccion}/profesores/{id_part}/eliminar', 'CursosController@cursoProfesoresEliminar');
+    Route::get('cursos/{id_curso}/modulos/{modulo}/profesores/{id_prof}/agregar', 'CursosController@cursoProfesoresGuardar');
+    Route::delete('cursos/{id_curso}/modulos/{modulo}/profesores/{id_prof}/eliminar', 'CursosController@cursoProfesoresEliminar');
     Route::resource('cursos','CursosController',['only' => ['index','create','store','update','edit', 'destroy']]);
 
     //Rutas manejo de roles

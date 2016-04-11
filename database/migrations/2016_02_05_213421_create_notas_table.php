@@ -15,13 +15,13 @@ class CreateNotasTable extends Migration {
 		Schema::create('notas', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('id_part_prof_modulos')->unsigned();
+			$table->integer('id_participante_curso')->unsigned();
 			$table->string('evaluacion');
 			$table->integer('calificacion');
 			$table->integer('porcentaje');
 			$table->timestamps();
 
-			$table->foreign('id_part_prof_modulos')->references('id')->on('part_prof_modulos')
+			$table->foreign('id_participante_curso')->references('id')->on('participante_cursos')
 				->onUpdate('cascade')->onDelete('cascade');
 
 		});

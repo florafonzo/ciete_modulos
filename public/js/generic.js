@@ -310,7 +310,7 @@ $(document).ready(function() {
 //-----------------------------------------------------------------------------------------//
 
 //----------------------------------Manejo modulos-----------------------------------------//
-    $( '#modulos' ).change(function() {
+    $( '#modulos' ).change(function() { //en creácion de cursos
         $('#desc_modulos').empty();
         var cant = $("#modulos").val();
         $('#desc_modulos').append('<div ><label>A continuación complete el nombre y fechas de cada módulo:</label> </div>');
@@ -321,6 +321,19 @@ $(document).ready(function() {
         }
 
     });
+
+    $( '#modulos1' ).change(function() { //en edición de cursos
+        $('#desc_modulos1').empty();
+        var cant = $("#modulos1").val();
+        $('#desc_modulos1').append('<div ><label>A continuación complete el nombre y fechas de cada módulo:</label> </div>');
+        for(var i=0; i<cant; i++) {
+            $('#desc_modulos1').append('<div class="form-group"> <label for="nombre_modulo" class="col-md-4">Nombre módulo:</label><div class="col-sm-8"><input type="text" class="form-control" id="nombre_'+i+'" name="nombre_'+i+'" required></div></div>');
+            $('#desc_modulos1').append('<div class="form-group"> <label for="fecha_i" class="col-md-4">Fecha inicio módulo:</label><div class="col-sm-8"><input type="date" class="form-control" id="fecha_i_'+i+'" name="fecha_i_'+i+'" required></div></div>');
+            $('#desc_modulos1').append('<div class="form-group"> <label for="fecha_f" class="col-md-4">Fecha fin módulo:</label><div class="col-sm-8"><input type="date" class="form-control" id="fecha_f_'+i+'" name="fecha_f_'+i+'" required></div></div>');
+        }
+
+    });
+
 
 
 //-----------------------------------------------------------------------------------------//

@@ -9,13 +9,13 @@ use App\Http\Requests\CursoEditRequest;
 use App\Models\CursoModalidadPago;
 use App\Models\ModalidadCurso;
 use App\Models\Participante;
-//use App\Models\ParticipanteCurso;
 use App\Models\Curso;
 use App\Models\ModalidadPago;
+use App\Models\ParticipanteCurso;
+use App\Models\ProfesorCurso;
 use App\Models\TipoCurso;
 use App\Models\Profesor;
 use App\Models\Modulo;
-//use App\Models\ProfesorCurso;
 
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -400,51 +400,9 @@ class CursosController extends Controller {
                         return view('cursos.crear', $data);
                     }
                 }
-
-                $modulos = Input::get('modulos');
-                $nuevo_modulo = new Modulo();
-                for ($i = 1; $i < $modulos;$i++) {
-                    if($i == 0) {
-                        $nombre = Input::get('nombre_' . $i);
-                        $fecha_i = Input::get('fecha_i_' . $i);
-                        $fecha_f = Input::get('fecha_f_' . $i);
-                        $fecha_actual = date('Y-m-d');// Se obtiene la fecha actual para validar las fechas de inicio y fin del curso
-                        if(($fecha_i) <= $fecha_actual) {
-                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser mayor a la fecha actual');
-                            return view('cursos.crear', $data);
-                        }
-                        if (($fecha_i) > ($fecha_f)) {
-                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual o menor a la fecha fin');
-                            return view('cursos.crear', $data);
-                        }
-                        $nuevo_modulo->nombre = $nombre;
-                        $nuevo_modulo->fecha_inicio = $fecha_i;
-                        $nuevo_modulo->fecha_fin = $fecha_f;
-                        dd($nuevo_modulo->fecha_fin);
-//                        $nuevo_modulo->save();
-                    }else{
-                        $nombre = Input::get('nombre_' . $i);
-                        $fecha_i = Input::get('fecha_i_' . $i);
-                        $fecha_f = Input::get('fecha_f_' . $i);
-                        dd($nuevo_modulo->fecha_fin);
-                        if(($fecha_i) <= $nuevo_modulo->fecha_fin) {
-                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser mayor a la fecha fin del modulo '.$nuevo_modulo->nombre);
-                            return view('cursos.crear', $data);
-                        }
-                        if (($fecha_i) > ($fecha_f)) {
-                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual o menor a la fecha fin');
-                            return view('cursos.crear', $data);
-                        }
-                        $nuevo_modulo->nombre = $nombre;
-                        $nuevo_modulo->fecha_inicio = $fecha_i;
-                        $nuevo_modulo->fecha_fin = $fecha_f;
-//                        $nuevo_modulo->save();
-                    }
-                }
                 $modalidades = Input::get('modalidades_pago');  // Se obtienen las modalidades de pago seleccionadas
-
                 // Se crea el nuevo curso con los datos ingresados
-                $create2 = Curso::findOrNew($request->id);
+                $create2 = new Curso();
                 $create2->id_tipo = $request->id_tipo;
                 $create2->id_modalidad_curso = $request->id_modalidad_curso;
                 $create2->curso_activo = "true";
@@ -458,6 +416,7 @@ class CursosController extends Controller {
                 $create2->costo = $request->costo;
                 $create2->descripcion_carrusel = $request->descripcion_carrusel;
                 $create2->activo_carrusel = $activo_carrusel;
+                $create2->activo_preinscripcion = false;
 
                 if($img_nueva == 'yes'){
                     $file = Input::get('dir');
@@ -474,6 +433,91 @@ class CursosController extends Controller {
                 }else{
                     $create2->imagen_carrusel = '';
                 }
+                $create2->save();
+//                dd('id curso: '.$create2->id);
+
+                // Creación de los módulos del nuevo curso
+                $modulos = $request->modulos;
+                $nuevo_modulo = new Modulo();
+                DB::table('modulos')->where('id_curso', '=', $create2->id)->delete();
+                for ($i = 0; $i < $modulos;$i++) {
+                    if($i == 0) {
+                        $nombre = Input::get('nombre_' . $i);
+                        $fecha_i = Input::get('fecha_i_' . $i);
+                        $fecha_f = Input::get('fecha_f_' . $i);
+                        if(($fecha_i) != $request->fecha_inicio) {
+                            DB::table('cursos')->where('id', '=', $create2->id)->delete();
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual a la fecha de inicio del curso '.$request->nombre);
+                            return view('cursos.crear', $data);
+                        }
+                        if (($fecha_i) >= ($fecha_f)) {
+                            DB::table('cursos')->where('id', '=', $create2->id)->delete();
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser menor a la fecha fin');
+                            return view('cursos.crear', $data);
+                        }
+                        if($i < ($modulos - 1)) {
+                            if (($fecha_f) > $request->fecha_fin) {
+                                DB::table('cursos')->where('id', '=', $create2->id)->delete();
+                                Session::set('error', 'La fecha fin del módulo ' . $nombre . ' debe ser menor a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }elseif($i == ($modulos - 1)){
+                            if (($fecha_f) != $request->fecha_fin) {
+                                DB::table('cursos')->where('id', '=', $create2->id)->delete();
+                                Session::set('error', 'La fecha fin del último módulo debe igual a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }
+                        $nuevo_modulo->nombre = $nombre;
+                        $nuevo_modulo->fecha_inicio = $fecha_i;
+                        $nuevo_modulo->fecha_fin = $fecha_f;
+
+                    }else{
+                        $nombre = Input::get('nombre_' . $i);
+                        $fecha_i = Input::get('fecha_i_' . $i);
+                        $fecha_f = Input::get('fecha_f_' . $i);
+                        if(($fecha_i) <= $nuevo_modulo->fecha_fin) {
+                            DB::table('cursos')->where('id', '=', $create2->id)->delete();
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser mayor a la fecha fin del modulo '.$nuevo_modulo->nombre);
+                            return view('cursos.crear', $data);
+                        }
+                        if (($fecha_i) >= ($fecha_f)) {
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual o menor a la fecha fin');
+                            return view('cursos.crear', $data);
+                        }
+                        if($i != ($modulos - 1)) {
+                            if (($fecha_f) > $request->fecha_fin) {
+                                DB::table('cursos')->where('id', '=', $create2->id)->delete();
+                                Session::set('error', 'La fecha fin del módulo ' . $nombre . ' debe ser menor a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }
+                        if($i < ($modulos - 1)) {
+                            if (($fecha_f) > $request->fecha_fin) {
+                                DB::table('cursos')->where('id', '=', $create2->id)->delete();
+                                Session::set('error', 'La fecha fin del módulo ' . $nombre . ' debe ser menor a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }elseif($i == ($modulos - 1)){
+                            if (($fecha_f) != $request->fecha_fin) {
+                                DB::table('cursos')->where('id', '=', $create2->id)->delete();
+                                Session::set('error', 'La fecha fin del último módulo debe igual a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }
+                        $nuevo_modulo->nombre = $nombre;
+                        $nuevo_modulo->fecha_inicio = $fecha_i;
+                        $nuevo_modulo->fecha_fin = $fecha_f;
+//                        $nuevo_modulo->save();
+                    }
+                    $nuevo_modulo1 = new Modulo();
+                    $nuevo_modulo1->nombre = $nuevo_modulo->nombre;
+                    $nuevo_modulo1->fecha_inicio = $nuevo_modulo->fecha_inicio;
+                    $nuevo_modulo1->fecha_fin =  $nuevo_modulo->fecha_fin;
+                    $nuevo_modulo1->id_curso = $create2->id;
+                    $nuevo_modulo1->save();
+                }
+
 
                 // Se verifica que se haya creado el el curso de forma correcta
                 if ($create2->save()) {
@@ -532,6 +576,8 @@ class CursosController extends Controller {
                 $data['tipos'] = TipoCurso::all()->lists('nombre', 'id');
                 $data['inicio'] = new DateTime($data['cursos']->fecha_inicio);
                 $data['fin'] = new DateTime($data['cursos']->fecha_fin);
+                $data['modulos'] = Modulo::where('id_curso', '=', $id)->get();
+                $data['cant_modulos'] = Modulo::where('id_curso', '=', $id)->count();
 
                 $arr = [];
                 foreach ($data['modalidad_pago'] as $index => $mod) {
@@ -687,6 +733,80 @@ class CursosController extends Controller {
                     $cursos->imagen_carrusel = '';
                 }
 
+                // Creación de los módulos del nuevo curso
+                $modulos = $request->modulos;
+                $nuevo_modulo = new Modulo();
+                DB::table('modulos')->where('id_curso', '=', $cursos->id)->delete();
+                for ($i = 0; $i < $modulos;$i++) {
+                    if($i == 0) {
+                        $nombre = Input::get('nombre_' . $i);
+                        $fecha_i = Input::get('fecha_i_' . $i);
+                        $fecha_f = Input::get('fecha_f_' . $i);
+                        if(($fecha_i) != $request->fecha_inicio) {
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual a la fecha de inicio del curso '.$request->nombre);
+                            return view('cursos.crear', $data);
+                        }
+                        if (($fecha_i) >= ($fecha_f)) {
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser menor a la fecha fin');
+                            return view('cursos.crear', $data);
+                        }
+                        if($i < ($modulos - 1)) {
+                            if (($fecha_f) > $request->fecha_fin) {
+                                Session::set('error', 'La fecha fin del módulo ' . $nombre . ' debe ser menor a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }elseif($i == ($modulos - 1)){
+                            if (($fecha_f) != $request->fecha_fin) {
+                                Session::set('error', 'La fecha fin del último módulo debe igual a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }
+                        $nuevo_modulo->nombre = $nombre;
+                        $nuevo_modulo->fecha_inicio = $fecha_i;
+                        $nuevo_modulo->fecha_fin = $fecha_f;
+
+                    }else{
+                        $nombre = Input::get('nombre_' . $i);
+                        $fecha_i = Input::get('fecha_i_' . $i);
+                        $fecha_f = Input::get('fecha_f_' . $i);
+                        if(($fecha_i) <= $nuevo_modulo->fecha_fin) {
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser mayor a la fecha fin del modulo '.$nuevo_modulo->nombre);
+                            return view('cursos.crear', $data);
+                        }
+                        if (($fecha_i) >= ($fecha_f)) {
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual o menor a la fecha fin');
+                            return view('cursos.crear', $data);
+                        }
+                        if($i != ($modulos - 1)) {
+                            if (($fecha_f) > $request->fecha_fin) {
+                                Session::set('error', 'La fecha fin del módulo ' . $nombre . ' debe ser menor a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }
+                        if($i < ($modulos - 1)) {
+                            if (($fecha_f) > $request->fecha_fin) {
+                                Session::set('error', 'La fecha fin del módulo ' . $nombre . ' debe ser menor a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }elseif($i == ($modulos - 1)){
+                            if (($fecha_f) != $request->fecha_fin) {
+                                Session::set('error', 'La fecha fin del último módulo debe igual a la fecha fin del curso ' . $request->nombre);
+                                return view('cursos.crear', $data);
+                            }
+                        }
+                        $nuevo_modulo->nombre = $nombre;
+                        $nuevo_modulo->fecha_inicio = $fecha_i;
+                        $nuevo_modulo->fecha_fin = $fecha_f;
+                    }
+                    $nuevo_modulo1 = new Modulo();
+                    $nuevo_modulo1->nombre = $nuevo_modulo->nombre;
+                    $nuevo_modulo1->fecha_inicio = $nuevo_modulo->fecha_inicio;
+                    $nuevo_modulo1->fecha_fin =  $nuevo_modulo->fecha_fin;
+                    $nuevo_modulo1->id_curso = $cursos->id;
+                    $nuevo_modulo1->save();
+                }
+
+                $cursos->save();
                 // Se verifica que se haya creado el curso de forma correcta
                 if ($cursos->save()) {
                     DB::table('curso_modalidad_pagos')->where('id_curso', '=', $cursos->id)->delete();
@@ -1045,13 +1165,19 @@ class CursosController extends Controller {
             if($usuario_actual->can('participantes_curso')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id);
-                $arr = [];
-                $secciones = ParticipanteCurso::where('id_curso', '=', $id)->select('seccion')->get();
-                foreach ($secciones as $index => $seccion) {
-                    $arr[$index] = $seccion->seccion;
+                $cant_secciones = $data['curso']->secciones;
+                $arr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+                for ($i = 0; $i < $cant_secciones; $i++) {
+                    $data['secciones'][$i] = $arr[$i];
                 }
-                sort($arr);
-                $data['secciones'] = array_unique($arr);
+
+//                $secciones = ParticipanteCurso::where('id_curso', '=', $id)->select('seccion')->get();
+//                foreach ($secciones as $index => $seccion) {
+//                    $arr[$index] = $seccion->seccion;
+//                }
+//                sort($arr);
+//                $data['secciones'] = array_unique($arr);
 
                 return view('cursos.participantes.secciones', $data);
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
@@ -1078,6 +1204,7 @@ class CursosController extends Controller {
             if($usuario_actual->can('participantes_curso')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['busq'] = false;
+                $data['busq_'] = false;
                 $data['participantes'] = [];
                 $data['curso'] = Curso::find($id_curso);
                 $data['seccion'] = $seccion;
@@ -1483,7 +1610,7 @@ class CursosController extends Controller {
 
 //--------------------------------------- Profesores --------------------------------------------
 
-    public function cursoSeccionesProfes($id) {
+    public function cursoModulosProfes($id) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1493,18 +1620,19 @@ class CursosController extends Controller {
                 $data['foto'] = 'foto_participante.png';
             }
 
-            if($usuario_actual->can('participantes_curso')) {  // Si el usuario posee los permisos necesarios continua con la acción
+            if($usuario_actual->can('profesores_curso')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id);
                 $arr = [];
-                $secciones = ParticipanteCurso::where('id_curso', '=', $id)->select('seccion')->get();
-                foreach ($secciones as $index => $seccion) {
-                    $arr[$index] = $seccion->seccion;
-                }
-                sort($arr);
-                $data['secciones'] = array_unique($arr);
+                $data['modulos'] = Modulo::where('id_curso', '=', $id)->get();
+//                $secciones = ParticipanteCurso::where('id_curso', '=', $id)->select('seccion')->get();
+//                foreach ($secciones as $index => $seccion) {
+//                    $arr[$index] = $seccion->seccion;
+//                }
+//                sort($arr);
+//                $data['secciones'] = array_unique($arr);
 
-                return view('cursos.profesores.secciones', $data);
+                return view('cursos.profesores.modulos', $data);
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 
                 return view('errors.sin_permiso');
@@ -1515,7 +1643,7 @@ class CursosController extends Controller {
             return view('errors.error')->with('error',$e->getMessage());
         }
     }
-    public function cursoProfesores($id_curso, $seccion) {
+    public function cursoProfesores($id_curso, $modulo) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1531,9 +1659,9 @@ class CursosController extends Controller {
                 $data['busq'] = false;
                 $data['profesores'] = [];
                 $data['curso'] = Curso::find($id_curso);
-                $data['seccion'] = $seccion;
-                $seccion = str_replace(' ', '', $seccion);
-                $curso_prof = ProfesorCurso::where('id_curso', '=', $id_curso)->where('seccion', '=', $seccion)->get();
+                $data['modulo'] = Modulo::find($modulo);
+                $curso_prof = ProfesorCurso::where('id_curso', '=', $id_curso)->where('id_modulo', '=', $modulo)->get();
+//                dd($curso_prof);
                 if($curso_prof->count()){
                     foreach ($curso_prof as $index => $curso) {
                         $data['profesores'][$index] = Profesor::where('id', '=', $curso->id_profesor)->orderBy('apellido')->get();
@@ -1560,7 +1688,7 @@ class CursosController extends Controller {
      *
      * @return Retorna la vista de la lista de profesores deseados.
      */
-    public function buscarProfesor($id_curso, $seccion) {
+    public function buscarProfesor($id_curso, $modulo) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1572,15 +1700,14 @@ class CursosController extends Controller {
             if($usuario_actual->can('ver_usuarios')) {   // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id_curso);
-                $data['seccion'] = $seccion;
+                $data['modulo'] = Modulo::find($modulo);
                 $data['profesores'] = '';
-                $seccion = str_replace(' ', '', $seccion);
                 $param = Input::get('parametro');
                 $data['busq_'] = true;
                 $data['busq'] = true;
                 if($param == '0'){
                     $data['busq'] = false;
-                    $profesores = ProfesorCurso::where('id_curso', '=', $id_curso)->where('seccion', '=', $seccion)->select('id_profesor')->get();
+                    $profesores = ProfesorCurso::where('id_curso', '=', $id_curso)->where('id_modulo', '=', $modulo)->select('id_profesor')->get();
                     if($profesores != null) {
                         foreach ($profesores as $index => $prof) {
                             $data['profesores'][$index] = Profesor::where('id', '=', $prof->id_profesor)->get();
@@ -1591,7 +1718,7 @@ class CursosController extends Controller {
                 }
                 if (empty(Input::get('busqueda'))) {
                     $data['busq'] = false;
-                    $profesores = ProfesorCurso::where('id_curso', '=', $id_curso)->where('seccion', '=', $seccion)->select('id_profesor')->get();
+                    $profesores = ProfesorCurso::where('id_curso', '=', $id_curso)->where('id_modulo', '=', $modulo)->select('id_profesor')->get();
                     if($profesores != null) {
                         foreach ($profesores as $index => $prof) {
                             $data['profesores'][$index] = Profesor::where('id', '=', $prof->id_profesor)->get();
@@ -1607,7 +1734,7 @@ class CursosController extends Controller {
                 if($profesores != null) {
                     foreach ($profesores as $index => $prof) {
                         $existe = ProfesorCurso::where('id_curso', '=', $id_curso)
-                            ->where('seccion', '=', $seccion)
+                            ->where('id_modulo', '=', $modulo)
                             ->where('id_profesor', '=', $prof->id)->get();
                         if($existe->count()) {
                             $data['profesores'][$index] = $prof;
@@ -1628,7 +1755,7 @@ class CursosController extends Controller {
 
     }
 
-    public function cursoProfesoresAgregar($id_curso, $seccion) {
+    public function cursoProfesoresAgregar($id_curso, $modulo) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1643,8 +1770,7 @@ class CursosController extends Controller {
                 $data['busq_'] = false;
                 $data['busq'] = false;
                 $data['curso'] = Curso::find($id_curso);
-                $data['seccion'] = $seccion;
-                $seccion = str_replace(' ', '', $seccion);
+                $data['modulo'] = Modulo::find($modulo);
                 $arr = [];
                 $todos = DB::table('profesor_cursos')->select('id_profesor')->get();
                 foreach ($todos as $index => $todo) {
@@ -1717,7 +1843,7 @@ class CursosController extends Controller {
      *
      * @return Retorna la vista de la lista de profesores deseados.
      */
-    public function buscarProfesorAgregar($id_curso, $seccion) {
+    public function buscarProfesorAgregar($id_curso, $modulo) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1729,19 +1855,19 @@ class CursosController extends Controller {
             if($usuario_actual->can('ver_usuarios')) {   // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id_curso);
-                $data['seccion'] = $seccion;
+                $data['modulo'] = Modulo::find($modulo);
                 $data['profesores'] = '';
-                $seccion = str_replace(' ', '', $seccion);
+                $data['profes'] = '';
                 $param = Input::get('parametro');
                 $data['busq_'] = true;
                 $data['busq'] = true;
                 if($param == '0'){
                     Session::set('error', 'Debe seleccionar el parametro por el cual desea buscar');
-                    return $this->cursoProfesoresAgregar($id_curso, $seccion);
+                    return $this->cursoProfesoresAgregar($id_curso, $modulo);
                 }
                 if (empty(Input::get('busqueda'))) {
                     Session::set('error', 'Coloque el elemento que desea buscar');
-                    return $this->cursoProfesoresAgregar($id_curso, $seccion);
+                    return $this->cursoProfesoresAgregar($id_curso, $modulo);
                 }else{
                     $busq = Input::get('busqueda');
                 }
@@ -1823,7 +1949,7 @@ class CursosController extends Controller {
     }
 
 
-    public function cursoProfesoresGuardar($id_curso, $seccion, $id_profesor) {
+    public function cursoProfesoresGuardar($id_curso, $modulo, $id_profesor) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1836,33 +1962,32 @@ class CursosController extends Controller {
             if($usuario_actual->can('agregar_prof_curso')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $curso = Curso::find($id_curso);
-                $data['seccion'] = $seccion;
+                $data['modulo'] = Modulo::find($modulo);
                 $data['busq_'] = false;
                 $data['busq'] = false;
-                $seccion = str_replace(' ', '', $seccion);
-//                dd($seccion);
                 $profesor = Profesor::find($id_profesor);
                 $existe = ProfesorCurso::where('id_profesor', '=', $id_profesor)->where('id_curso', '=', $id_curso)->get();
 
                 if($existe->count()) {
                     Session::set('error', 'Ya existe el registro en la base de datos');
-                    return $this->cursoProfesoresAgregar($id_curso, $seccion);
+                    return $this->cursoProfesoresAgregar($id_curso, $modulo);
                 }else{
                     if ($curso != null || $profesor != null) {
                         $prof_curso = ProfesorCurso::create([
                             'id_profesor' => $id_profesor,
                             'id_curso' => $id_curso,
-                            'seccion' => $seccion
+                            'id_modulo' => $modulo,
+
                         ]);
-                        dd($prof_curso);
+//                        dd($prof_curso);
                         $prof_curso->save();
 
                         if ($prof_curso->save()) {
                             Session::set('mensaje', 'Profesor agregado con éxito');
-                            return $this->cursoProfesoresAgregar($id_curso, $seccion);
+                            return $this->cursoProfesoresAgregar($id_curso, $modulo);
                         } else {
                             Session::set('error', 'Ha ocurrido un error inesperado');
-                            return $this->cursoProfesoresAgregar($id_curso, $seccion);
+                            return $this->cursoProfesoresAgregar($id_curso, $modulo);
                         }
                     } else {
                         Session::set('error', 'Ha ocurrido un error inesperado');
@@ -1882,7 +2007,7 @@ class CursosController extends Controller {
         }
     }
 
-    public function cursoProfesoresEliminar($id_curso, $seccion, $id_profesor) {
+    public function cursoProfesoresEliminar($id_curso, $modulo, $id_profesor) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1894,7 +2019,7 @@ class CursosController extends Controller {
 
             if($usuario_actual->can('eliminar_prof_curso')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
-                $data['seccion'] = $seccion;
+                $data['modulo'] = Modulo::find($modulo);
                 $data['busq_'] = false;
                 $data['busq'] = false;
                 $prof_curso = ProfesorCurso::where('id_curso', '=', $id_curso)->where('id_profesor', '=', $id_profesor)->first();
