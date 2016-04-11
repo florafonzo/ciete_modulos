@@ -32,13 +32,13 @@
                                 <tr>
                                     <td>{{ $curso[0]->nombre }}</td>
                                     <td>{{ $tipo_curso[$index] }}</td>
-                                    <td>{{ $curso[0]->seccion  }}</td>
+                                    <td>{{ $seccion[$index]  }}</td>
                                     <td>{{ $inicio[$index]->format('d-m-Y')  }}</td>
                                     <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                     <td>
                                         @if(Entrust::can('ver_notas_part'))
-                                            {!!Form::open(["url"=>"participante/cursos/".$curso[0]->id."/notas",  "method" => "GET" ])!!}
-                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Notas">
+                                            {!!Form::open(["url"=>"participante/cursos/".$curso[0]->id."/modulos",  "method" => "GET" ])!!}
+                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Módulos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
                                             {!! Form::close() !!}
@@ -50,6 +50,11 @@
                         @endif
                     </table>
                 </div>
+                @if(Entrust::can('ver_perfil_part'))
+                    <div style="text-align: center;">
+                        <a href="{{URL::to("/")}}/" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
+                    </div>
+                @endif
             </div>
         @endif
     </div>

@@ -16,12 +16,15 @@ class CreateNotasTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('id_participante_curso')->unsigned();
+			$table->integer('id_modulo')->unsigned();
 			$table->string('evaluacion');
 			$table->integer('calificacion');
 			$table->integer('porcentaje');
 			$table->timestamps();
 
 			$table->foreign('id_participante_curso')->references('id')->on('participante_cursos')
+				->onUpdate('cascade')->onDelete('cascade');
+			$table->foreign('id_modulo')->references('id')->on('modulos')
 				->onUpdate('cascade')->onDelete('cascade');
 
 		});

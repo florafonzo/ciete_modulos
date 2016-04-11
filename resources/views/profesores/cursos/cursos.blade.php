@@ -56,8 +56,8 @@
                                         <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/secciones",  "method" => "GET" ])!!}
-                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Secciones">
+                                                {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos",  "method" => "GET" ])!!}
+                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Modulos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
                                                 {!! Form::close() !!}
@@ -76,8 +76,8 @@
                                         <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/cursos/".$curso[0]->id."/secciones",  "method" => "GET" ])!!}
-                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Secciones">
+                                                {!!Form::open(["url"=>"profesor/cursos/".$curso[0]->id."/modulos",  "method" => "GET" ])!!}
+                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Modulos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
                                                 {!! Form::close() !!}
@@ -93,7 +93,7 @@
                                 <td> 0 resultados de la busqueda</td>
                             @else
                                 <td></td>
-                                <td>No existen cursos activos</td>
+                                <td>No está dictando nigún curso</td>
                             @endif
                         @endif
                     </table>

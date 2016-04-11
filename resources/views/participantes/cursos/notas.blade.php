@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Notas - {{$curso[0]->nombre}}
+                Notas del curso {{$curso->nombre}} - Módulo {{$modulo->nombre}}
             </h3>
         </div>
 
@@ -27,7 +27,7 @@
                                 <tr>
                                     <td>{{ $nota->evaluacion  }}</td>
                                     <td>{{ $nota->porcentaje  }}%</td>
-                                    <td>{{ $nota->nota  }}</td>
+                                    <td>{{ $nota->calificacion  }}</td>
                                 </tr>
                             @endforeach
                             <tr>
@@ -48,7 +48,7 @@
                 </div>
                 @if(Entrust::can('ver_cursos_part'))
                     <div style="text-align: center;">
-                        <a href="{{URL::to("/")}}/participante/cursos" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
+                        <a href="{{URL::to("/")}}/participante/cursos/{{$curso->id}}/modulos" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                     </div>
                 @endif
             </div>

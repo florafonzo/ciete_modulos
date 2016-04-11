@@ -16,7 +16,7 @@ class Nota extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id_part_prof_modulo','calificacion','evaluacion', 'porcentaje'];
+    protected $fillable = ['id_part_prof_modulo','id_modulo','calificacion','evaluacion', 'porcentaje'];
 
 
 }

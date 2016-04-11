@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Curso;
+use App\Models\Modulo;
 use App\Models\Nota;
 use App\Models\ParticipanteCurso;
 use App\Models\ParticipanteWebinar;
@@ -286,7 +287,7 @@ class ParticipantesController extends Controller {
 //                    dd($);
                 }
 
-                return view('participantes.ver-cursos', $data);
+                return view('participantes.cursos.cursos', $data);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 
@@ -299,7 +300,37 @@ class ParticipantesController extends Controller {
         }
     }
 
-    public function verNotasCurso($id)
+    public function verModulosCurso($id_curso)
+    {
+        try{
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('ver_notas_part')) {// Si el usuario posee los permisos necesarios continua con la acción
+
+                $data['errores'] = '';
+                $data['curso'] = Curso::find($id_curso);
+                $data['modulos'] = Modulo::where('id_curso','=', $id_curso)->get();
+
+                return view('participantes.cursos.modulos', $data);
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+
+    public function verNotasCurso($id, $modulo)
     {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -315,13 +346,15 @@ class ParticipantesController extends Controller {
                 $data['errores'] = '';
                 $id_part = Participante::where('id_usuario', '=', $usuario_actual->id)->get();
                 $curso_part = ParticipanteCurso::where('id_participante', '=', $id_part[0]->id)->where('id_curso', '=', $id)->get();
-                $data['curso'] = Curso::where('id', '=', $id)->get();
-                $data['notas'] = Nota::where('id_participante_curso', '=', $curso_part[0]->id)->get();
+                $data['curso'] = Curso::find($id);
+                $data['modulo'] = Modulo::find($modulo);
+                $data['notas'] = Nota::where('id_participante_curso', '=', $curso_part[0]->id)
+                                    ->where('id_modulo', '=', $modulo)->get();
                 if($data['notas']->count()) {
                     $data['promedio'] = 0;
                     $porcentaje = 0;
                     foreach ($data['notas'] as $nota) {
-                        $calif = $nota->nota;
+                        $calif = $nota->calificacion;
                         $porcent = $nota->porcentaje;
                         $porcentaje =  ($porcentaje + $porcent);
                         $data['promedio'] = $data['promedio'] + ($calif * ($porcent / 100));
@@ -329,7 +362,7 @@ class ParticipantesController extends Controller {
                     $data['porcentaje'] =  100 - $porcentaje;
                 }
 
-                return view('participantes.notas', $data);
+                return view('participantes.cursos.notas', $data);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 

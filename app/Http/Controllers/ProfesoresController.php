@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Curso;
+use App\Models\Modulo;
 use App\Models\Nota;
 use App\Models\Participante;
 use App\Models\ParticipanteCurso;
@@ -27,6 +28,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfesorRequest;
 use App\Http\Requests\CalificarRequest;
+use PhpParser\Node\Expr\BinaryOp\Mod;
 
 class ProfesoresController extends Controller {
 
@@ -475,7 +477,7 @@ class ProfesoresController extends Controller {
 
     }
 
-    public function verSeccionesCurso($id_curso)
+    public function verModulosCurso($id_curso)
     {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -491,13 +493,47 @@ class ProfesoresController extends Controller {
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id_curso);
                 $arr = [];
-//                $profesor = Profesor::where('id_usuario', '=', $usuario_actual->id)->get();
-                $secciones = ParticipanteCurso::where('id_curso', '=', $id_curso)->select('seccion')->get();
-                foreach ($secciones as $index => $seccion) {
-                    $arr[$index] = $seccion->seccion;
+                $modulos = ProfesorCurso::where('id_profesor', '=', $usuario_actual->id)
+                                        ->where('id_curso', '=', $id_curso)->get();
+
+                foreach ($modulos as $index => $modulo) {
+                    $data['modulos'][$index] = Modulo::find($modulo->id_modulo);
                 }
-                sort($arr);
-                $data['secciones'] = array_unique($arr);
+
+                return view('profesores.cursos.modulos', $data);
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+
+    public function verSeccionesCurso($id_curso, $modulo)
+    {
+        try{
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('ver_notas_profe')) {// Si el usuario posee los permisos necesarios continua con la acción
+
+                $data['errores'] = '';
+                $data['curso'] = Curso::find($id_curso);
+                $data['modulo'] = Modulo::find($modulo);
+                $cant_secciones = $data['curso']->secciones;
+                $arr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                for ($i = 0; $i < $cant_secciones; $i++) {
+                    $data['secciones'][$i] = $arr[$i];
+                }
 
                 return view('profesores.cursos.secciones', $data);
 
@@ -512,7 +548,7 @@ class ProfesoresController extends Controller {
         }
     }
 
-    public function verParticipantesSeccion($id_curso, $seccion)
+    public function verParticipantesSeccion($id_curso, $modulo, $seccion)
     {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -528,6 +564,7 @@ class ProfesoresController extends Controller {
                 $data['busq'] = false;
                 $data['busq_'] = false;
                 $data['curso'] = Curso::find($id_curso);
+                $data['modulo'] = Modulo::find($modulo);
                 $data['seccion'] = $seccion;
                 $seccion = str_replace(' ', '', $seccion);
                 $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->where('seccion', '=', $seccion)->select('id_participante')->get();
@@ -559,7 +596,7 @@ class ProfesoresController extends Controller {
      *
      * @return Retorna la vista de la lista de participantes deseados.
      */
-    public function buscarParticipante($id_curso, $seccion) {
+    public function buscarParticipante($id_curso, $modulo, $seccion) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -571,6 +608,7 @@ class ProfesoresController extends Controller {
             if($usuario_actual->can('ver_usuarios')) {   // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id_curso);
+                $data['modulo'] = Modulo::find($modulo);
                 $data['seccion'] = $seccion;
                 $data['participantes'] = '';
                 $seccion = str_replace(' ', '', $seccion);
@@ -627,7 +665,7 @@ class ProfesoresController extends Controller {
 
     }
 
-    public function verNotasParticipante($id_curso, $seccion, $id_part)
+    public function verNotasParticipante($id_curso, $modulo, $seccion, $id_part)
     {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -643,6 +681,7 @@ class ProfesoresController extends Controller {
                 $data['errores'] = '';
                 $data['calificacion'] = '';
                 $data['curso'] = Curso::find($id_curso);
+                $data['modulo'] = Modulo::find($modulo);
                 $seccion = str_replace(' ', '', $seccion);
                 $data['seccion'] = $seccion;
                 $data['participante'] = Participante::find($id_part);
@@ -653,12 +692,12 @@ class ProfesoresController extends Controller {
                                 ->select('id')->get();
 
                 if($participante->count()) {
-                    $data['notas'] = Nota::where('id_participante_curso', '=', $participante[0]->id)->get();
+                    $data['notas'] = Nota::where('id_participante_curso', '=', $participante[0]->id)->orderBy('created_at')->get();
                     if($data['notas']->count()){
                         $data['promedio'] = 0;
                         $porcentaje = 0;
                         foreach ($data['notas'] as $nota) {
-                            $calif = $nota->nota;
+                            $calif = $nota->calificacion;
                             $porcent = $nota->porcentaje;
                             $porcentaje =  ($porcentaje + $porcent);
                             $data['promedio'] = $data['promedio'] + ($calif * ($porcent / 100));
@@ -685,7 +724,7 @@ class ProfesoresController extends Controller {
         }
     }
 
-    public function store(CalificarRequest $request, $id_curso, $seccion, $id_part) {
+    public function store(CalificarRequest $request, $modulo, $id_curso, $seccion, $id_part) {
 
         try{
 //            dd('ahhhhhh2');
@@ -701,6 +740,7 @@ class ProfesoresController extends Controller {
                 $id = Input::get('id_nota');
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id_curso);
+                $data['modulo'] = Modulo::find($modulo);
                 $seccion = str_replace(' ', '', $seccion);
                 $data['seccion'] = $seccion;
                 $data['participante'] = Participante::find($id_part);
@@ -725,8 +765,9 @@ class ProfesoresController extends Controller {
                         }
                     }    
                     $nota->id_participante_curso = $part[0]->id;
+                    $nota->id_modulo = $modulo;
                     $nota->evaluacion = $request->evaluacion;
-                    $nota->nota = $request->nota;
+                    $nota->calificacion = $request->nota;
                     $nota->porcentaje = $request->porcentaje;
                     $nota->save();
                 }
@@ -734,15 +775,15 @@ class ProfesoresController extends Controller {
                     if($id == null) {
 //                        dd('holaaaaa');
                         Session::set('mensaje', 'Nota creada satisfactoriamente.');
-                        return $this->verNotasParticipante($id_curso, $seccion, $id_part);
+                        return $this->verNotasParticipante($id_curso, $modulo, $seccion, $id_part);
                     }else{
                         Session::set('mensaje', 'Nota editada satisfactoriamente.');
-                        return $this->verNotasParticipante($id_curso, $seccion, $id_part);
+                        return $this->verNotasParticipante($id_curso, $modulo, $seccion, $id_part);
                     }
 
                 } else{
                     Session::set('error', 'Ha ocurrido un error inesperado');
-                    return $this->verNotasParticipante($id_curso, $seccion,$id_part);
+                    return $this->verNotasParticipante($id_curso, $modulo, $seccion,$id_part);
                 }
 
 
@@ -758,7 +799,7 @@ class ProfesoresController extends Controller {
     }
 
 
-    public function eliminarNotasParticipante($id_curso, $seccion, $id_part, $id_nota) {
+    public function eliminarNotasParticipante($id_curso, $modulo, $seccion, $id_part, $id_nota) {
 
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -771,10 +812,12 @@ class ProfesoresController extends Controller {
 
             if($usuario_actual->can('editar_notas')) {// Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $data['curso'] = Curso::find($id_curso);
+                $data['modulo'] = Modulo::find($modulo);
 
                 DB::table('notas')->where('id', '=', $id_nota)->delete();
 
-                return $this->verNotasParticipante($id_curso, $seccion, $id_part);
+                return $this->verNotasParticipante($id_curso, $modulo, $seccion, $id_part);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 

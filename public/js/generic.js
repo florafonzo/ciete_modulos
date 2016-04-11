@@ -208,6 +208,7 @@ $(document).ready(function() {
 //    -----------------------------------------------------
 
 //------------------------ Modal notas(profesor) ------------------------------------------//
+
 //    $("#agregar_nota").on("click", function(){
 //        $("#notasModal").modal();
 //    });
@@ -257,10 +258,10 @@ $(document).ready(function() {
                 $.each(data, function(index, Obj){
                     console.log(Obj.nota);
                     $('#eval').append('<input type="text" name="evaluacion" class="form-control" value="'+Obj.evaluacion+'" required />');
-                    $('#calif').append('<input type="text" name="nota" class="form-control" value="'+Obj.nota+'" required />');
+                    $('#calif').append('<input type="text" name="nota" class="form-control" value="'+Obj.calificacion+'" required />');
                     $('#porct').append('<input type="text" name="porcentaje" class="form-control" value="'+Obj.porcentaje+'" required />');
 
-                    alert(String(id));
+                    //alert(String(id));
                     $('#notasEditModal').modal('show');
                 });
              },

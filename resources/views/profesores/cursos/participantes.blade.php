@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Participantes del curso {{$curso->nombre}} <br/> Sección - {{$seccion}}
+                Participantes del curso {{$curso->nombre}} - Módulo {{$modulo->nombre}}<br/> Sección - {{$seccion}}
             </h3>
         </div>
 
@@ -15,7 +15,7 @@
                 @include('partials.mensajes')
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/secciones/".$seccion."/participantes/buscar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/participantes/buscar",  "method" => "GET" ])!!}
                         {{--{!! Form::open(array('method' => 'get', 'route' => array('usuarios.buscar'), 'id' => 'form_busq')) !!}--}}
                         <div class="buscador">
                             <select class="form-control " name="parametro">
@@ -53,7 +53,7 @@
                                         <td>{{ $participante->documento_identidad }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/secciones/".$seccion."/participantes/".$participante->id."/notas",  "method" => "GET" ])!!}
+                                                {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/participantes/".$participante->id."/notas",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Notas">
                                                     <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
                                                 </button>
@@ -69,7 +69,7 @@
                                         <td>{{ $participante[0]->documento_identidad }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/secciones/".$seccion."/participantes/".$participante[0]->id."/notas",  "method" => "GET" ])!!}
+                                                {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/participantes/".$participante[0]->id."/notas",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Notas">
                                                     <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
                                                 </button>
@@ -92,7 +92,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_perfil_prof'))
-                    <a href="{{URL::to("/")}}/profesor/cursos/{{$curso->id}}/secciones" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
+                    <a href="{{URL::to("/")}}/profesor/cursos/{{$curso->id}}/modulos/{{$modulo->id}}/secciones" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
                 @endif
             </div>
         @endif

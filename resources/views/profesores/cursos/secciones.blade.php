@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Secciones del curso {{$curso->nombre}}
+                Secciones del módulo {{$modulo->nombre}} del curso  {{$curso->nombre}}
             </h3>
         </div>
 
@@ -29,7 +29,7 @@
                                     <td>{{ $seccion }}</td>
                                     <td class="boton_">
                                         @if(Entrust::can('ver_notas_profe'))
-                                            {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/secciones/".$seccion."/participantes",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/participantes",  "method" => "GET" ])!!}
                                             <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Participantes">
                                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                             </button>
@@ -38,7 +38,7 @@
                                     </td>
                                     <td class="boton_">
                                         @if(Entrust::can('listar_alumnos'))
-                                            {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/secciones/".$seccion."/lista",  "method" => "GET", "target" => "_blank"])!!}
+                                            {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/lista",  "method" => "GET", "target" => "_blank"])!!}
                                                 <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Lista de alumnos">
                                                     <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                                                 </button>
@@ -52,7 +52,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_cursos_profe'))
-                    <a href="{{URL::to("/")}}/profesor/cursos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
+                    <a href="{{URL::to("/")}}/profesor/cursos/modulos/{{$modulo->id}}" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
                 @endif
             </div>
         @endif

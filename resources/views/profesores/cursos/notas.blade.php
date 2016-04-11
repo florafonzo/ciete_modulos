@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Notas de {{$participante->nombre}} {{$participante->apellido}}<br/>{{$curso->nombre}}
+                Notas de {{$participante->nombre}} {{$participante->apellido}}<br/>Curso {{$curso->nombre}} - Módulo {{$modulo->nombre}}
             </h3>
         </div>
 
@@ -27,7 +27,7 @@
                                 <tr>
                                     <td>{{ $nota->evaluacion  }}</td>
                                     <td>{{ $nota->porcentaje  }}%</td>
-                                    <td>{{ $nota->nota  }}</td>
+                                    <td>{{ $nota->calificacion  }}</td>
                                     <td>
                                         @if(Entrust::can('editar_notas'))
                                             <button type="button" data-toggle="modal" data-id="{{$nota->id}}" data-curso="{{$curso->id}}" data-seccion="{{$seccion}}" data-part="{{$participante->id}}" class='btn btn-info edit_nota' data-toggle='tooltip' data-placement="bottom" title="Editar" aria-hidden="true">
@@ -37,7 +37,7 @@
                                     </td>
                                     <td>
                                         @if(Entrust::can('eliminar_notas'))
-                                            {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/secciones/".$seccion."/participantes/".$participante->id."/notas/".$nota->id,  "method" => "DELETE", "id" => "form_eliminar".$nota->id ])!!}
+                                            {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/participantes/".$participante->id."/notas/".$nota->id,  "method" => "DELETE", "id" => "form_eliminar".$nota->id ])!!}
                                             <button type="button" onclick="mostrarModal('{{$nota->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar" aria-hidden="true">
                                                 <span class="glyphicon glyphicon-trash" ></span>
                                             </button>
@@ -67,7 +67,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_notas_profe'))
-                    <a href="{{URL::to("/")}}/profesor/cursos/{{$curso->id}}/secciones/{{$seccion}}/participantes" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
+                    <a href="{{URL::to("/")}}/profesor/cursos/{{$curso->id}}/modulos/{{$modulo->id}}/secciones/{{$seccion}}/participantes" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                 @endif
                 @if(Entrust::can('agregar_notas'))
                     <button data-toggle="modal" data-target="#notasModal" class="btn btn-success text-right pull-right" id="agregar_nota"><span class="glyphicon glyphicon-plus"></span> Agregar nota</button>
@@ -87,7 +87,7 @@
                     <h4> Calificar </h4>
                 </div>
                 <div class="modal-body">
-                    {!!Form::open(['url' => 'profesor/cursos/'.$curso->id.'/secciones/'.$seccion.'/participantes/'.$participante->id.'/notas',  "method" => "post", "id" => "form_notan"])!!}
+                    {!!Form::open(['url' => 'profesor/cursos/'.$curso->id.'/modulos/'.$modulo->id.'/secciones/'.$seccion.'/participantes/'.$participante->id.'/notas',  "method" => "post", "id" => "form_notan"])!!}
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-12">
                             <div class="form-group">
@@ -133,7 +133,7 @@
                     <h4> Edición calificación </h4>
                 </div>
                 <div class="modal-body">
-                    {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/secciones/".$seccion."/participantes/".$participante->id."/notas",  "method" => "post" ])!!}
+                    {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/participantes/".$participante->id."/notas",  "method" => "post" ])!!}
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-12">
                             <div class="form-group" >

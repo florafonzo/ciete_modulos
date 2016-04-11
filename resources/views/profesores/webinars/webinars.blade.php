@@ -88,7 +88,7 @@
                                 <td> 0 resultados de la busqueda</td>
                             @else
                                 <td></td>
-                                <td>No existen cursos activos</td>
+                                <td>No está dictando ningún webinar</td>
                             @endif
                         @endif
                     </table>
