@@ -94,8 +94,11 @@
                 <div class="form-group">
                     {!!Form::label('modulos', 'Cantidad de módulos:',  array( 'class' => 'col-md-4 '))!!}
                     <div class="col-sm-8">
-                        {!!Form::text('modulos', Session::get('modulos') ,array('required','class' => 'form-control'))!!}
+                        {!!Form::text('modulos', Session::get('modulos') ,array('required','class' => 'form-control', "id" => "modulos"))!!}
                     </div>
+                </div>
+                <div id="desc_modulos">
+
                 </div>
                 <div class="form-group">
                     {!!Form::label('costo', 'Costo:',  array( 'class' => 'col-md-4 '))!!}

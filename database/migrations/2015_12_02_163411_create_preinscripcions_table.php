@@ -19,8 +19,10 @@ class CreatePreinscripcionsTable extends Migration {
 			$table->string('nombre');
 			$table->string('apellido');
 			$table->string('email');
-			$table->string('cedula');
+			$table->string('documento_identidad');
 			$table->string('titulo');
+			$table->string('recibo');
+			$table->string('tipo');
 			$table->timestamps();
 
 

@@ -9,12 +9,13 @@ use App\Http\Requests\CursoEditRequest;
 use App\Models\CursoModalidadPago;
 use App\Models\ModalidadCurso;
 use App\Models\Participante;
-use App\Models\ParticipanteCurso;
+//use App\Models\ParticipanteCurso;
 use App\Models\Curso;
 use App\Models\ModalidadPago;
 use App\Models\TipoCurso;
 use App\Models\Profesor;
-use App\Models\ProfesorCurso;
+use App\Models\Modulo;
+//use App\Models\ProfesorCurso;
 
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -400,8 +401,47 @@ class CursosController extends Controller {
                     }
                 }
 
+                $modulos = Input::get('modulos');
+                $nuevo_modulo = new Modulo();
+                for ($i = 1; $i < $modulos;$i++) {
+                    if($i == 0) {
+                        $nombre = Input::get('nombre_' . $i);
+                        $fecha_i = Input::get('fecha_i_' . $i);
+                        $fecha_f = Input::get('fecha_f_' . $i);
+                        $fecha_actual = date('Y-m-d');// Se obtiene la fecha actual para validar las fechas de inicio y fin del curso
+                        if(($fecha_i) <= $fecha_actual) {
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser mayor a la fecha actual');
+                            return view('cursos.crear', $data);
+                        }
+                        if (($fecha_i) > ($fecha_f)) {
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual o menor a la fecha fin');
+                            return view('cursos.crear', $data);
+                        }
+                        $nuevo_modulo->nombre = $nombre;
+                        $nuevo_modulo->fecha_inicio = $fecha_i;
+                        $nuevo_modulo->fecha_fin = $fecha_f;
+                        dd($nuevo_modulo->fecha_fin);
+//                        $nuevo_modulo->save();
+                    }else{
+                        $nombre = Input::get('nombre_' . $i);
+                        $fecha_i = Input::get('fecha_i_' . $i);
+                        $fecha_f = Input::get('fecha_f_' . $i);
+                        dd($nuevo_modulo->fecha_fin);
+                        if(($fecha_i) <= $nuevo_modulo->fecha_fin) {
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser mayor a la fecha fin del modulo '.$nuevo_modulo->nombre);
+                            return view('cursos.crear', $data);
+                        }
+                        if (($fecha_i) > ($fecha_f)) {
+                            Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual o menor a la fecha fin');
+                            return view('cursos.crear', $data);
+                        }
+                        $nuevo_modulo->nombre = $nombre;
+                        $nuevo_modulo->fecha_inicio = $fecha_i;
+                        $nuevo_modulo->fecha_fin = $fecha_f;
+//                        $nuevo_modulo->save();
+                    }
+                }
                 $modalidades = Input::get('modalidades_pago');  // Se obtienen las modalidades de pago seleccionadas
-
 
                 // Se crea el nuevo curso con los datos ingresados
                 $create2 = Curso::findOrNew($request->id);
