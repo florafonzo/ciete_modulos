@@ -16,15 +16,16 @@
                     <div class="col-md-6 col-md-offset-6">
                         {!! Form::open(array('method' => 'get', 'route' => array('inscripcion.buscar'), 'id' => 'form_busq')) !!}
                         <div class="buscador">
-                            <select class="form-control " id="param" name="parametro">
+                            <select class="form-control " id="param1" name="parametro">
                                 <option value="0"  selected="selected">Buscar por</option>
+                                <option value="nombre"  >Nombre</option>
                                 <option value="apellido"  >Apellido</option>
                                 {{--<option value="documento_identidad"  >Dcocumento de identidad</option>--}}
                                 <option value="email"  >Correo</option>
-                                <option value="tipo"  >Tipo curso</option>
+                                <option value="tipo">Tipo curso</option>
                             </select>
-                            {!!Form::text('busqueda', null,array('placeholder' => 'Escriba su busqueda...','class' => 'form-control bus', 'id' => 'busqueda'))!!}
-                            {!! Form::select('busqu', $tipos, null, array('class' => 'form-control busq','hidden' => 'true', 'id' => 'busqueda2')) !!}
+                            {!!Form::text('busqueda', null,array('placeholder' => 'Escriba su busqueda...','class' => 'form-control bus', 'id' => 'busq'))!!}
+                            {!! Form::select('busqu', $tipos, null, array('class' => 'form-control busq','hidden' => 'true', 'id' => 'busq2')) !!}
                             <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" ></span> </button>
                         </div>
                         {!! Form::close() !!}
@@ -50,20 +51,27 @@
                                 @foreach($usuarios as $index => $user)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $user[0]->nombre }}</td>
-                                        <td>{{ $user[0]->apellido  }}</td>
+                                        <td>{{ $user->nombre }}</td>
+                                        <td>{{ $user->apellido  }}</td>
 {{--                                        <td>{{ $user[0]->doc_id  }}</td>--}}
-                                        <td>{{ $user[0]->email }}</td>
+                                        <td>{{ $user->email }}</td>
                                         <td>
-                                            @foreach($tipos as $tipo)
-                                                {{ $tipo->display_name }} <br/>
-                                            @endforeach
+                                            {{$user->tipo}}
                                         </td>
+                                        @if($user->tipo == 'curso')
+                                            <td>
+                                                @if(Entrust::can('activar_inscripcion'))
+                                                    {!! Form::open(array('method' => 'GET','route' => array('inscripcion.verPdf', $user->id))) !!}
+                                                    {!! Form::button('<span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="bottom" title="Ver documentos" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-info'))!!}
+                                                    {!! Form::close() !!}
+                                                @endif
+                                            </td>
+                                        @endif
                                         <td>
                                             @if(Entrust::can('activar_inscripcion'))
-{{--                                                {!! Form::open(array('method' => 'GET','route' => array('usuarios.edit', $user[0]->id))) !!}--}}
-                                                {!! Form::button('<span class="glyphicon glyphicon-ok" data-toggle="tooltip" data-placement="bottom" title="Activar" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-info'))!!}
-{{--                                                {!! Form::close() !!}--}}
+                                                {{-- {!! Form::open(array('method' => 'GET','route' => array('usuarios.edit', $user[0]->id))) !!}--}}
+                                                {!! Form::button('<span class="glyphicon glyphicon-ok" data-toggle="tooltip" data-placement="bottom" title="Activar" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-success'))!!}
+                                                {{--  {!! Form::close() !!}--}}
                                             @endif
                                         </td>
                                     </tr>

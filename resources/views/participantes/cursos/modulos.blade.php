@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Módulos del curso {{$curso->nombre}}
+                MÃ³dulos del curso {{$curso->nombre}}
             </h3>
         </div>
 
@@ -17,7 +17,7 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Módulo</th>
+                            <th>MÃ³dulo</th>
                             <th>Acciones</th>
                             <th></th>
                         </tr>

@@ -3,6 +3,7 @@
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Providers;
 
 class PreinscripcionRequest extends Request {
 
@@ -29,9 +30,9 @@ class PreinscripcionRequest extends Request {
             'curso' => 'required',
             'nombre' => 'required|max:255|min:3',
             'apellido' => 'required|max:255|min:4',
-            'cedula' => 'pdf|max:1024',
-            'titulo' => 'mimes:pdf|max:1024',
-            'recibo' => 'mimes:pdf|max:1024',
+            'cedula' => 'required|mimes:pdf',
+            'titulo' => 'required|mimes:pdf',
+            'recibo' => 'required|mimes:pdf',
             'email' => 'required|email|max:255'
         ];
     }

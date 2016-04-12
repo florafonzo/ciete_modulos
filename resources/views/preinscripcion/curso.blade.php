@@ -8,15 +8,15 @@
                 <div class="panel panel_login">
                     <div class="panel-heading">Formulario de preinscripción de Diplomados y Cápsulas</div>
                     <div class="panel-body">
-                        <form id="form" method="POST" action="{{ url('preinscripcion/cursos') }}">
+                        <form id="form" method="POST" action="{{ url('preinscripcion/cursos') }}" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="{!! csrf_token() !!}">
                             <div class="form-group">
                                 <label for="nombre">Nombre:</label>
-                                <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre" required>
+                                <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre" value="{{old('nombre')}}" required>
                             </div>
                             <div class="form-group">
                                 <label for="apellido">Apellido:</label>
-                                <input type="text" class="form-control" id="apellido" placeholder="Apellido" name="apellido" required>
+                                <input type="text" class="form-control" id="apellido" placeholder="Apellido" name="apellido" value="{{old('apellido')}}" required>
                             </div>
 
                             <div class="form-group">
@@ -29,20 +29,20 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="cedula">Cédula o Pasaporte:</label>
-                                <input name="cedula" type="file">
+                                <label for="cedula">Documento de identidad:</label>
+                                <input name="cedula" type="file" required>
                             </div>
                             <div class="form-group">
                                 <label for="titulo">Título universitario:</label>
-                                <input name="titulo" type="file">
+                                <input name="titulo" type="file" required>
                             </div>
                             <div>
                                 <label for="recibo">Recibo de pago:</label>
-                                <input name="recibo" type="file">
+                                <input name="recibo" type="file" required>
                             </div>
                             <div class="form-group">
                                 <label for="correo">Correo eléctronico:</label>
-                                <input type="email" class="form-control" id="correo" placeholder="Email" name="email" required>
+                                <input type="email" class="form-control" id="correo" placeholder="Email" name="email" value="{{old('email')}}" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Enviar</button>
                         </form>

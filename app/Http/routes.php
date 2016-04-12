@@ -219,6 +219,9 @@ Route::group([
         Route::get('inscripcion/procesar/buscar', [
             'as' => 'inscripcion.buscar', 'uses' => 'InscripcionController@buscarInscripcion'
         ]);
+        Route::get('inscripcion/procesar/{id}/archivo', [
+            'as' => 'inscripcion.verPdf', 'uses' => 'InscripcionController@verPdf'
+        ]);
 
 
 

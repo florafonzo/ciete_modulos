@@ -9,13 +9,15 @@ use App\Models\Preinscripcion;
 use App\Models\Webinar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
-//use App\Models\Curso as curso;
+use Illuminate\Support\Facades\Validator;
+
 use DateTime;
 use Auth;
 use Exception;
 use App\Models\TipoCurso;
-//use App\Models\Preinscripcion as preinscripcion;
+
 use DB;
 use Input;
 use Mail;
@@ -125,25 +127,27 @@ class PreinscripcionController extends Controller {
         try {
 
             $preins = new Preinscripcion();
-
             $cours = new Curso();
-
-            /*
-            if ($request->hasFile('cedula') && $request->hasFile('titulo')) {
-                    $imagen = $request->file('cedula');
-                    $imagen2 = $request->file('cedula');
-                } else {
-                    $imagen = '';
-                    $imagen2= '';
-            }*/
-
             $data['errores'] = '';
             $id = Input::get('curso');
+
             if($id == 0){
                 $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                 Session::set('error', 'Debe seleccionar un curso de la lista');
                 return view('preinscripcion.curso', $data);
             }
+
+            //  Se valida que los archivos esten en formato PDF
+            $validar_di = Validator::make(array('cedula' => $request->file('cedula')), array('cedula' => 'mimes:pdf'));
+            $validar_titulo = Validator::make(array('titulo' => $request->file('titulo')), array('titulo' => 'mimes:pdf'));
+            $validar_recibo = Validator::make(array('recibo' => $request->file('recibo')), array('recibo' => 'mimes:pdf'));
+            if ($validar_di->fails() || $validar_titulo->fails() || $validar_recibo->fails()) {
+                $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
+                Session::set('error','Los archivos deben estar en formato PDF');
+                return view('preinscripcion.curso', $data);
+
+            }
+
             $max= $cours->maxCuposCurso($id); //obtengo el máximo número de participantes que puede tener un curso
             $cant = $preins->cantParticipantes($id);
 
@@ -159,19 +163,28 @@ class PreinscripcionController extends Controller {
                         $create2->id_curso = $request->curso;
                         $create2->nombre = $request->nombre;
                         $create2->apellido = $request->apellido;
-                        $create2->documento_identidad = $request->cedula;
-                        $create2->titulo = $request->titulo;
-                        $create2->recibo = $request->recibo;
                         $create2->email = $request->email;
                         $create2->tipo = 'curso';
 
+                        $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
+                        $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
+                        $nombreRecibo = 'Recibo_' . date('dmY') . '_' . date('His') . '.pdf';
+                        $create2->documento_identidad = $nombreDI;
+                        $create2->titulo = $nombreTitulo;
+                        $create2->recibo = $nombreRecibo;
                         $create2->save();
+
+                        $pdfDI = $request->file('filepdf');
+                        $pdfTitulo = $request->file('filepdf');
+                        $pdfRecibo = $request->file('filepdf');
+                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreDI, $pdfDI );
+                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, $pdfTitulo );
+                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, $pdfRecibo );
+
 
                         $data['nombre'] = $request->nombre;
                         $data['apellido'] = $request->apellido;
-
                         $data['curso'] = $preins->getCursoName($id); // aquí se retorna el nombre del curso
-
                         $data['email'] = $request->email;
 
                         Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
@@ -179,8 +192,8 @@ class PreinscripcionController extends Controller {
                                 ->to($data['email'], 'CIETE')
                                 ->replyTo($data['email']);
                         });
-                        $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
 
+                        $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                         Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo. Recuerde revisar su carpeta de Spam');
                         return view('preinscripcion.curso', $data);
                     }else{
@@ -196,13 +209,27 @@ class PreinscripcionController extends Controller {
                     $create2->id_curso = $request->curso;
                     $create2->nombre = $request->nombre;
                     $create2->apellido = $request->apellido;
-                    $create2->documento_identidad = $request->cedula;
-                    $create2->titulo = $request->titulo;
                     $create2->email = $request->email;
-                    $create2->recibo = $request->recibo;
                     $create2->tipo = 'curso';
 
+                    // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD
+                    $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
+                    $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
+                    $nombreRecibo = 'Recibo_' . date('dmY') . '_' . date('His') . '.pdf';
+                    $create2->documento_identidad = $nombreDI;
+                    $create2->titulo = $nombreTitulo;
+                    $create2->recibo = $nombreRecibo;
                     $create2->save();
+
+                    // se guardan los archivos PDF en la carpeta correcta
+                    $pdfDI = $request->file('filepdf');
+                    $pdfTitulo = $request->file('filepdf');
+                    $pdfRecibo = $request->file('filepdf');
+                    Storage::put('/documentos/preinscripciones_pdf/'.$nombreDI, \File::get($pdfDI) );
+                    Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, \File::get($pdfTitulo) );
+                    Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, \File::get($pdfRecibo) );
+
+
 
                     $data['nombre'] = $request->nombre;
                     $data['apellido'] = $request->apellido;
@@ -379,7 +406,7 @@ class PreinscripcionController extends Controller {
                 }
 
 
-                return view('preinscripcion.preinscripcion-curso', $data);
+                return view('preinscripcion.preinscripcion-cursos', $data);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 
@@ -424,7 +451,7 @@ class PreinscripcionController extends Controller {
                 }
 
 
-                return view('preinscripcion.preinscripcion-curso', $data);
+                return view('preinscripcion.preinscripcion-cursos', $data);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 

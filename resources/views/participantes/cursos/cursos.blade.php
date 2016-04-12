@@ -38,7 +38,7 @@
                                     <td>
                                         @if(Entrust::can('ver_notas_part'))
                                             {!!Form::open(["url"=>"participante/cursos/".$curso[0]->id."/modulos",  "method" => "GET" ])!!}
-                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Módulos">
+                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="MÃ³dulos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
                                             {!! Form::close() !!}
