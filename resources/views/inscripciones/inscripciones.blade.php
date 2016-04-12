@@ -61,7 +61,7 @@
                                         @if($user->tipo == 'curso')
                                             <td>
                                                 @if(Entrust::can('activar_inscripcion'))
-                                                    {!! Form::open(array('method' => 'GET','route' => array('inscripcion.verPdf', $user->id))) !!}
+                                                    {!! Form::open(array('method' => 'GET','route' => array('inscripcion.verPdf', $user->id), "target" => "_blank")) !!}
                                                     {!! Form::button('<span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="bottom" title="Ver documentos" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-info'))!!}
                                                     {!! Form::close() !!}
                                                 @endif

@@ -33,7 +33,7 @@
     <div class="titulo_">
         <img class="imagen_" src="{{URL::to('/')}}/images/ciete_logo.jpg">
         <h3>
-            Participantes del curso: {{$curso->nombre}} <br/> Módulo - {{$modilo->nombre}} Sección - {{$seccion}}
+            Participantes del curso: {{$curso->nombre}} <br/> Módulo - {{$modulo->nombre}} / Sección - {{$seccion}}
         </h3>
     </div>
     <div class="">

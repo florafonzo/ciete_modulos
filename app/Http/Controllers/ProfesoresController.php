@@ -1119,7 +1119,7 @@ class ProfesoresController extends Controller {
 
 //-------------------------------------------------------------------------------------------
 
-    public function generarLista($id, $seccion) {
+    public function generarLista($id, $modulo, $seccion) {
         try {
 
             $usuario_actual = Auth::user();
@@ -1133,6 +1133,8 @@ class ProfesoresController extends Controller {
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id);
                 $data['seccion'] = $seccion;
+                $data['modulo'] = Modulo::find($modulo);
+                $data['participantes'] = '';
                 $seccion = str_replace(' ', '', $seccion);
                 $participantes = ParticipanteCurso::where('id_curso', '=', $id)->where('seccion', '=', $seccion)->select('id_participante')->get();
                 if($participantes != null) {
@@ -1147,8 +1149,18 @@ class ProfesoresController extends Controller {
                     usort($data['participantes'], array($this, "cmp")); //Ordenar por orden alfabetico segun el apellido
                 }
 
-                $pdf = PDF::loadView('profesores.cursos.lista',$data);
-                return $pdf->stream("Listado curso - ".$data['curso']->nombre." - seccion ".$seccion.".pdf", array('Attachment'=>0));
+                if($data['participantes'] != ''){
+                    $pdf = PDF::loadView('profesores.cursos.lista',$data);
+                    return $pdf->stream("Listado curso - ".$data['curso']->nombre." - seccion ".$seccion.".pdf", array('Attachment'=>0));
+                }else{
+                    $cant_secciones = $data['curso']->secciones;
+                    $arr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                    for ($i = 0; $i < $cant_secciones; $i++) {
+                        $data['secciones'][$i] = $arr[$i];
+                    }
+                    Session::set('error', 'Disculpe, no existen participantes inscritos en la sección '.$seccion);
+                    return view('profesores.cursos.secciones', $data);
+                }
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 
@@ -1160,7 +1172,7 @@ class ProfesoresController extends Controller {
         }
     }
 
-    public function generarListaW($id, $seccion) {
+    public function generarListaW($id, $modulo, $seccion) {
         try {
 
             $usuario_actual = Auth::user();
@@ -1174,6 +1186,8 @@ class ProfesoresController extends Controller {
                 $data['errores'] = '';
                 $data['webinar'] = Webinar::find($id);
                 $data['seccion'] = $seccion;
+                $data['modulo'] = Modulo::find($modulo);
+                $data['participantes'] = '';
                 $seccion = str_replace(' ', '', $seccion);
                 $participantes = ParticipanteWebinar::where('id_webinar', '=', $id)->where('seccion', '=', $seccion)->select('id_participante')->get();
                 if($participantes != null) {
