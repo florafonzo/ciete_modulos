@@ -10,6 +10,7 @@ use App\Models\Webinar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Facades\Validator;
 
@@ -174,12 +175,12 @@ class PreinscripcionController extends Controller {
                         $create2->recibo = $nombreRecibo;
                         $create2->save();
 
-                        $pdfDI = $request->file('filepdf');
-                        $pdfTitulo = $request->file('filepdf');
-                        $pdfRecibo = $request->file('filepdf');
-                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreDI, $pdfDI );
-                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, $pdfTitulo );
-                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, $pdfRecibo );
+                        $pdfDI = $request->file('cedula');
+                        $pdfTitulo = $request->file('titulo');
+                        $pdfRecibo = $request->file('recibo');
+                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreDI, File::get($pdfDI ));
+                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, File::get($pdfTitulo) );
+                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, File::get($pdfRecibo ));
 
 
                         $data['nombre'] = $request->nombre;

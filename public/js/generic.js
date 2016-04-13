@@ -641,6 +641,23 @@ function activarPrecurso(id) {
         })
 }
 //------------------------------------------------------------------------------//
+//------------------------Función para activar preinscripcion ------------------//
+
+function activarInscripcion(id) {
+    swal({
+            title: "¿Está seguro que desea confrimar la inscripción?",
+            text: "Si acepta, aparecerá en la lista de participantes inscritos",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            confirmButtonText: "Aceptar",
+            closeOnConfirm: false
+        },
+        function(){
+            $('#form_inscripcion'+id).submit();
+        })
+}
+//------------------------------------------------------------------------------//
 
 
 CKEDITOR.replace('.ckeditor');

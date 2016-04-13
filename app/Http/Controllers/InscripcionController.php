@@ -2,12 +2,19 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Curso;
+use App\Models\Participante;
+use App\Models\ParticipanteCurso;
+use App\Models\ParticipanteWebinar;
+use App\Models\Webinar;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Response;
+use Mail;
 
 use App\Models\Preinscripcion;
 use Illuminate\Http\Request;
@@ -15,7 +22,7 @@ use Illuminate\Http\Request;
 class InscripcionController extends Controller {
 
 
-	public function indexCurso() {
+	public function index() {
 		try{
 
 			//Verificación de los permisos del usuario para poder realizar esta acción
@@ -104,34 +111,193 @@ class InscripcionController extends Controller {
 	}
 
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
 	public function store()
 	{
-		//
+        try{
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('activar_inscripcion')) {    // Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['busq_'] = false;
+                $actividad = '';
+                $id = Input::get('val');
+                $usuario = Preinscripcion::find($id);
+                $existe = User::where('email', '=', $usuario->email)->get();// se verifica si el usuario ya está registrado
+
+                if($usuario->tipo == 'curso'){
+                    $actividad = Curso::find($usuario->id_curso);
+                    $data['tipo'] = 'curso';
+                }elseif($usuario->tipo == 'webinar'){
+                    $actividad = Webinar::find($usuario->id_curso);
+                    $data['tipo'] = 'webinar';
+                }
+                $data['email'] = $usuario->email;
+                $data['nombre'] = $usuario->nombre;
+                $data['apellido'] = $usuario->apellido;
+                $data['curso'] = $actividad->nombre;
+                $data['clave'] = '123456';
+
+                if($existe->count()){
+                    if($usuario->tipo == 'curso'){
+                        $participante = Participante::where('id_usuario', '=', $existe->id);
+                        $participante_nuevo = new ParticipanteCurso();
+                        $participante_nuevo->id_participante = $participante->id;
+                        $participante_nuevo->id_curso = $actividad->id;
+                        $participante_nuevo->seccion = 'A';
+                        $participante_nuevo->save();
+
+                    }elseif($usuario->tipo == 'webinar'){
+                        $participante = Participante::where('id_usuario', '=', $existe->id);
+                        $participante_nuevo = new ParticipanteWebinar();
+                        $participante_nuevo->id_participante = $participante->id;
+                        $participante_nuevo->id_webinar = $actividad->id;
+                        $participante_nuevo->seccion = 'A';
+                        $participante_nuevo->save();
+                    }
+
+                    if($participante_nuevo->save()) {
+                        Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
+                            $message->subject('CIETE - Inscripción')
+                                ->to($data['email'], 'CIETE')
+                                ->replyTo($data['email']);
+                        });
+
+                        DB::table('preinscripciones')->where('id', '=', $id)->delete();
+                        $data['usuarios'] = Preinscripcion::all();
+                        $data['tipos'] = ['curso', 'webinar'];
+                        Session::set('mensaje', 'El usuario fue inscrito con éxito.');
+                        return view('inscripciones.inscripciones', $data);
+                    }else{
+                        $data['usuarios'] = Preinscripcion::all();
+                        $data['tipos'] = ['curso', 'webinar'];
+                        Session::set('error', 'Ha ocurrido un error inesperado');
+                        return view('inscripciones.inscripciones', $data);
+                    }
+
+                }else{
+                    $user = new User();
+                    $user->nombre = $data['nombre'];
+                    $user->apellido = $data['apellido'];
+                    $user->email = $data['email'];
+                    $user->foto = '';
+                    $user->password = bcrypt('123456');
+                    $user->save();
+                    $data['user'] = $user->id;
+
+                    if($user->save()) {
+                        Mail::send('emails.inscripcion', $data, function ($message) use ($data) {
+                            $message->subject('CIETE - Inscripción')
+                                ->to($data['email'], 'CIETE')
+                                ->replyTo($data['email']);
+                        });
+
+                        DB::table('preinscripciones')->where('id', '=', $id)->delete();
+                        $data['usuarios'] = Preinscripcion::all();
+                        $data['tipos'] = ['curso', 'webinar'];
+                        Session::set('mensaje', 'El usuario fue inscrito con éxito.');
+                        return view('inscripciones.inscripciones', $data);
+                    }else{
+                        $data['usuarios'] = Preinscripcion::all();
+                        $data['tipos'] = ['curso', 'webinar'];
+                        Session::set('error', 'Ha ocurrido un error inesperado');
+                        return view('inscripciones.inscripciones', $data);
+                    }
+                }
+
+
+
+
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function verPdf($id)
-	{
-        $usuario = Preinscripcion::find($id);
-        $filename = $usuario->documento_identidad;
-        $path = public_path().'/documentos/preinscripciones_pdf/'.$filename;
-//        dd($path);
 
-        return Response::make(file_get_contents($path), 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; '.$filename,
-        ]);
+	public function verDocumentos($id) {
+        try{
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('activar_inscripcion')) {    // Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $usuario = Preinscripcion::find($id);
+                $data['docs'] = '';
+                $data['nombres'] = ['Documento de Identidad', 'Titulo', 'Recibo'];
+                if($usuario->documento_identidad != ''){
+                    $data['docs'][0] = $usuario->documento_identidad;
+                }else{
+                    $data['docs'][0] = '';
+                }
+                if($usuario->titulo != ''){
+                    $data['docs'][1] = $usuario->titulo;
+                }else{
+                    $data['docs'][1] = '';
+                }
+                if($usuario->recibo != ''){
+                    $data['docs'][2] = $usuario->recibo;
+                }else{
+                    $data['docs'][2] = '';
+                }
+
+                return view('inscripciones.documentos', $data);
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+
 	}
+
+    public function verPdf($doc) {
+        try {
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if ($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            } else {
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if ($usuario_actual->can('activar_inscripcion')) {
+                $data['errores'] = '';
+//                $usuario = Preinscripcion::find($id);
+//                $filename = $usuario->documento_identidad;
+                $path = public_path() . '/documentos/preinscripciones_pdf/' . $doc;
+                //        dd($path);
+
+                return Response::make(file_get_contents($path), 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; ' . $doc,
+                ]);
+            }
+        }catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
 
 	/**
 	 * Show the form for editing the specified resource.

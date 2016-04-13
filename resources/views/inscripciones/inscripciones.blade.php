@@ -61,17 +61,24 @@
                                         @if($user->tipo == 'curso')
                                             <td>
                                                 @if(Entrust::can('activar_inscripcion'))
-                                                    {!! Form::open(array('method' => 'GET','route' => array('inscripcion.verPdf', $user->id), "target" => "_blank")) !!}
-                                                    {!! Form::button('<span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="bottom" title="Ver documentos" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-info'))!!}
+                                                    {!! Form::open(array('method' => 'GET','route' => array('inscripcion.documentos', $user->id))) !!}
+                                                        <button type="submit" class='btn btn-info' data-toggle='tooltip' data-placement="bottom" title="Ver documentos">
+                                                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                                                        </button>
+                                                        {{--{!! Form::button('<span class="glyphicon glyphicon-file" data-toggle="tooltip" data-placement="bottom" title="Ver documentos" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-info'))!!}--}}
                                                     {!! Form::close() !!}
                                                 @endif
                                             </td>
                                         @endif
                                         <td>
                                             @if(Entrust::can('activar_inscripcion'))
-                                                {{-- {!! Form::open(array('method' => 'GET','route' => array('usuarios.edit', $user[0]->id))) !!}--}}
-                                                {!! Form::button('<span class="glyphicon glyphicon-ok" data-toggle="tooltip" data-placement="bottom" title="Activar" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-success'))!!}
-                                                {{--  {!! Form::close() !!}--}}
+                                                {!! Form::open(array('method' => 'POST','route' => array('inscripcion.store'), 'id' => 'form_inscripcion'.$user->id)) !!}
+                                                    <input name="val" type="hidden" value="{{$user->id}}">
+                                                    <button type="button" onclick="activarInscripcion('{{$user->id}}')" class='btn btn-success' data-toggle='tooltip' data-placement="bottom" title="Activar">
+                                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                                    </button>
+                                                    {{--{!! Form::button('<span class="glyphicon glyphicon-ok" data-toggle="tooltip" data-placement="bottom" title="Activar" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-success'))!!}--}}
+                                                {!! Form::close() !!}
                                             @endif
                                         </td>
                                     </tr>

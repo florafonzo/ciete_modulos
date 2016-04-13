@@ -33,7 +33,7 @@
 						<img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" />
 						Estimado Usuario, <br>
 
-						Haz click en el siguiente enlace para cambiar tu contraseña: <br>
+						Haga click en el siguiente enlace para cambiar su contraseña: <br>
 					<form class="form-horizontal" role="form" method="GET" action="{{ url('password/reset/'.$token) }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<div class="form-group">

@@ -446,7 +446,7 @@ class UsuariosController extends Controller {
                         return view('usuarios.crear');
                     }
                 } else {    // Si el usuario no se ha creado bien se redirige al formulario de creación y se le indica al usuario el error
-                    Session::set('error', 'Ha ocur rido un error inesperado');
+                    Session::set('error', 'Ha ocurrido un error inesperado');
                     return view('usuarios.crear');
                 }
             }else{   // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error

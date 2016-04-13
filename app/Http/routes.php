@@ -215,13 +215,18 @@ Route::group([
     ]);
 
     //Rutas inscripcion
-        Route::get('inscripcion/procesar','InscripcionController@indexCurso');
+        Route::get('inscripcion/procesar','InscripcionController@index');
         Route::get('inscripcion/procesar/buscar', [
             'as' => 'inscripcion.buscar', 'uses' => 'InscripcionController@buscarInscripcion'
         ]);
-        Route::get('inscripcion/procesar/{id}/archivo', [
+        Route::get('inscripcion/procesar/{id}/documentos', [
+            'as' => 'inscripcion.documentos', 'uses' => 'InscripcionController@verDocumentos'
+        ]);
+        Route::get('inscripcion/procesar/{doc}/documentos/ver', [
             'as' => 'inscripcion.verPdf', 'uses' => 'InscripcionController@verPdf'
         ]);
+        Route::resource('inscripcion','InscripcionController');
+
 
 
 
