@@ -19,7 +19,6 @@
                         <tr>
                             <th>#</th>
                             <th>Nombre</th>
-                            <th>Tipo</th>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
                             <th>Acciones</th>

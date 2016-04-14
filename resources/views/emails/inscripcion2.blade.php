@@ -31,10 +31,11 @@
             <div class="panel panel-login">
                 <div class="panel-body">
                     <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" />
-                    Bienvenido estimado {{$nombre}} {{$apellido}} al CIETE.
-                    Gracias por formar parte de nuestra comunidad.
+                    Bienvenido estimado {{$nombre}} {{$apellido}} al CIETE.<br>
+
                     Usted acaba de ser inscrito en el {{$tipo}} {{$curso}}, ingrese con su correo y clave habitual a la página
-                    y podrá ver sus cursos inscritos.
+                    y podrá ver sus nuevos cursos inscritos.<br><br>
+                    Gracias por formar parte de nuestra comunidad.
                 </div>
             </div>
         </div>

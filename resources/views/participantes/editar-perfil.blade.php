@@ -15,6 +15,35 @@
                 @include('partials.mensajes'){{--Errores--}}
                 @if($datos->count())
                     {!! Form::open(array('method' => 'PUT', 'route' => array('participante.update', Auth::user()->id), 'class' => 'form-horizontal col-md-10', 'enctype' => "multipart/form-data")) !!}
+                    <div class="form-group" id="perfil">
+                        {!!Form::label('imagen_perfil', 'Imagen de Perfil: ',  array( 'class' => 'col-md-4 '))!!}
+                        <div class="col-sm-8" id="borde">
+                            @if (Session::has('imagen'))
+                                {!!Form::file('file_perfil',['required'=>'True', 'id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
+                                {!!Form::hidden('img_carg','yes',['id' => 'oculto'])!!}
+                                {!!Form::hidden('file_viejo',$foto)!!}
+                            @else
+                                @if (Session::has('cortar'))
+                                    <br>
+                                    {!!Form::hidden('img_carg',null)!!}
+                                    {!!Form::hidden('cortar','yes')!!}
+                                    {!!Form::hidden('dir',$ruta)!!}
+                                    {!!Form::hidden('file_viejo',$foto)!!}
+                                    <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
+                                    <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/participante/perfil/imagen">Cambiar</a>
+                                @else
+                                    <br>
+                                    {!!Form::hidden('img_carg',null)!!}
+                                    {!!Form::hidden('cortar',null)!!}
+                                    <img src="{{URL::to('/')}}/images/images_perfil/{{$foto}}" id="imagen_cortada" width="150" height="150"><br><br>
+                                    {{--{!!Html::image('/img/images_perfil/'.$perfil->file_perfil,null, ['height'=>'279', 'width'=>'270 ']) !!} <br><br>--}}
+                                    <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/participante/perfil/imagen" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                    <img class="" id="imagen2" src="" alt="">
+                    {!!Form::hidden('file_viejo',$foto)!!}
                     <div class="form-group">
                         {!!Form::label('nombre', 'Nombre:', array( 'class' => 'col-md-4 ')) !!}
                         <div class="col-sm-8">
@@ -45,6 +74,63 @@
                             {!!Form::text('celular', $datos[0]->celular, array( 'class' => 'form-control'))!!}
                         </div>
                     </div>
+                    @if($datos[0]->nuevo)
+                        <div class="form-group">
+                            {!!Form::label('pais', 'Pais: ', array('class' => 'col-md-4 '))!!}
+                            <div class="col-sm-8 pais">
+                                <select class="form-control " id="id_pais" name="id_pais">
+                                    <option value="0"  selected="selected"> Seleccione un pais</option>
+                                    @foreach ($paises as $index=>$pais)
+                                        <option value="{{$index}}">{{$pais}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group localidad">
+                            <div class="form-group">
+                                {!!Form::label('estado', 'Estado:', array('class' => 'col-md-4 '))!!}
+                                <div class="col-sm-8">
+                                    <!--{!! Form::select('id_estado', $estados, null, array( 'class' => 'form-control', 'id'=>'id_est'))!!}-->
+                                    <select class="form-control col-sm-8" id="id_est" name="id_est">
+                                        <option value="0"  selected="selected"> Seleccione un estado</option>
+                                        @foreach ($estados as $index=>$estado)
+                                            <option value="{{$index}}">{{$estado}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group localidad1">
+                            <div class="form-group">
+                                {!!Form::label('ciudad', 'Ciudad:', array('class' => 'col-md-4 '))!!}
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="ciudad" name="ciudad">
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group localidad2">
+                            <div class="form-group">
+                                {!!Form::label('municipio', 'Municipio:', array('class' => 'col-md-4 '))!!}
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="municipio" name="municipio">
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group localidad3">
+                            <div class="form-group">
+                                {!!Form::label('parroquia', 'Parroquia:', array('class' => 'col-md-4 '))!!}
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="parroquia" name="parroquia">
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     <div class="form-group">
                         {!!Form::label('email', 'Correo electrónico:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
@@ -63,41 +149,6 @@
                             {!! Form::password('password_confirmation', array('class' => 'form-control')) !!}
                         </div>
                     </div>
-                    <div class="form-group" id="perfil">
-                        {!!Form::label('imagen_perfil', 'Imagen de Perfil: ',  array( 'class' => 'col-md-4 '))!!}
-                        <div class="col-sm-8" id="borde">
-                            @if (Session::has('imagen'))
-                                {!!Form::file('file_perfil',['required'=>'True', 'id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
-                                {!!Form::hidden('img_carg','yes',['id' => 'oculto'])!!}
-                                {!!Form::hidden('file_viejo',$foto)!!}
-                            @else
-                                @if (Session::has('cortar'))
-                                    <br>
-                                    {!!Form::hidden('img_carg',null)!!}
-                                    {!!Form::hidden('cortar','yes')!!}
-                                    {!!Form::hidden('dir',$ruta)!!}
-                                    {!!Form::hidden('file_viejo',$foto)!!}
-                                    <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                    <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/participante/perfil/imagen">Cambiar</a>
-                                @else
-                                    <br>
-                                    {!!Form::hidden('img_carg',null)!!}
-                                    {!!Form::hidden('cortar',null)!!}
-                                    <img src="{{URL::to('/')}}/images/images_perfil/{{$foto}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                    {{--{!!Html::image('/img/images_perfil/'.$perfil->file_perfil,null, ['height'=>'279', 'width'=>'270 ']) !!} <br><br>--}}
-                                    <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/participante/perfil/imagen" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>
-                                @endif
-                            @endif
-                        </div>
-                    </div>
-                    <img class="" id="imagen2" src="" alt="">
-                    {!!Form::hidden('file_viejo',$foto)!!}
-                    {{--<div class="form-group">--}}
-                        {{--{!!Form::label('imagen', 'Imagen de perfil: ',  array( 'class' => 'col-md-4 control-label'))!!}--}}
-                        {{--<div class="col-sm-8">--}}
-                            {{--{!!Form::file('imagen', $datos[0]->foto, array('class' => 'form-control'))!!}--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
                     <div class="form-group">
                         {!!Form::label('correo_alternativo', 'Correo electrónico alternativo: ',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">

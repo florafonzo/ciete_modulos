@@ -8,6 +8,8 @@ use App\Models\Nota;
 use App\Models\ParticipanteCurso;
 use App\Models\ParticipanteWebinar;
 use App\Models\TipoCurso;
+use App\Models\Pais;
+use App\Models\Estado;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
@@ -117,6 +119,8 @@ class ParticipantesController extends Controller {
                 $data['errores'] = '';
                 $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
                 $data['email']= User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
+                $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                $data['estados'] = Estado::all()->lists('estado','id_estado');
 
                 return view('participantes.editar-perfil', $data);
 
@@ -175,23 +179,58 @@ class ParticipantesController extends Controller {
                         return view('participantes.editar-perfil', $data);
                     }
                 }
+//                dd($participante[0]->nuevo);
+                if($participante[0]->nuevo == true) {
+                    $pais = Input::get('id_pais');
+                    if ($pais == 231) {
+                        $estado = Input::get('id_est');
+                        $ciudad = Input::get('ciudad');
+                        $municipio = Input::get('municipio');
+                        $parroquia = Input::get('parroquia');
+                        if (($estado == 0) || ($ciudad == 0) || ($municipio == 0) || ($parroquia == 0)) {
+                            $data['errores'] = "Debe completar todos los datos de la direecion (Estado, Ciudad, Municipio y Parroquia)";
+                            $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                            $data['estados'] = Estado::all()->lists('estado', 'id_estado');
+                            $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
+                            $data['email'] = User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
 
-                if($img_nueva == 'yes'){
-                    $file = Input::get('dir');
-                    if($usuario->foto != null){
-                        Storage::delete('/images/images_perfil/' . $request->file_viejo);
+                            return view('participantes.editar-perfil', $data);
+                        }
+                        $dir = $pais . '-' . $estado . '-' . $ciudad . '-' . $municipio . '-' . $parroquia;
+
+                    } elseif ($pais == 0) {
+                        $data['errores'] = "Debe completar el campo pais";
+                        $data['roles'] = Role::all()->lists('display_name', 'id');
+                        $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                        $data['estados'] = Estado::all()->lists('estado', 'id_estado');
+                        $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
+                        $data['email'] = User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
+
+                        return view('participantes.editar-perfil', $data);
+                    } else {
+                        $dir = $pais;
                     }
-                    $file = str_replace('data:image/png;base64,', '', $file);
-                    $nombreTemporal = 'perfil_' . date('dmY') . '_' . date('His') . ".jpg";
-                    $usuario->foto = $nombreTemporal;
-
-                    $imagen = Image::make($file);
-                    $payload = (string)$imagen->encode();
-                    Storage::put(
-                        '/images/images_perfil/'. $nombreTemporal,
-                        $payload
-                    );
+                    $participante[0]->direccion = $dir;
+                    $participante[0]->nuevo = false;
                 }
+
+                    if ($img_nueva == 'yes') {
+                        $file = Input::get('dir');
+                        if ($usuario->foto != null) {
+                            Storage::delete('/images/images_perfil/' . $request->file_viejo);
+                        }
+                        $file = str_replace('data:image/png;base64,', '', $file);
+                        $nombreTemporal = 'perfil_' . date('dmY') . '_' . date('His') . ".jpg";
+                        $usuario->foto = $nombreTemporal;
+
+                        $imagen = Image::make($file);
+                        $payload = (string)$imagen->encode();
+                        Storage::put(
+                            '/images/images_perfil/' . $nombreTemporal,
+                            $payload
+                        );
+                    }
+
 
                 // Se editan los datos del participante con los datos ingresados en el formulario
                 $usuario->nombre = $request->nombre;
@@ -433,6 +472,8 @@ class ParticipantesController extends Controller {
                 $data['errores'] = '';
                 $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
                 $data['email']= User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
+                $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                $data['estados'] = Estado::all()->lists('estado','id_estado');
                 Session::flash('imagen', 'yes');
                 return view('participantes.editar-perfil', $data);
 
@@ -462,6 +503,8 @@ class ParticipantesController extends Controller {
                 $data['errores'] = '';
                 $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
                 $data['email']= User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
+                $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                $data['estados'] = Estado::all()->lists('estado','id_estado');
                 Session::flash('imagen', null);
                 Session::flash('cortar', 'yes');
                 return view('participantes.editar-perfil', $data);

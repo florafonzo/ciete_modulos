@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PreinscripcionRequest;
+use App\Http\Requests\PreinscripcionWebRequest;
 
 use App\Models\Curso;
 use App\Models\Preinscripcion;
@@ -10,7 +11,7 @@ use App\Models\Webinar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use File;
 
 use Illuminate\Support\Facades\Validator;
 
@@ -164,9 +165,11 @@ class PreinscripcionController extends Controller {
                         $create2->id_curso = $request->curso;
                         $create2->nombre = $request->nombre;
                         $create2->apellido = $request->apellido;
+                        $create2->di = $request->di;
                         $create2->email = $request->email;
                         $create2->tipo = 'curso';
 
+                        // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD
                         $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
                         $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
                         $nombreRecibo = 'Recibo_' . date('dmY') . '_' . date('His') . '.pdf';
@@ -175,12 +178,13 @@ class PreinscripcionController extends Controller {
                         $create2->recibo = $nombreRecibo;
                         $create2->save();
 
+                        // se guardan los archivos PDF en la carpeta correcta
                         $pdfDI = $request->file('cedula');
                         $pdfTitulo = $request->file('titulo');
                         $pdfRecibo = $request->file('recibo');
-                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreDI, File::get($pdfDI ));
-                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, File::get($pdfTitulo) );
-                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, File::get($pdfRecibo ));
+                        Storage::put('/documentos/preinscripciones_pdf'.$nombreDI, \File::get($pdfDI ));
+                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, \File::get($pdfTitulo) );
+                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, \File::get($pdfRecibo ));
 
 
                         $data['nombre'] = $request->nombre;
@@ -210,6 +214,7 @@ class PreinscripcionController extends Controller {
                     $create2->id_curso = $request->curso;
                     $create2->nombre = $request->nombre;
                     $create2->apellido = $request->apellido;
+                    $create2->di = $request->di;
                     $create2->email = $request->email;
                     $create2->tipo = 'curso';
 
@@ -223,9 +228,9 @@ class PreinscripcionController extends Controller {
                     $create2->save();
 
                     // se guardan los archivos PDF en la carpeta correcta
-                    $pdfDI = $request->file('filepdf');
-                    $pdfTitulo = $request->file('filepdf');
-                    $pdfRecibo = $request->file('filepdf');
+                    $pdfDI = $request->file('cedula');
+                    $pdfTitulo = $request->file('titulo');
+                    $pdfRecibo = $request->file('recibo');
                     Storage::put('/documentos/preinscripciones_pdf/'.$nombreDI, \File::get($pdfDI) );
                     Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, \File::get($pdfTitulo) );
                     Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, \File::get($pdfRecibo) );
@@ -267,7 +272,7 @@ class PreinscripcionController extends Controller {
 
     }
 
-    public function storePreinscripcionWebinar(PreinscripcionRequest $request){
+    public function storePreinscripcionWebinar(PreinscripcionWebRequest $request){
 
         try {
 
@@ -295,10 +300,11 @@ class PreinscripcionController extends Controller {
                         $create2->id_curso = $request->curso;
                         $create2->nombre = $request->nombre;
                         $create2->apellido = $request->apellido;
-                        $create2->documento_identidad = $request->cedula;
-                        $create2->titulo = $request->titulo;
+                        $create2->di = $request->di;
                         $create2->email = $request->email;
-                        $create2->recibo = $request->recibo;
+                        $create2->documento_identidad = '';
+                        $create2->titulo = '';
+                        $create2->recibo = '';
                         $create2->tipo = 'webinar';
 
                         $create2->save();
@@ -332,10 +338,11 @@ class PreinscripcionController extends Controller {
                     $create2->id_curso = $request->curso;
                     $create2->nombre = $request->nombre;
                     $create2->apellido = $request->apellido;
-                    $create2->documento_identidad = $request->cedula;
-                    $create2->titulo = $request->titulo;
+                    $create2->di = $request->di;
                     $create2->email = $request->email;
-                    $create2->recibo = $request->recibo;
+                    $create2->documento_identidad = '';
+                    $create2->titulo = '';
+                    $create2->recibo = '';
                     $create2->tipo = 'webinar';
 
                     $create2->save();

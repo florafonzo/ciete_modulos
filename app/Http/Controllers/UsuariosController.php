@@ -392,6 +392,7 @@ class UsuariosController extends Controller {
                     $create2->ocupacion = Input::get('ocupacion');
                     $create2->titulo_pregrado = Input::get('titulo');
                     $create2->universidad = Input::get('univ');
+                    $create2->nuevo = false;
 
                 } elseif (($request->es_participante) == 'no') {    //  Si no es Perticipante entonces es Profesor
                     // Se verifica que el usuario haya seleccionado que roles tendrá el usuario que se está creando
@@ -644,6 +645,7 @@ class UsuariosController extends Controller {
                     $tipo_usuario->ocupacion = Input::get('ocupacion');
                     $tipo_usuario->titulo_pregrado = Input::get('titulo');
                     $tipo_usuario->universidad = Input::get('univ');
+                    $tipo_usuario->nuevo = false;
 
                     $tipo_usuario->save(); // Se guardan los nuevos datos en la tabla Participentes
 

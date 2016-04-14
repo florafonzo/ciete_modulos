@@ -18,7 +18,10 @@
                                 <label for="apellido">Apellido:</label>
                                 <input type="text" class="form-control" id="apellido" placeholder="Apellido" name="apellido" value="{{old('apellido')}}" required>
                             </div>
-
+                            <div class="form-group">
+                                <label for="apellido">Documento de identidad:</label>
+                                <input type="text" class="form-control" id="" placeholder="Número de documento de identidad" name="di" value="{{old('di')}}" required>
+                            </div>
                             <div class="form-group">
                                 <label for="curso">Curso:</label>
                                 <select name="curso" id="curso" placeholder="Curso" required>
@@ -27,6 +30,9 @@
                                         <option value="{{$index}}">{{$curso}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>A continuación adjunte los documentos en formato PDF:</label>
                             </div>
                             <div class="form-group">
                                 <label for="cedula">Documento de identidad:</label>

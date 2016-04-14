@@ -30,21 +30,18 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-login">
                 <div class="panel-body">
-                    <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" />
-                    Bienvenido estimado {{$nombre}} {{$apellido}} al CIETE.
+                    <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" /><br>
+                    Bienvenido estimado {{$nombre}} {{$apellido}} al CIETE.<br><br>
 
-                    Gracias por formar parte de nuestra comunidad.
-                    Usted acaba de ser inscrito en el {{$tipo}} {{$curso}}, haga click en el siguiente enlace para que complete su inscripción: <br>
-                    <form class="form-horizontal" role="form" method="GET" action="{{ url('inscripcion/completar/'.$user) }}">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Completar Inscripción
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    Usted acaba de ser inscrito en el {{$tipo}} {{$curso}}, ya puede ingresar a la página colocando los siguientes datos:<br>
+                    <ul style="list-style: none;">
+                        <li><strong>Correo: {{$email}}</strong></li>
+                        <li><strong>Contraseña: {{$clave}}</strong></li>
+                    </ul>
+                    Ingrese a la sección de <strong>Ver Perfil</strong> para cambiar su contraseña y completar sus datos.<br><br>
+                    Gracias por formar parte de nuestra comunidad.<br><br>
+
+                    CIETE
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Providers;
 
-class PreinscripcionRequest extends Request {
+class PreinscripcionWebRequest extends Request {
 
     /**
      * Determine if the user is authorized to make this request.
@@ -30,10 +30,7 @@ class PreinscripcionRequest extends Request {
             'curso' => 'required',
             'nombre' => 'required|max:255',
             'apellido' => 'required|max:255',
-            'apellido' => 'required|max:100|min:2',
-            'cedula' => 'required|mimes:pdf',
-            'titulo' => 'required|mimes:pdf',
-            'recibo' => 'required|mimes:pdf',
+            'di' => 'required|max:100',
             'email' => 'required|email|max:255'
         ];
     }

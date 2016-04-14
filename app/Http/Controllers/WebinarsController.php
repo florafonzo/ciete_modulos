@@ -341,6 +341,7 @@ class WebinarsController extends Controller {
                 $create2->especificaciones = $request->especificaciones;
                 $create2->descripcion_carrusel = $request->descripcion_carrusel;
                 $create2->activo_carrusel = $activo_carrusel;
+                $create2->activo_preinscripcion = false;
 
                 if($img_nueva == 'yes'){
                     $file = Input::get('dir');

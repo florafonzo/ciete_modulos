@@ -225,6 +225,7 @@ Route::group([
         Route::get('inscripcion/procesar/{doc}/documentos/ver', [
             'as' => 'inscripcion.verPdf', 'uses' => 'InscripcionController@verPdf'
         ]);
+        Route::get('inscripcion/completar/{id}','InscripcionController@completarInscripcion');
         Route::resource('inscripcion','InscripcionController');
 
 
