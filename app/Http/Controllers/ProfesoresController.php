@@ -1265,11 +1265,11 @@ class ProfesoresController extends Controller {
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id_curso);
                 $data['modulo'] = Modulo::find($modulo);
-                $cohorte = $request->cohorte;
-                $grupo = $request->grupo;
-                $positivo = $request->positivo;
-                $negativo = $request->negativo;
-                $sugerencias = $request->sugerencias;
+                $data['cohorte'] = $request->cohorte;
+                $data['grupo'] = $request->grupo;
+                $data['positivo'] = $request->positivo;
+                $data['negativo'] = $request->negativo;
+                $data['sugerencias'] = $request->sugerencias;
                 $data['participantes'] = '';
 
                 $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->select('id_participante')->get();
@@ -1289,12 +1289,11 @@ class ProfesoresController extends Controller {
                             dd($final);
                             if ($final >= 15) {
                                 $proyecto = 'A';
-                            } else {
+                            } elseif(($final > 0) && ($final < 15)) {
                                 $proyecto = 'R';
+                            }else{
+                                $proyecto = 'D';
                             }
-                            //                        }elseif(){
-                            //
-                            //                        }
                             $data['participantes'][$index] = [[$alumno[0]->nombre], [$alumno[0]->apellido], [$final], [$proyecto]];
                         }else{
                             $data['participantes'][$index] = [[$alumno[0]->nombre], [$alumno[0]->apellido], [0], ['D']];

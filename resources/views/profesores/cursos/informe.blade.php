@@ -33,10 +33,16 @@
 <div class="titulo_">
     <img class="imagen_" src="{{URL::to('/')}}/images/ciete_logo.jpg">
     <h3>
-        Participantes del curso: {{$curso->nombre}} <br/> Módulo - {{$modulo->nombre}}
+        Participantes del curso: {{$curso->nombre}} <br/> MÃ³dulo - {{$modulo->nombre}}
     </h3>
 </div>
 <div class="">
+    <div class="row">
+        <ul style="list-style: none">
+            <li><strong>Cohorte:</strong> {{$cohorte}}</li>
+            <li><strong>Gruppo:</strong> {{$cohorte}}</li>
+        </ul>
+    </div>
     <table class="todo_">
         <thead class="nombres">
         <tr>
@@ -64,6 +70,13 @@
             <td>No existen participantes</td>
         @endif
     </table>
+    <div class="row">
+        <ul style="list-style: none">
+            <li><strong>Aspectos positivos del curso:</strong> {{$positivo}}</li>
+            <li><strong>Aspectos negtivos del curso:</strong> {{$negativo}}</li>
+            <li><strong>Sugerencias de mejora:</strong> {{$sugerencias}}</li>
+        </ul>
+    </div>
 </div>
 </body>
 </html>
