@@ -146,39 +146,39 @@ class InscripcionController extends Controller {
                 $clave = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, $tam);
                 $data['clave'] = $clave;
 
-                $seccion = '';
-                if($usuario->tipo == 'curso'){
-                    $max_secc = $actividad->id_curso;
-                    $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id_curso)->orderBy('created_at')->get();
-                    $todo = end($todo);
-                    $ultimo = end($todo);
-                    $cuantos = ParticipanteCurso::where('id_curso', '=', $actividad->id_curso)->where('seccion', '=', $ultimo->seccion)->count();
-                    if($cuantos < $max_secc){
-                        $seccion = $ultimo->seccion;
-                    }else{
-                        for($i = 0; $i < count($secc); $i++){
-                            if($secc[$i] == $ultimo->seccion){
-                                $seccion = $secc[$i + 1];
-                            }
-                        }
-                    }
-                }elseif($usuario->tipo == 'webinar'){
-                    $max_secc = $actividad->id_curso;
-                    $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id_curso)->orderBy('created_at')->get();
-                    $todo = end($todo);
-                    $ultimo = end($todo);
-                    $cuantos = ParticipanteWebinar::where('id_webinaro', '=', $actividad->id_curso)->where('seccion', '=', $ultimo->seccion)->count();
-                    if($cuantos < $max_secc){
-                        $seccion = $ultimo->seccion;
-                    }else{
-                        for($i = 0; $i < count($secc); $i++){
-                            if($secc[$i] == $ultimo->seccion){
-                                $seccion = $secc[$i + 1];
-                            }
-                        }
-                    }
-                }
-                dd($seccion);
+                $seccion = 'A';
+//                if($usuario->tipo == 'curso'){
+//                    $max_secc = $actividad->id_curso;
+//                    $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id_curso)->orderBy('created_at')->get();
+//                    $todo = end($todo);
+//                    $ultimo = end($todo);
+//                    $cuantos = ParticipanteCurso::where('id_curso', '=', $actividad->id_curso)->where('seccion', '=', $ultimo->seccion)->count();
+//                    if($cuantos < $max_secc){
+//                        $seccion = $ultimo->seccion;
+//                    }else{
+//                        for($i = 0; $i < count($secc); $i++){
+//                            if($secc[$i] == $ultimo->seccion){
+//                                $seccion = $secc[$i + 1];
+//                            }
+//                        }
+//                    }
+//                }elseif($usuario->tipo == 'webinar'){
+//                    $max_secc = $actividad->id_curso;
+//                    $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id_curso)->orderBy('created_at')->get();
+//                    $todo = end($todo);
+//                    $ultimo = end($todo);
+//                    $cuantos = ParticipanteWebinar::where('id_webinaro', '=', $actividad->id_curso)->where('seccion', '=', $ultimo->seccion)->count();
+//                    if($cuantos < $max_secc){
+//                        $seccion = $ultimo->seccion;
+//                    }else{
+//                        for($i = 0; $i < count($secc); $i++){
+//                            if($secc[$i] == $ultimo->seccion){
+//                                $seccion = $secc[$i + 1];
+//                            }
+//                        }
+//                    }
+//                }
+//                dd($seccion);
 
                 if($existe->count()){           //Caso en que el usuario ya se encuentre registrado.
                     if($usuario->tipo == 'curso'){

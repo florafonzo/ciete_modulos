@@ -79,7 +79,7 @@
                             <a class="menu_usu" href="{{URL::to('/preinscripcion/webinars/procesar')}}"> Preinscripciones Webinars </a>
                         </li>
                     @endif
-                    @if(Entrust::can('activar_preinscripcion'))
+                    @if(Entrust::can('activar_inscripcion'))
                         <li class="menu_usuarios @if(Request::is('')) active @endif">
                             <a class="menu_usu" href="{{URL::to('/')}}/inscripcion/procesar"> Gestión Inscripciones </a>
                         </li>
