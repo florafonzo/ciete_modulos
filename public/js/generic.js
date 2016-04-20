@@ -401,6 +401,7 @@ function mostrarModal(id) {
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
             confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -420,6 +421,7 @@ function desactivarCurso(id) {
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
             confirmButtonText: "Desactivar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -438,6 +440,7 @@ function activarCurso(id) {
             showCancelButton: true,
             confirmButtonColor: 'green',
             confirmButtonText: "Activar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -456,6 +459,7 @@ function activarWebinar(id) {
             showCancelButton: true,
             confirmButtonColor: 'green',
             confirmButtonText: "Activar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -473,6 +477,7 @@ function eliminarPart(id) {
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
             confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -492,6 +497,7 @@ function agregarPart(id) {
             showCancelButton: true,
             confirmButtonColor: 'green',
             confirmButtonText: "Agregar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -509,6 +515,7 @@ function eliminarProf(id) {
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
             confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -528,6 +535,7 @@ function agregarProf(id) {
             showCancelButton: true,
             confirmButtonColor: 'green',
             confirmButtonText: "Agregar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -544,6 +552,7 @@ function eliminarPartW(id) {
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
             confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -563,6 +572,7 @@ function agregarPartW(id) {
             showCancelButton: true,
             confirmButtonColor: 'green',
             confirmButtonText: "Agregar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -580,6 +590,7 @@ function eliminarProfW(id) {
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
             confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -599,6 +610,7 @@ function agregarProfW(id) {
             showCancelButton: true,
             confirmButtonColor: 'green',
             confirmButtonText: "Agregar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -616,6 +628,7 @@ function desactivarPrecurso(id) {
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
             confirmButtonText: "Desactivar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -634,6 +647,7 @@ function activarPrecurso(id) {
             showCancelButton: true,
             confirmButtonColor: 'green',
             confirmButtonText: "Activar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -645,12 +659,13 @@ function activarPrecurso(id) {
 
 function activarInscripcion(id) {
     swal({
-            title: "¿Está seguro que desea confrimar la inscripción?",
+            title: "¿Está seguro que desea confirmar la inscripción?",
             text: "Si acepta, aparecerá en la lista de participantes inscritos",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: 'green',
             confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar",
             closeOnConfirm: false
         },
         function(){
@@ -659,6 +674,31 @@ function activarInscripcion(id) {
 }
 //------------------------------------------------------------------------------//
 
+//----------------------------------Modal Rechazo inscripción------------------------------//
+
+    function rechazarModal(id) {
+        swal({
+            title: "Rechazo de inscripción",
+            text: "Indique el motivo del rechazo:",
+            type: "input",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Motivo..."
+            },
+            function(inputValue){
+                if (inputValue === false) return false;
+                if (inputValue === "") {
+                    swal.showInputError("Debe indicar el motivo");
+                    return false
+                }
+                //swal("Genial!", "Usted escribió: " + inputValue, "success");
+                $('#motivo').append('<input type="hidden" name="motivo" value="'+inputValue+'">');
+                $('#form_inscripcion2'+id).submit();
+            });
+    }
+//-----------------------------------------------------------------------------------------//
 
 CKEDITOR.replace('.ckeditor');
 

@@ -28,6 +28,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfesorRequest;
 use App\Http\Requests\CalificarRequest;
+use App\Http\Requests\InformeRequest;
 use PhpParser\Node\Expr\BinaryOp\Mod;
 
 class ProfesoresController extends Controller {
@@ -492,7 +493,6 @@ class ProfesoresController extends Controller {
 
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id_curso);
-                $arr = [];
                 $modulos = ProfesorCurso::where('id_profesor', '=', $usuario_actual->id)
                                         ->where('id_curso', '=', $id_curso)->get();
 
@@ -1118,6 +1118,7 @@ class ProfesoresController extends Controller {
     }
 
 //-------------------------------------------------------------------------------------------
+//------------------------------------- Lista alumnos ---------------------------------------
 
     public function generarLista($id, $modulo, $seccion) {
         try {
@@ -1219,4 +1220,127 @@ class ProfesoresController extends Controller {
     public function cmp($a, $b) {
         return strcmp($a[0]->apellido, $b[0]->apellido);
     }
+
+    //------------------------------------- Informe Acedemicos ---------------------------------------
+    public function datosInforme($id_curso, $modulo)
+    {
+        try {
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('ver_perfil_prof')) { // Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['curso'] = Curso::find($id_curso);
+                $data['modulo'] = Modulo::find($modulo);
+                return view('profesores.cursos.informe-datos', $data);
+
+            }else{      // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+
+    public function generarInformeAc(InformeRequest $request, $id_curso, $modulo) {
+        try {
+
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('informe_academico')) {// Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['curso'] = Curso::find($id_curso);
+                $data['modulo'] = Modulo::find($modulo);
+                $cohorte = $request->cohorte;
+                $grupo = $request->grupo;
+                $positivo = $request->positivo;
+                $negativo = $request->negativo;
+                $sugerencias = $request->sugerencias;
+                $data['participantes'] = '';
+
+                $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->select('id_participante')->get();
+                if($participantes->count()) {
+                    foreach ($participantes as $index => $part) {
+                        $alumno = Participante::where('id', '=', $part->id_participante)->get();
+                        $notas = Nota::where('id_participante_curso', '=', $part->id);
+                        if($notas->count()) {
+                            $final = 0;
+                            $porcentaje = 0;
+                            foreach ($notas as $nota) {
+                                $calif = $nota->calificacion;
+                                $porcent = $nota->porcentaje;
+                                $porcentaje = ($porcentaje + $porcent);
+                                $final = $final + ($calif * ($porcent / 100));
+                            }
+                            dd($final);
+                            if ($final >= 15) {
+                                $proyecto = 'A';
+                            } else {
+                                $proyecto = 'R';
+                            }
+                            //                        }elseif(){
+                            //
+                            //                        }
+                            $data['participantes'][$index] = [[$alumno[0]->nombre], [$alumno[0]->apellido], [$final], [$proyecto]];
+                        }else{
+                            $data['participantes'][$index] = [[$alumno[0]->nombre], [$alumno[0]->apellido], [0], ['D']];
+                        }
+                    }
+                }else{
+                    $data['participantes'] = '';
+                }
+
+                if($data['participantes'] != '') {
+                    usort($data['participantes'], array($this, "querySort")); //Ordenar por orden alfabetico segun el apellido
+                }
+
+//                dd($data['participantes']);
+
+                return view('profesores.cursos.informe', $data);
+
+//                if($data['participantes'] != ''){
+//                    $pdf = PDF::loadView('profesores.cursos.lista',$data);
+//                    return $pdf->stream("Listado curso - ".$data['curso']->nombre." - modulo ".$data['modulo']->nombre.".pdf", array('Attachment'=>0));
+//                }else{
+//                    $modulos = ProfesorCurso::where('id_profesor', '=', $usuario_actual->id)
+//                        ->where('id_curso', '=', $id_curso)->get();
+//
+//                    foreach ($modulos as $index => $mod) {
+//                        $data['modulos'][$index] = Modulo::find($mod->id_modulo);
+//                    }
+//                    Session::set('error', 'Disculpe, no existen participantes en el modulo '.$data['modulo']->nombre);
+//                    return view('profesores.cursos.modulos', $data);
+//                }
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch(Exception $e){
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+
+
+
+    function querySort ($x, $y) {
+        return strcasecmp($x[1][0], $y[1][0]);
+    }
 }
+
+

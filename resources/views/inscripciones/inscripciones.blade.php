@@ -69,6 +69,8 @@
                                                     {!! Form::close() !!}
                                                 @endif
                                             </td>
+                                        @else
+                                            <td></td>
                                         @endif
                                         <td>
                                             @if(Entrust::can('activar_inscripcion'))
@@ -78,6 +80,16 @@
                                                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                                     </button>
                                                     {{--{!! Form::button('<span class="glyphicon glyphicon-ok" data-toggle="tooltip" data-placement="bottom" title="Activar" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-success'))!!}--}}
+                                                {!! Form::close() !!}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if(Entrust::can('desactivar_inscripcion'))
+                                                {!! Form::open(array('method' => 'DELETE','route' => array('inscripcion.destroy', $user->id), 'id' => 'form_inscripcion2'.$user->id)) !!}
+                                                    <button type="button" onclick="rechazarModal('{{$user->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Rechazar" aria-hidden="true">
+                                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                    </button>
+                                                    <div id="motivo"></div>
                                                 {!! Form::close() !!}
                                             @endif
                                         </td>
@@ -101,6 +113,35 @@
         @endif
     </div>
 
+    {{--Modal para rechazar inscripción--}}
+    {{--<div class="modal fade" id="rechazarModal" role="dialog">--}}
+        {{--<div class="modal-dialog">--}}
+            {{--<!-- Modal content-->--}}
+            {{--<div class="modal-content">--}}
+                {{--<div class="modal-header">--}}
+                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
+                    {{--<h4> Calificar </h4>--}}
+                {{--</div>--}}
+                {{--<div class="modal-body">--}}
+                    {{--{!! Form::open(array('method' => 'DELETE','route' => array('inscripcion.destroy', $user->id), 'id' => 'form_inscripcion2'.$user->id)) !!}--}}
+                    {{--<div class="row">--}}
+                        {{--<div class="col-md-10 col-md-offset-1 col-xs-12">--}}
+                            {{--<div class="form-group">--}}
+                                {{--{!!Form::label('motvio', 'Motivo por el cual se rechaza la inscripción:', array( 'class' => '')) !!}--}}
+                                {{--{!!Form::textarea('motivo', null ,array('required', 'class' => 'form-control')) !!}--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="modal-footer">--}}
+                    {{--<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>--}}
+                    {{--<button type="button" onclick="desactivarInscripcion('{{$user->id}}')" class="btn btn-success btn-success pull-right" ><span class="glyphicon glyphicon-remove"></span> Rechazar</button>--}}
+                {{--</div>--}}
+                {{--{!! Form::close() !!}--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+    {{--Fin Modal--}}
 
 
 @stop

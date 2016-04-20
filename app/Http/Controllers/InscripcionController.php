@@ -146,56 +146,81 @@ class InscripcionController extends Controller {
                 $clave = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, $tam);
                 $data['clave'] = $clave;
 
-                $seccion = 'A';
-//                if($usuario->tipo == 'curso'){
-//                    $max_secc = $actividad->id_curso;
-//                    $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id_curso)->orderBy('created_at')->get();
-//                    $todo = end($todo);
-//                    $ultimo = end($todo);
-//                    $cuantos = ParticipanteCurso::where('id_curso', '=', $actividad->id_curso)->where('seccion', '=', $ultimo->seccion)->count();
-//                    if($cuantos < $max_secc){
-//                        $seccion = $ultimo->seccion;
-//                    }else{
-//                        for($i = 0; $i < count($secc); $i++){
-//                            if($secc[$i] == $ultimo->seccion){
-//                                $seccion = $secc[$i + 1];
-//                            }
-//                        }
-//                    }
-//                }elseif($usuario->tipo == 'webinar'){
-//                    $max_secc = $actividad->id_curso;
-//                    $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id_curso)->orderBy('created_at')->get();
-//                    $todo = end($todo);
-//                    $ultimo = end($todo);
-//                    $cuantos = ParticipanteWebinar::where('id_webinaro', '=', $actividad->id_curso)->where('seccion', '=', $ultimo->seccion)->count();
-//                    if($cuantos < $max_secc){
-//                        $seccion = $ultimo->seccion;
-//                    }else{
-//                        for($i = 0; $i < count($secc); $i++){
-//                            if($secc[$i] == $ultimo->seccion){
-//                                $seccion = $secc[$i + 1];
-//                            }
-//                        }
-//                    }
-//                }
+                if($usuario->tipo == 'curso'){
+                    if(ParticipanteCurso::all()->count() != 0) {
+                        $max_secc = $actividad->max;
+                        $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id)->orderBy('created_at')->get();
+                        $todo = end($todo);
+                        $ultimo = end($todo);
+                        $cuantos = ParticipanteCurso::where('id_curso', '=', $actividad->id)->where('seccion', '=', $ultimo->seccion)->count();
+                        if ($cuantos < $max_secc) {
+                            $seccion = $ultimo->seccion;
+                        } else {
+                            for ($i = 0; $i < count($secc); $i++) {
+                                if ($secc[$i] == $ultimo->seccion) {
+                                    $seccion = $secc[$i + 1];
+                                }
+                            }
+                        }
+                    }else{
+                        $seccion = 'A';
+                    }
+                }elseif($usuario->tipo == 'webinar'){
+                    if(ParticipanteWebinar::all()->count() != 0) {
+                        $max_secc = $actividad->max;
+                        $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id)->orderBy('created_at')->get();
+                        $todo = end($todo);
+                        $ultimo = end($todo);
+                        $cuantos = ParticipanteWebinar::where('id_webinaro', '=', $actividad->id)->where('seccion', '=', $ultimo->seccion)->count();
+                        if ($cuantos < $max_secc) {
+                            $seccion = $ultimo->seccion;
+                        } else {
+                            for ($i = 0; $i < count($secc); $i++) {
+                                if ($secc[$i] == $ultimo->seccion) {
+                                    $seccion = $secc[$i + 1];
+                                }
+                            }
+                        }
+                    }else{
+                        $seccion = 'A';
+                    }
+                }
 //                dd($seccion);
 
                 if($existe->count()){           //Caso en que el usuario ya se encuentre registrado.
                     if($usuario->tipo == 'curso'){
                         $participante = Participante::where('id_usuario', '=', $existe[0]->id)->get();
-                        $participante_nuevo = new ParticipanteCurso();
-                        $participante_nuevo->id_participante = $participante[0]->id;
-                        $participante_nuevo->id_curso = $actividad->id;
-                        $participante_nuevo->seccion = $seccion;
-                        $participante_nuevo->save();
+                        $registrado = ParticipanteCurso::where('id_participante','=', $participante[0]->id)->where('id_curso', '=', $actividad->id)->get();
+                        if($registrado->count()) {
+                            $data['usuarios'] = Preinscripcion::all();
+                            $data['tipos'] = ['curso', 'webinar'];
+                            Session::set('error', 'El usuario ya se encuentra inscrito en la actividad');
+                            return view('inscripciones.inscripciones', $data);
+
+                        }else{
+                            $participante_nuevo = new ParticipanteCurso();
+                            $participante_nuevo->id_participante = $participante[0]->id;
+                            $participante_nuevo->id_curso = $actividad->id;
+                            $participante_nuevo->seccion = $seccion;
+                            $participante_nuevo->save();
+                        }
 
                     }elseif($usuario->tipo == 'webinar'){
                         $participante = Participante::where('id_usuario', '=', $existe[0]->id)->get();
-                        $participante_nuevo = new ParticipanteWebinar();
-                        $participante_nuevo->id_participante = $participante[0]->id;
-                        $participante_nuevo->id_webinar = $actividad->id;
-                        $participante_nuevo->seccion = $seccion;
-                        $participante_nuevo->save();
+                        $registrado = ParticipanteWebinar::where('id_participante','=', $participante[0]->id)->where('id_webinar', '=', $actividad->id)->get();
+                        if($registrado->count()) {
+                            $data['usuarios'] = Preinscripcion::all();
+                            $data['tipos'] = ['curso', 'webinar'];
+                            Session::set('error', 'El usuario ya se encuentra inscrito en la actividad');
+                            return view('inscripciones.inscripciones', $data);
+                        }
+                        else {
+                            $participante_nuevo = new ParticipanteWebinar();
+                            $participante_nuevo->id_participante = $participante[0]->id;
+                            $participante_nuevo->id_webinar = $actividad->id;
+                            $participante_nuevo->seccion = $seccion;
+                            $participante_nuevo->save();
+                        }
                     }
 
                     if($participante_nuevo->save()) {
@@ -329,6 +354,7 @@ class InscripcionController extends Controller {
 
             if($usuario_actual->can('activar_inscripcion')) {    // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $data['busq_'] = false;
                 $usuario = Preinscripcion::find($id);
                 $data['docs'] = '';
                 $data['nombres'] = ['Documento de Identidad', 'Titulo', 'Recibo'];
@@ -374,12 +400,16 @@ class InscripcionController extends Controller {
 
             if ($usuario_actual->can('activar_inscripcion')) {
                 $data['errores'] = '';
+                $data['busq_'] = false;
                 $path = public_path() . '/documentos/preinscripciones_pdf/' . $doc;
 
                 return Response::make(file_get_contents($path), 200, [
                     'Content-Type' => 'application/pdf',
                     'Content-Disposition' => 'inline; ' . $doc,
                 ]);
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
             }
         }catch (Exception $e) {
 
@@ -387,37 +417,90 @@ class InscripcionController extends Controller {
         }
     }
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
+
+	public function destroy($id) {
+        try {
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if ($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            } else {
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if ($usuario_actual->can('desactivar_inscripcion')) {
+                $data['errores'] = '';
+                $data['busq_'] = false;
+                $usuario = Preinscripcion::find($id);
+                $data['motivo'] = Input::get('motivo');
+                if($data['motivo'] == null){
+                    $data['usuarios'] = Preinscripcion::all();
+                    $data['tipos'] = ['curso', 'webinar'];
+                    Session::set('error', 'El motivo no puede estar vacío');
+                    return view('inscripciones.inscripciones', $data);
+                }
+
+                $data['nombre'] = $usuario->nombre;
+                $data['apellido'] = $usuario->apellido;
+                $data['email'] = $usuario->email;
+                if($usuario->tipo == 'curso'){
+                    $actividad = Curso::find($usuario->id_curso);
+                    $data['actividad'] = $actividad->nombre;
+                    $data['tipo'] = 'curso';
+                }elseif($usuario->tipo == 'webinar'){
+                    $actividad = Webinar::find($usuario->id_curso);
+                    $data['actividad'] = $actividad->nombre;
+                    $data['tipo'] = 'webinar';
+                }
+
+                Mail::send('emails.rechazo', $data, function ($message) use ($data) {
+                    $message->subject('CIETE - Inscripción rechazada')
+                        ->to($data['email'], 'CIETE')
+                        ->replyTo($data['email']);
+                });
+
+                DB::table('preinscripciones')->where('id', '=', $id)->delete();
+                $data['usuarios'] = Preinscripcion::all();
+                $data['tipos'] = ['curso', 'webinar'];
+                Session::set('mensaje', 'El usuario fue rechazado con éxito.');
+                return view('inscripciones.inscripciones', $data);
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+                return view('errors.sin_permiso');
+            }
+        }catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        //
+    }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update($id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
 }

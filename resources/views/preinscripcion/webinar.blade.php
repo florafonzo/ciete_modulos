@@ -20,6 +20,10 @@
                                 <label for="apellido">Apellido:</label>
                                 <input type="text" class="form-control" id="apellido" placeholder="Apellido" name="apellido" required>
                             </div>
+                            <div class="form-group">
+                                <label for="apellido">Documento de identidad:</label>
+                                <input type="text" class="form-control" id="" placeholder="Número de documento de identidad" name="di" value="{{old('di')}}" required>
+                            </div>
 
                             <div class="form-group">
                                 <label for="webinar">Webinar:</label>

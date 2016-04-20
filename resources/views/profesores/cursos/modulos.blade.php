@@ -30,8 +30,17 @@
                                     <td class="boton_">
                                         @if(Entrust::can('ver_notas_profe'))
                                             {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/secciones",  "method" => "GET" ])!!}
-                                            <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Secciones">
+                                            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Secciones">
                                                 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                                            </button>
+                                            {!! Form::close() !!}
+                                        @endif
+                                    </td>
+                                    <td class="boton_">
+                                        @if(Entrust::can('informe_academico'))
+                                            {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/informe/datos",  "method" => "GET" ])!!}
+                                            <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Informe academico">
+                                                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
                                             </button>
                                             {!! Form::close() !!}
                                         @endif
