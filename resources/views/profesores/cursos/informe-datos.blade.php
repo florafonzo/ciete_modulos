@@ -13,8 +13,7 @@
             @include('partials.menu_usuarios')
             <div class="col-md-8 col-sm-8 opciones_part2">
                 @include('partials.mensajes'){{--Errores--}}
-{{--                {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/informe/datos/generar",  "method" => "POST" ])!!}--}}
-                {!! Form::open(array('method' => 'POST', 'route' => array('profesor.informe', $curso->id, $modulo->id), 'class' => 'form-horizontal col-md-10', 'enctype' => "multipart/form-data")) !!}
+                {!! Form::open(array('method' => 'POST', 'route' => array('profesor.informe', $curso->id, $modulo->id), 'class' => 'form-horizontal col-md-10', 'enctype' => "multipart/form-data", "target" => "_blank")) !!}
                     <div class="form-group">
                         {!!Form::label('cohorte', 'Cohorte:', array( 'class' => 'col-md-4 ')) !!}
                         <div class="col-sm-8">
@@ -30,25 +29,25 @@
                     <div class="form-group">
                         {!!Form::label('conclu', 'Conclusión del curso:', array( 'class' => 'col-md-4 ')) !!}
                         <div class="col-sm-8">
-                            {!!Form::textarea('conclusion', old('conclusion'),array('required', 'class' => 'form-control')) !!}
+                            {!!Form::textarea('conclusion', old('conclusion'),array( 'class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="form-group">
                         {!!Form::label('positivo', 'Aspectos positivos:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
-                            {!!Form::textarea('positivo', old('positivo') ,array('required','class' => 'form-control'))!!}
+                            {!!Form::textarea('positivo', old('positivo') ,array('class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group">
                         {!!Form::label('negativo', 'Aspectos negativos:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
-                            {!!Form::textarea('negativo',old('negativo') ,array('required','class' => 'form-control'))!!}
+                            {!!Form::textarea('negativo',old('negativo') ,array('class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group">
                         {!!Form::label('sugerencias', 'Sugerencias de mejora:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
-                            {!!Form::text('sugerencias', old('sugerencias') ,array('required','class' => 'form-control'))!!}
+                            {!!Form::textarea('sugerencias', old('sugerencias') ,array('class' => 'form-control'))!!}
                         </div>
                     </div>
                     @if(Entrust::can('informe_academico'))

@@ -724,7 +724,7 @@ class ProfesoresController extends Controller {
         }
     }
 
-    public function store(CalificarRequest $request, $modulo, $id_curso, $seccion, $id_part) {
+    public function store(CalificarRequest $request, $id_curso, $modulo, $seccion, $id_part) {
 
         try{
 //            dd('ahhhhhh2');
@@ -1264,19 +1264,33 @@ class ProfesoresController extends Controller {
             if($usuario_actual->can('informe_academico')) {// Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id_curso);
+                $data['inicio'] = new DateTime($data['curso']->fecha_inicio);
+                $data['fin'] = new DateTime($data['curso']->fecha_fin);
                 $data['modulo'] = Modulo::find($modulo);
+                $profesor = Profesor::where('id_usuario', '=', $usuario_actual->id)->get();
                 $data['cohorte'] = $request->cohorte;
                 $data['grupo'] = $request->grupo;
+                $data['conclusion'] = $request->conclusion;
                 $data['positivo'] = $request->positivo;
                 $data['negativo'] = $request->negativo;
                 $data['sugerencias'] = $request->sugerencias;
                 $data['participantes'] = '';
+                $data['nombre'] = $usuario_actual->nombre;
+                $data['apellido'] = $usuario_actual->apellido;
+                $data['correo'] = $usuario_actual->email;
+                $data['ci'] = $profesor[0]->documento_identidad;
+                $data['celular'] = $profesor[0]->celular;
+                $data['aprobados'] = 0;
+                $data['reprobados'] = 0;
+                $data['desertores'] = 0;
+                $data['fecha_actual'] = date("d-m-Y");
 
                 $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->select('id_participante')->get();
+                $data['total'] = $participantes->count();
                 if($participantes->count()) {
                     foreach ($participantes as $index => $part) {
                         $alumno = Participante::where('id', '=', $part->id_participante)->get();
-                        $notas = Nota::where('id_participante_curso', '=', $part->id);
+                        $notas = Nota::where('id_participante_curso', '=', $part->id_participante)->get();
                         if($notas->count()) {
                             $final = 0;
                             $porcentaje = 0;
@@ -1286,17 +1300,20 @@ class ProfesoresController extends Controller {
                                 $porcentaje = ($porcentaje + $porcent);
                                 $final = $final + ($calif * ($porcent / 100));
                             }
-                            dd($final);
                             if ($final >= 15) {
                                 $proyecto = 'A';
+                                $data['aprobados'] = $data['aprobados'] + 1;
                             } elseif(($final > 0) && ($final < 15)) {
                                 $proyecto = 'R';
+                                $data['reprobados'] = $data['reprobados'] + 1;
                             }else{
                                 $proyecto = 'D';
+                                $data['desertores'] = $data['desertores'] + 1;
                             }
                             $data['participantes'][$index] = [[$alumno[0]->nombre], [$alumno[0]->apellido], [$final], [$proyecto]];
                         }else{
                             $data['participantes'][$index] = [[$alumno[0]->nombre], [$alumno[0]->apellido], [0], ['D']];
+                            $data['desertores'] = $data['desertores'] + 1;
                         }
                     }
                 }else{
@@ -1309,21 +1326,19 @@ class ProfesoresController extends Controller {
 
 //                dd($data['participantes']);
 
-                return view('profesores.cursos.informe', $data);
+                if($data['participantes'] != ''){
+                    $pdf = PDF::loadView('profesores.cursos.informe',$data);
+                    return $pdf->stream($data['modulo']->nombre."-".$data['cohorte']."-".$data['grupo']."-".date("Y").".pdf", array('Attachment'=>0));
+                }else{
+                    $modulos = ProfesorCurso::where('id_profesor', '=', $usuario_actual->id)
+                        ->where('id_curso', '=', $id_curso)->get();
 
-//                if($data['participantes'] != ''){
-//                    $pdf = PDF::loadView('profesores.cursos.lista',$data);
-//                    return $pdf->stream("Listado curso - ".$data['curso']->nombre." - modulo ".$data['modulo']->nombre.".pdf", array('Attachment'=>0));
-//                }else{
-//                    $modulos = ProfesorCurso::where('id_profesor', '=', $usuario_actual->id)
-//                        ->where('id_curso', '=', $id_curso)->get();
-//
-//                    foreach ($modulos as $index => $mod) {
-//                        $data['modulos'][$index] = Modulo::find($mod->id_modulo);
-//                    }
-//                    Session::set('error', 'Disculpe, no existen participantes en el modulo '.$data['modulo']->nombre);
-//                    return view('profesores.cursos.modulos', $data);
-//                }
+                    foreach ($modulos as $index => $mod) {
+                        $data['modulos'][$index] = Modulo::find($mod->id_modulo);
+                    }
+                    Session::set('error', 'Disculpe, no existen participantes en el modulo '.$data['modulo']->nombre);
+                    return view('profesores.cursos.modulos', $data);
+                }
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 

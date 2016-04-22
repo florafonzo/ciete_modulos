@@ -159,7 +159,8 @@ class PreinscripcionController extends Controller {
                     $existe = Preinscripcion::where('id_curso','=', $request->curso)
                         ->where('tipo', '=', 'curso')
                         ->where('nombre', '=', $request->nombre)
-                        ->where('apellido', '=', $request->apellido)->get();
+                        ->where('apellido', '=', $request->apellido)
+                        ->where('di', '=', $request->di)->get();
                     if(!($existe->count())) {
                         $create2 = Preinscripcion::findOrNew($request->id);
                         $create2->id_curso = $request->curso;

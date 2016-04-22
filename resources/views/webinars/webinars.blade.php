@@ -54,7 +54,7 @@
                                         @if(Entrust::can('editar_webinars'))
                                             {{--<button><span class="glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="Editar" aria-hidden="true"></span></button>--}}
                                             {!! Form::open(array('method' => 'GET','route' => array('webinars.edit', $webinar->id))) !!}
-                                                <button type="button" class='btn btn-info' data-toggle='tooltip' data-placement="bottom" title="Editar" aria-hidden="true">
+                                                <button type="submit" class='btn btn-info' data-toggle='tooltip' data-placement="bottom" title="Editar" aria-hidden="true">
                                                     <span class="glyphicon glyphicon-pencil" ></span>
                                                 </button>
                                             {!! Form::close() !!}
