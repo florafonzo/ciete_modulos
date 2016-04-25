@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Secciones del curso {{$curso->nombre}}
+                Secciones de la actividad {{$curso->nombre}}
             </h3>
             <h3>
                 Descarga de archivo para la inscripción masiva en Moodle

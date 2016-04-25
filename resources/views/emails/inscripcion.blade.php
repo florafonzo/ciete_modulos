@@ -33,7 +33,7 @@
                     <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" /><br>
                     Bienvenido estimado {{$nombre}} {{$apellido}} al CIETE.<br><br>
 
-                    Usted acaba de ser inscrito en el {{$tipo}} {{$curso}}, ya puede ingresar a la página colocando los siguientes datos:<br>
+                    Usted acaba de ser inscrito en la actividad {{$curso}}, ya puede ingresar a la página colocando los siguientes datos:<br>
                     <ul style="list-style: none;">
                         <li><strong>Correo: {{$email}}</strong></li>
                         <li><strong>Contraseña: {{$clave}}</strong></li>

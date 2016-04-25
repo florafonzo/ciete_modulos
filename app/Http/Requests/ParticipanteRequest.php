@@ -37,6 +37,8 @@ class ParticipanteRequest extends Request {
             'password' => 'confirmed|min:6',
             'email_alternativo' => 'email|max:255|unique:users',
             'imagen' => 'mimes:jpeg,png,jpg|max:1024',
+            'archivo_documento_identidad' => 'mimes:pdf',
+            'titulo' => 'mimes:pdf',
         ];
     }
 

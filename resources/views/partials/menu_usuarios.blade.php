@@ -36,12 +36,12 @@
                     @endif
                     @if(Entrust::can('ver_lista_cursos'))
                         <li class="menu_usuarios @if(Request::is('cursos') or (!(Request::is('cursos/desactivados*')) and Request::is('cursos/*'))) active @endif">
-                            <a class="menu_usu"  href="{{URL::to('/cursos')}}"> Cursos </a>
+                            <a class="menu_usu"  href="{{URL::to('/cursos')}}"> Actividades </a>
                         </li>
                     @endif
                     @if(Entrust::can('ver_lista_cursos'))
                         <li class="menu_usuarios @if(Request::is('cursos/desactivados*')) active @endif">
-                            <a class="menu_usu"  href="{{URL::to('/cursos/desactivados')}}"> Cursos desactivados </a>
+                            <a class="menu_usu"  href="{{URL::to('/cursos/desactivados')}}"> Actividades desactivadas </a>
                         </li>
                     @endif
                     @if(Entrust::can('ver_roles'))
@@ -61,7 +61,7 @@
                     @endif
                     @if(Entrust::can('ver_cursos_part'))
                         <li class="menu_usuarios @if(Request::is('participante/cursos*')) active @endif">
-                            <a class="menu_usu" href="{{URL::to('/participante/cursos')}}"> Cursos inscritos </a>
+                            <a class="menu_usu" href="{{URL::to('/participante/cursos')}}"> Actividades inscritas </a>
                         </li>
                     @endif
                     @if(Entrust::can('ver_cursos_part'))
@@ -71,12 +71,12 @@
                     @endif
                     @if(Entrust::can('activar_preinscripcion'))
                         <li class="menu_usuarios @if(Request::is('preinscripcion')) active @endif">
-                            <a class="menu_usu" href="{{URL::to('/preinscripcion/cursos/procesar')}}"> Preinscripciones Cursos </a>
+                            <a class="menu_usu" href="{{URL::to('/preinscripcion/cursos/procesar')}}"> Preinscripciones de Actividades </a>
                         </li>
                     @endif
                     @if(Entrust::can('activar_preinscripcion'))
                         <li class="menu_usuarios @if(Request::is('preinscripcion')) active @endif">
-                            <a class="menu_usu" href="{{URL::to('/preinscripcion/webinars/procesar')}}"> Preinscripciones Webinars </a>
+                            <a class="menu_usu" href="{{URL::to('/preinscripcion/webinars/procesar')}}"> Preinscripciones de Webinars </a>
                         </li>
                     @endif
                     @if(Entrust::can('activar_inscripcion'))
@@ -91,7 +91,7 @@
                     {{--@endif--}}
                     @if(Entrust::can('ver_cursos_profe'))
                         <li class="menu_usuarios @if(Request::is('profesor/cursos*')) active @endif">
-                            <a class="menu_usu" href="{{URL::to('/profesor/cursos')}}"> Cursos dictados</a>
+                            <a class="menu_usu" href="{{URL::to('/profesor/cursos')}}"> Actividades dictadas</a>
                         </li>
                     @endif
                     @if(Entrust::can('ver_cursos_profe'))

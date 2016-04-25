@@ -88,6 +88,23 @@ $(document).ready(function() {
 
 //-------------------------------------------------------------------------//
 
+//----------------------------Mostrar cohorte si es diplomado-------------//
+    if($('#id_tipo' ).val() == '1') {
+        $('#cohorte').show();
+    }else{
+        $('#cohorte').hide();
+    }
+    $('#id_tipo' ).change(function() {
+        if($(this).val() == '1') {
+            $('#cohorte').show();
+        }else{
+            $('#cohorte').hide();
+        }
+    });
+
+//-------------------------------------------------------------------------//
+
+
 // ------ FadeOut para desaparecer notificaciones en un tiempo estimado ------ //
     $('.flash_time').fadeToggle(4000);
 

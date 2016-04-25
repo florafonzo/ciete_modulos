@@ -352,11 +352,27 @@ class CursosController extends Controller {
                 Session::set('fecha_fin', $request->fecha_fin);
                 Session::set('especificaciones', $request->especificaciones);
                 Session::set('costo', $request->costo);
+                Session::set('cohorte', $request->cohorte);
                 Session::set('descripcion_carrusel', $request->descripcion_carrusel);
 
                 $data['tipos'] = TipoCurso::all()->lists('nombre', 'id');
                 $data['modalidad_pago'] = ModalidadPago::all()->lists('nombre', 'id');
                 $data['modalidad_curso'] = ModalidadCurso::all()->lists('nombre', 'id');
+
+                // se verifica si se seleccionó el tipo de curso, si es Diplomado el campo Cohorte debe estar lleno.
+                if($request->id_tipo == '0'){
+                    Session::set('error', 'Debe seleccionar el tipo de la Actividad');
+                    return view('cursos.crear', $data);
+                }elseif($request->id_tipo == '1'){  //Diplomado
+                    if($request->cohorte == ''){
+                        Session::set('error', 'El campo Cohorte es obligatorio para los Diplomados');
+                        return view('cursos.crear', $data);
+                    }else{
+                        $cohorte = $request->cohorte;
+                    }
+                }elseif($request->id_tipo == '2'){  //Cápsula
+                    $cohorte = '';
+                }
 
                 $fecha_actual = date('Y-m-d');// Se obtiene la fecha actual para validar las fechas de inicio y fin del curso
                 if(($request->fecha_inicio) <= $fecha_actual) {
@@ -414,6 +430,7 @@ class CursosController extends Controller {
                 $create2->fecha_fin = $request->fecha_fin;
                 $create2->especificaciones = $request->especificaciones;
                 $create2->costo = $request->costo;
+                $create2->cohorte = $cohorte;
                 $create2->descripcion_carrusel = $request->descripcion_carrusel;
                 $create2->activo_carrusel = $activo_carrusel;
                 $create2->activo_preinscripcion = false;
@@ -528,6 +545,7 @@ class CursosController extends Controller {
                             'id_modalidad_pago' => $pago[0]->id,
                         ]);
                     }
+                    Session::set('mensaje', 'Actividad creada con éxito');
                     return redirect('/cursos');
                 } else {    // Si el curso no se ha creado bien se redirige al formulario de creación y se le indica al usuario el error
                     Session::set('error', 'Ha ocurrido un error inesperado');
@@ -569,7 +587,8 @@ class CursosController extends Controller {
                 $data['cursos'] = Curso::find($id); // Se obtiene la información del curso seleccionado
                 $data['activo_'] =  $data['cursos']->activo_carrusel;
                 //Se obtienen todos los tipos de cursos, modalidades de pago y modalidades de curso.
-                $data['tipo'] = $data['cursos']->id_tipo;
+                $tipo =  TipoCurso::where('id', '=', $data['cursos']->id_tipo)->get();
+                $data['tipo'] = $tipo[0]->nombre;
                 $data['modalidad_pago'] = ModalidadPago::all()->lists('nombre', 'id');
                 $data['modalidades_curso'] = ModalidadCurso::all()->lists('nombre', 'id');
                 $data['modalidad_curso'] = $data['cursos']->id_modalidad_curso;
@@ -643,11 +662,14 @@ class CursosController extends Controller {
                 $data['cursos'] = Curso::find($id);
                 $data['inicio'] = new DateTime($cursos->fecha_inicio);
                 $data['fin'] = new DateTime($cursos->fecha_fin);
-                $data['tipo'] = $data['cursos']->id_tipo;
+                $tipo =  TipoCurso::where('id', '=', $data['cursos']->id_tipo)->get();
+                $data['tipo'] = $tipo[0]->nombre;
                 $data['modalidad_pago'] = ModalidadPago::all()->lists('nombre', 'id');
                 $data['modalidades_curso'] = ModalidadCurso::all()->lists('nombre', 'id');
                 $data['modalidad_curso'] = $data['cursos']->id_modalidad_curso;
                 $data['tipos'] = TipoCurso::all()->lists('nombre', 'id');
+                $data['modulos'] = Modulo::where('id_curso', '=', $id)->get();
+                $data['cant_modulos'] = Modulo::where('id_curso', '=', $id)->count();
                 $arr = [];
                 foreach ($data['modalidad_pago'] as $index => $mod) {
                     $arr[$index] = false;
@@ -657,6 +679,21 @@ class CursosController extends Controller {
                     $arr[$pago->id_modalidad_pago] = true;
                 }
                 $data['pagos'] = $arr;
+
+                // se verifica si el curso es Diplomado, en tal caso debe estar lleno el campo cohorte
+                if($request->id_tipo == '0'){
+                    Session::set('error', 'Debe seleccionar el tipo de la Actividad');
+                    return view('cursos.editar', $data);
+                }elseif($request->id_tipo == '1'){
+                    if($request->cohorte == ''){
+                        Session::set('error', 'El campo Cohorte es obligatorio para los Diplomados');
+                        return view('cursos.editar', $data);
+                    }else{
+                        $cohorte = $request->cohorte;
+                    }
+                }elseif($request->id_tipo == '2'){
+                    $cohorte = '';
+                }
 
                 $fecha_actual = date('Y-m-d');// Se obtiene la fecha actual para validar las fechas de inicio y fin del curso
                 if(($request->fecha_inicio) <= $fecha_actual) {
@@ -710,6 +747,7 @@ class CursosController extends Controller {
                 $cursos->fecha_fin = $request->fecha_fin;
                 $cursos->especificaciones = $request->especificaciones;
                 $cursos->costo = $request->costo;
+                $cursos->costo = $cohorte;
                 $cursos->activo_carrusel = $activo_carrusel;
 
                 if(($img_nueva == 'yes') && ($activo_carrusel)){
@@ -817,6 +855,7 @@ class CursosController extends Controller {
                             'id_modalidad_pago' => $pago[0]->id,
                         ]);
                     }
+                    Session::set('mensaje', 'Actividad actualizada con éxito');
                     return redirect('/cursos');
                 } else {    // Si el curso no se ha creado bien se redirige al formulario de creación y se le indica al usuario el error
                     Session::set('error', 'Ha ocurrido un error inesperado');

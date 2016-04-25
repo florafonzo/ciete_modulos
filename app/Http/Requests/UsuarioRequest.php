@@ -39,6 +39,8 @@ class UsuarioRequest extends Request {
             'password' => 'required|confirmed|min:6',
             'email_alternativo' => 'email|max:255',
             'imagen' => 'mimes:jpeg,png,jpg|max:1024',
+            'archivo_documento_identidad' => 'mimes:pdf',
+            'titulo' => 'mimes:pdf',
         ];
     }
 

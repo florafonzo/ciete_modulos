@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Exception;
+use Response;
 use DB;
 use DateTime;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\Participante;
 use App\Models\Webinar;
@@ -118,6 +120,16 @@ class ParticipantesController extends Controller {
 
                 $data['errores'] = '';
                 $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
+                if($data['datos'][0]->di_file == ''){
+                    Session::flash('di_f', 'yes');
+                }else{
+                    Session::flash('di_f', null);
+                }
+                if($data['datos'][0]->titulo_pregrado == ''){
+                    Session::flash('titulo_', 'yes');
+                }else{
+                    Session::flash('titulo_', null);
+                }
                 $data['email']= User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
                 $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
                 $data['estados'] = Estado::all()->lists('estado','id_estado');
@@ -161,6 +173,10 @@ class ParticipantesController extends Controller {
                 $usuario = User::find($id); // Se obtienen los datos del participante que se desea editar
                 $participante = Participante::where('id_usuario', '=', $id)->get(); // Se obtiene el resto de los datos del participante que se desea editar
                 $img_nueva = Input::get('cortar');//Session::get('cortar');
+                $di_f = Input::get('di_f');
+                $titulo_ = Input::get('titulo_');
+                $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                $data['estados'] = Estado::all()->lists('estado', 'id_estado');
 
                 $email = $request->email;
                 // Se verifica si el correo ingresado es igual al anterior y si no lo es se verifica
@@ -181,6 +197,8 @@ class ParticipantesController extends Controller {
                 }
 //                dd($participante[0]->nuevo);
                 if($participante[0]->nuevo == true) {
+                    $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
+                    $data['email'] = User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
                     $pais = Input::get('id_pais');
                     if ($pais == 231) {
                         $estado = Input::get('id_est');
@@ -200,12 +218,6 @@ class ParticipantesController extends Controller {
 
                     } elseif ($pais == 0) {
                         $data['errores'] = "Debe completar el campo pais";
-                        $data['roles'] = Role::all()->lists('display_name', 'id');
-                        $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
-                        $data['estados'] = Estado::all()->lists('estado', 'id_estado');
-                        $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
-                        $data['email'] = User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
-
                         return view('participantes.editar-perfil', $data);
                     } else {
                         $dir = $pais;
@@ -214,22 +226,61 @@ class ParticipantesController extends Controller {
                     $participante[0]->nuevo = false;
                 }
 
-                    if ($img_nueva == 'yes') {
-                        $file = Input::get('dir');
-                        if ($usuario->foto != null) {
-                            Storage::delete('/images/images_perfil/' . $request->file_viejo);
-                        }
-                        $file = str_replace('data:image/png;base64,', '', $file);
-                        $nombreTemporal = 'perfil_' . date('dmY') . '_' . date('His') . ".jpg";
-                        $usuario->foto = $nombreTemporal;
-
-                        $imagen = Image::make($file);
-                        $payload = (string)$imagen->encode();
-                        Storage::put(
-                            '/images/images_perfil/' . $nombreTemporal,
-                            $payload
-                        );
+                //  Se valida que los archivos esten en formato PDF
+                if($request->hasFile('archivo_documento_identidad') && $di_f == 'yes') {
+                    $validar_di = Validator::make(array('archivo_documento_identidad' => $request->file('archivo_documento_identidad')), array('archivo_documento_identidad' => 'mimes:pdf'));
+                    if ($validar_di->fails()) {
+                        $data['datos'] = Participante::where('id_usuario', '=', $id)->get(); // Se obtienen los datos del participante
+                        $data['email']= User::where('id', '=', $id)->get(); // Se obtiene el correo principal del participante;
+                        Session::set('error', 'El archivo documento identidad debe estar en formato PDF');
+                        return view('participantes.editar-perfil', $data);
                     }
+                    // Se crea el nombre del archivo y se guarda
+                    $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
+                    if($participante[0]->di_file != ''){ // se borra el qrchivo anterior si existe
+                        Storage::delete('/documentos/participantes/'.$participante[0]->di_file);
+                    }
+                    $participante[0]->di_file = $nombreDI;
+                    // se guardan los archivos PDF en la carpeta correcta
+                    $pdfDI = $request->file('archivo_documento_identidad');
+                    Storage::put('/documentos/participantes/'.$nombreDI, \File::get($pdfDI ));
+                }
+                if($request->hasFile('titulo') && $titulo_ == 'yes') {
+                    $validar_di = Validator::make(array('archivo_documento_identidad' => $request->file('archivo_documento_identidad')), array('archivo_documento_identidad' => 'mimes:pdf'));
+                    if ($validar_di->fails()) {
+                        $data['datos'] = Participante::where('id_usuario', '=', $id)->get(); // Se obtienen los datos del participante
+                        $data['email']= User::where('id', '=', $id)->get(); // Se obtiene el correo principal del participante;
+                        Session::set('error', 'El archivo título de pregrado debe estar en formato PDF');
+                        return view('participantes.editar-perfil', $data);
+
+                    }
+                    // Se crea el nombre del archivo y se guarda
+                    $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
+                    if($participante[0]->titulo_pregrado != ''){ // se borra el qrchivo anterior si existe
+                        Storage::delete('/documentos/participantes/'.$participante[0]->di_file);
+                    }
+                    $participante[0]->titulo_pregrado = $nombreTitulo;
+                    // se guarda el archivo PDF en la carpeta correcta
+                    $pdfTitulo = $request->file('titulo');
+                    Storage::put('/documentos/participantes/'.$nombreTitulo, \File::get($pdfTitulo) );
+                }
+
+                if ($img_nueva == 'yes') {
+                    $file = Input::get('dir');
+                    if ($usuario->foto != null) {
+                        Storage::delete('/images/images_perfil/' . $request->file_viejo);
+                    }
+                    $file = str_replace('data:image/png;base64,', '', $file);
+                    $nombreTemporal = 'perfil_' . date('dmY') . '_' . date('His') . ".jpg";
+                    $usuario->foto = $nombreTemporal;
+
+                    $imagen = Image::make($file);
+                    $payload = (string)$imagen->encode();
+                    Storage::put(
+                        '/images/images_perfil/' . $nombreTemporal,
+                        $payload
+                    );
+                }
 
 
                 // Se editan los datos del participante con los datos ingresados en el formulario
@@ -244,20 +295,17 @@ class ParticipantesController extends Controller {
                 $participante[0]->apellido = $request->apellido;
                 $participante[0]->documento_identidad = $request->documento_identidad;
                 $participante[0]->telefono = $request->telefono;
-//                $participante[0]->foto = $imagen;
                 $participante[0]->celular = $request->celular;
                 $participante[0]->correo_alternativo = $request->correo_alternativo;
                 $participante[0]->twitter = Input::get('twitter');
                 $participante[0]->ocupacion = Input::get('ocupacion');
-                $participante[0]->titulo_pregrado = Input::get('titulo');
+//                $participante[0]->titulo_pregrado = Input::get('titulo');
                 $participante[0]->universidad = Input::get('univ');
-
                 $participante[0]->save(); // Se guardan los nuevos datos en la tabla Participentes
 
 
                 //  Si se actualizaron con exito los datos del usuario, se actualizan los roles del usuario.
                 if ($usuario->save()) {
-
                     if ($participante[0]->save()) {
                         Session::set('mensaje','Datos guardados satisfactoriamente.');
                         $data['datos'] = Participante::where('id_usuario', '=', $id)->get(); // Se obtienen los datos del participante
@@ -518,6 +566,94 @@ class ParticipantesController extends Controller {
             return view('errors.error')->with('error', $e->getMessage());
         }
 
+    }
+
+    public function cambiarArchivoDi()
+    {
+        try {
+
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('editar_perfil_part')) {  // Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
+                $data['email']= User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
+                $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                $data['estados'] = Estado::all()->lists('estado','id_estado');
+                Session::flash('di_f', 'yes');
+                return view('participantes.editar-perfil', $data);
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+
+        } catch (Exception $e) {
+            return view('errors.error')->with('error', $e->getMessage());
+        }
+    }
+    public function cambiarArchivoT()
+    {
+        try {
+
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('editar_perfil_part')) {  // Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
+                $data['email']= User::where('id', '=', $usuario_actual->id)->get(); // Se obtiene el correo principal del participante;
+                $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                $data['estados'] = Estado::all()->lists('estado','id_estado');
+                Session::flash('titulo_', 'yes');
+                return view('participantes.editar-perfil', $data);
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+
+        } catch (Exception $e) {
+            return view('errors.error')->with('error', $e->getMessage());
+        }
+    }
+
+    public function verPdf($doc) {
+        try {
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if ($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            } else {
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if ($usuario_actual->can('editar_perfil_part')) {
+                $data['errores'] = '';
+                $data['busq_'] = false;
+                $path = public_path() . '/documentos/participantes/' . $doc;
+
+                return Response::make(file_get_contents($path), 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; ' . $doc,
+                ]);
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
     }
 
 }

@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Edición de Curso
+                Edición de Actividad
             </h3>
         </div>
         @if (!(Auth::guest()))
@@ -61,7 +61,23 @@
                     <div class="form-group">
                         {!!Form::label('id_tipo_l', 'Tipo:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
-                            {!! Form::select('id_tipo', $tipos, $tipo, array('required','class' => 'form-control')) !!}
+                            <select class="form-control " id="id_tipo" name="id_tipo">
+                                <option value="0"  selected="selected"> Seleccione el tipo de actividad</option>
+                                @foreach ($tipos as $index=>$tipo_)
+                                    @if($tipo_ != $tipo)
+                                        <option value="{{$index}}">{{$tipo_}}</option>
+                                    @else
+                                        <option value="{{$index}}" selected>{{$tipo_}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+{{--                            {!! Form::select('id_tipo', $tipos, $tipo, array('required','class' => 'form-control')) !!}--}}
+                        </div>
+                    </div>
+                    <div class="form-group" id="cohorte">
+                        {!!Form::label('cohorte', 'Cohorte:',  array( 'class' => 'col-md-4 '))!!}
+                        <div class="col-sm-8">
+                            {!!Form::text('cohorte', $cursos->cohorte ,array('class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -83,19 +99,19 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('secciones_l', 'Cantidad de secciones:',  array( 'class' => 'col-md-4 '))!!}
+                        {!!Form::label('secciones_l', 'Cantidad de grupos:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
                             {!!Form::text('secciones', $cursos->secciones ,array('required','class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('mini_l', 'Cantidad de cupos MIN:',  array( 'class' => 'col-md-4 '))!!}
+                        {!!Form::label('mini_l', 'Cantidad MIN de cupos por grupo:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
                             {!!Form::text('mini', $cursos->min ,array('required','class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('maxi_l', 'Cantidad de cupos MAX:',  array( 'class' => 'col-md-4 '))!!}
+                        {!!Form::label('maxi_l', 'Cantidad MAX de cupos por grupo:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
                             {!!Form::text('maxi', $cursos->max ,array('required','class' => 'form-control'))!!}
                         </div>

@@ -25,7 +25,6 @@ class Preinscripcion extends Model {
 
     function getCursoName ($id){
         $nombrecurso = DB::table('cursos')
-            ->join('preinscripciones', 'cursos.id', '=', 'preinscripciones.id_curso')
             ->select('cursos.nombre')
             ->where('cursos.id', '=', $id)
             ->get();
@@ -33,12 +32,12 @@ class Preinscripcion extends Model {
         foreach ($nombrecurso as $nombre) {
             $nombre->nombre;
         }
+
         return $nombre->nombre;
     }
 
     function getWebName ($id){
         $nombrecurso = DB::table('webinars')
-            ->join('preinscripciones', 'webinars.id', '=', 'preinscripciones.id_curso')
             ->select('webinars.nombre')
             ->where('webinars.id', '=', $id)
             ->get();

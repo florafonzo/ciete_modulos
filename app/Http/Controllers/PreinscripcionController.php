@@ -6,14 +6,13 @@ use App\Http\Requests\PreinscripcionRequest;
 use App\Http\Requests\PreinscripcionWebRequest;
 
 use App\Models\Curso;
+use App\Models\ModalidadPago;
 use App\Models\Preinscripcion;
 use App\Models\Webinar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use File;
-
-use Illuminate\Support\Facades\Validator;
 
 use DateTime;
 use Auth;
@@ -112,6 +111,7 @@ class PreinscripcionController extends Controller {
 
         $data['errores'] = '';
         $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
+        $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
 
         return view('preinscripcion.curso', $data);
     }
@@ -131,27 +131,36 @@ class PreinscripcionController extends Controller {
             $preins = new Preinscripcion();
             $cours = new Curso();
             $data['errores'] = '';
-            $id = Input::get('curso');
+            $id_curso = Input::get('curso');
+            $id_modalidad = Input::get('tipo_pago');
 
-            if($id == 0){
+            if($id_curso == 0){
                 $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
+                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
                 Session::set('error', 'Debe seleccionar un curso de la lista');
+                return view('preinscripcion.curso', $data);
+            }
+            if($id_modalidad == 0){
+                $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
+                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                Session::set('error', 'Debe seleccionar una modalidad de pago');
                 return view('preinscripcion.curso', $data);
             }
 
             //  Se valida que los archivos esten en formato PDF
-            $validar_di = Validator::make(array('cedula' => $request->file('cedula')), array('cedula' => 'mimes:pdf'));
-            $validar_titulo = Validator::make(array('titulo' => $request->file('titulo')), array('titulo' => 'mimes:pdf'));
-            $validar_recibo = Validator::make(array('recibo' => $request->file('recibo')), array('recibo' => 'mimes:pdf'));
-            if ($validar_di->fails() || $validar_titulo->fails() || $validar_recibo->fails()) {
-                $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
-                Session::set('error','Los archivos deben estar en formato PDF');
-                return view('preinscripcion.curso', $data);
+//            $validar_di = Validator::make(array('cedula' => $request->file('cedula')), array('cedula' => 'mimes:pdf'));
+//            $validar_titulo = Validator::make(array('titulo' => $request->file('titulo')), array('titulo' => 'mimes:pdf'));
+//            $validar_recibo = Validator::make(array('recibo' => $request->file('recibo')), array('recibo' => 'mimes:pdf'));
+//            if ($validar_di->fails() || $validar_titulo->fails() || $validar_recibo->fails()) {
+//                $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
+//                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+//                Session::set('error','Los archivos deben estar en formato PDF');
+//                return view('preinscripcion.curso', $data);
+//
+//            }
 
-            }
-
-            $max= $cours->maxCuposCurso($id); //obtengo el máximo número de participantes que puede tener un curso
-            $cant = $preins->cantParticipantes($id);
+            $max= $cours->maxCuposCurso($id_curso); //obtengo el máximo número de participantes que puede tener un curso
+            $cant = $preins->cantParticipantes($id_curso);
 
             if($cant < $max){
                 $hay = Preinscripcion::all();
@@ -168,29 +177,35 @@ class PreinscripcionController extends Controller {
                         $create2->apellido = $request->apellido;
                         $create2->di = $request->di;
                         $create2->email = $request->email;
-                        $create2->tipo = 'curso';
-
-                        // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD
-                        $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
-                        $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
-                        $nombreRecibo = 'Recibo_' . date('dmY') . '_' . date('His') . '.pdf';
-                        $create2->documento_identidad = $nombreDI;
-                        $create2->titulo = $nombreTitulo;
-                        $create2->recibo = $nombreRecibo;
+                        $create2->id_modalidad_pago = $request->tipo_pago;
+                        $create2->monto = $request->monto;
+                        $create2->numero_pago = $request->numero_pago;
+                        $curso = Curso::find($id_curso);
+                        $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
+                        $create2->tipo = $tipo[0]->nombre;
                         $create2->save();
 
-                        // se guardan los archivos PDF en la carpeta correcta
-                        $pdfDI = $request->file('cedula');
-                        $pdfTitulo = $request->file('titulo');
-                        $pdfRecibo = $request->file('recibo');
-                        Storage::put('/documentos/preinscripciones_pdf'.$nombreDI, \File::get($pdfDI ));
-                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, \File::get($pdfTitulo) );
-                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, \File::get($pdfRecibo ));
+                        // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD
+//                        $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
+//                        $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
+//                        $nombreRecibo = 'Recibo_' . date('dmY') . '_' . date('His') . '.pdf';
+//                        $create2->documento_identidad = $nombreDI;
+//                        $create2->titulo = $nombreTitulo;
+//                        $create2->recibo = $nombreRecibo;
+//                        $create2->save();
+//
+//                        // se guardan los archivos PDF en la carpeta correcta
+//                        $pdfDI = $request->file('cedula');
+//                        $pdfTitulo = $request->file('titulo');
+//                        $pdfRecibo = $request->file('recibo');
+//                        Storage::put('/documentos/preinscripciones_pdf'.$nombreDI, \File::get($pdfDI ));
+//                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, \File::get($pdfTitulo) );
+//                        Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, \File::get($pdfRecibo ));
 
 
                         $data['nombre'] = $request->nombre;
                         $data['apellido'] = $request->apellido;
-                        $data['curso'] = $preins->getCursoName($id); // aquí se retorna el nombre del curso
+                        $data['curso'] = $preins->getCursoName($id_curso); // aquí se retorna el nombre del curso
                         $data['email'] = $request->email;
 
                         Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
@@ -200,13 +215,14 @@ class PreinscripcionController extends Controller {
                         });
 
                         $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
-                        Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo. Recuerde revisar su carpeta de Spam');
+                        $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                        Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo');
                         return view('preinscripcion.curso', $data);
                     }else{
-                        $curso = Curso::find($id);
+                        $curso = Curso::find($id_curso);
                         $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
-
-                        Session::set('error', 'Usted ya se encuentra preinscrito en el curso '.$curso->nombre);
+                        $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                        Session::set('error', 'Usted ya se encuentra inscrito en el curso '.$curso->nombre);
                         return view('preinscripcion.curso', $data);
                     }
 
@@ -217,32 +233,36 @@ class PreinscripcionController extends Controller {
                     $create2->apellido = $request->apellido;
                     $create2->di = $request->di;
                     $create2->email = $request->email;
-                    $create2->tipo = 'curso';
-
-                    // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD
-                    $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
-                    $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
-                    $nombreRecibo = 'Recibo_' . date('dmY') . '_' . date('His') . '.pdf';
-                    $create2->documento_identidad = $nombreDI;
-                    $create2->titulo = $nombreTitulo;
-                    $create2->recibo = $nombreRecibo;
+                    $create2->id_modalidad_pago = $request->tipo_pago;
+                    $create2->monto = $request->monto;
+                    $create2->numero_pago = $request->numero_pago;
+                    $curso = Curso::find($id_curso);
+                    $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
+                    $create2->tipo = $tipo[0]->nombre;
                     $create2->save();
 
-                    // se guardan los archivos PDF en la carpeta correcta
-                    $pdfDI = $request->file('cedula');
-                    $pdfTitulo = $request->file('titulo');
-                    $pdfRecibo = $request->file('recibo');
-                    Storage::put('/documentos/preinscripciones_pdf/'.$nombreDI, \File::get($pdfDI) );
-                    Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, \File::get($pdfTitulo) );
-                    Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, \File::get($pdfRecibo) );
+//                    // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD
+//                    $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
+//                    $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
+//                    $nombreRecibo = 'Recibo_' . date('dmY') . '_' . date('His') . '.pdf';
+//                    $create2->documento_identidad = $nombreDI;
+//                    $create2->titulo = $nombreTitulo;
+//                    $create2->recibo = $nombreRecibo;
+//                    $create2->save();
+//
+//                    // se guardan los archivos PDF en la carpeta correcta
+//                    $pdfDI = $request->file('cedula');
+//                    $pdfTitulo = $request->file('titulo');
+//                    $pdfRecibo = $request->file('recibo');
+//                    Storage::put('/documentos/preinscripciones_pdf/'.$nombreDI, \File::get($pdfDI) );
+//                    Storage::put('/documentos/preinscripciones_pdf/'.$nombreTitulo, \File::get($pdfTitulo) );
+//                    Storage::put('/documentos/preinscripciones_pdf/'.$nombreRecibo, \File::get($pdfRecibo) );
 
 
 
                     $data['nombre'] = $request->nombre;
                     $data['apellido'] = $request->apellido;
-
-                    $data['curso'] = $preins->getCursoName($id); // aquí se retorna el nombre del curso
-
+                    $data['curso'] = $preins->getCursoName($id_curso); // aquí se retorna el nombre del curso
                     $data['email'] = $request->email;
 
                     Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
@@ -251,16 +271,16 @@ class PreinscripcionController extends Controller {
                             ->replyTo($data['email']);
                     });
                     $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
-
-                    Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a nsu correo. Recuerde revisar su carpeta de Spam');
+                    $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                    Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a nsu correo.');
                     return view('preinscripcion.curso', $data);
                 }
             }else{
-                $curso = Curso::find($id);
+                $curso = Curso::find($id_curso);
                 $curso->activo_preinscripcion = false;//Se desactiva el curso
                 $curso->save(); // se guarda
                 $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
-
+                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
                 Session::set('error', 'Ya no quedan cupos disponibles para el curso '.$curso->nombre);
                 return view('preinscripcion.curso', $data);
 
@@ -303,10 +323,10 @@ class PreinscripcionController extends Controller {
                         $create2->apellido = $request->apellido;
                         $create2->di = $request->di;
                         $create2->email = $request->email;
-                        $create2->documento_identidad = '';
-                        $create2->titulo = '';
-                        $create2->recibo = '';
-                        $create2->tipo = 'webinar';
+                        $create2->monto = '';
+                        $create2->id_modalidad_pago = 1;
+                        $create2->numero_pago = '';
+                        $create2->tipo = 'Webinar';
 
                         $create2->save();
 
@@ -324,13 +344,13 @@ class PreinscripcionController extends Controller {
                         });
                         $data['webinars'] = Webinar::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
 
-                        Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo. Recuerde revisar su carpeta de Spam');
+                        Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo.');
                         return view('preinscripcion.webinar', $data);
                     }else{
                         $web = Webinar::find($id);
                         $data['webinars'] = Webinar::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
 
-                        Session::set('error', 'Usted ya se encuentra preinscrito en el webinar '.$web->nombre);
+                        Session::set('error', 'Usted ya se encuentra inscrito en el webinar '.$web->nombre);
                         return view('preinscripcion.webinar', $data);
                     }
 
@@ -341,10 +361,10 @@ class PreinscripcionController extends Controller {
                     $create2->apellido = $request->apellido;
                     $create2->di = $request->di;
                     $create2->email = $request->email;
-                    $create2->documento_identidad = '';
-                    $create2->titulo = '';
-                    $create2->recibo = '';
-                    $create2->tipo = 'webinar';
+                    $create2->monto = '';
+                    $create2->id_modalidad_pago = 1;
+                    $create2->numero_pago = '';
+                    $create2->tipo = 'Webinar';
 
                     $create2->save();
 
@@ -362,7 +382,7 @@ class PreinscripcionController extends Controller {
                     });
                     $data['cursos'] = Webinar::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
 
-                    Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a nsu correo. Recuerde revisar su carpeta de Spam');
+                    Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a nsu correo.');
                     return view('preinscripcion.webinar', $data);
                 }
             }else{

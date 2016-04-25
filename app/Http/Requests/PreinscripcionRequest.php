@@ -30,11 +30,11 @@ class PreinscripcionRequest extends Request {
             'curso' => 'required',
             'nombre' => 'required|max:255',
             'apellido' => 'required|max:255',
-            'apellido' => 'required|max:100|min:2',
-            'cedula' => 'required|mimes:pdf',
-            'titulo' => 'required|mimes:pdf',
-            'recibo' => 'required|mimes:pdf',
-            'email' => 'required|email|max:255'
+            'di' => 'required|max:100|min:2',
+            'email' => 'required|email|max:255',
+            'tipo_pago' => 'required',
+            'monto' => 'required|numeric',
+            'numero_pago' => 'required',
         ];
     }
 

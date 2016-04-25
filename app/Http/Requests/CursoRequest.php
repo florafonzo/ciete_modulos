@@ -52,7 +52,7 @@ class CursoRequest extends Request {
 //            'plan_estudio' => 'required|max:1000',
             'costo' => 'required|integer',
 //            'modalidades_pago' => 'required|max:1000',
-            'imagen_carrusel' => 'mimes:jpeg,png,jpg|max:1024',
+            'imagen_carrusel' => 'required|mimes:jpeg,png,jpg|max:1024',
             'descripcion_carrusel' => 'max:100',
             'activo_carrusel' => '',
 

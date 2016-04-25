@@ -18,7 +18,7 @@
 
                     @if($es_participante)
                         <div class="form-group">
-                            {!!Form::label('rol_actual', 'Rol actual: ', array( 'class' => 'col-md-4 control-label')) !!}
+                            {!!Form::label('rol_actual', 'Rol actual: ', array( 'class' => 'col-md-4  ')) !!}
                             <div class="col-sm-8">
                                 {!!Form::text('rol_actual', $rol[0]->name ,array('disabled', 'class' => 'form-control')) !!}
 
@@ -28,26 +28,43 @@
                         </div>
                     @endif
                     <div class="form-group">
-                        {!!Form::label('nombre', 'Nombre', array( 'class' => 'col-md-4 control-label')) !!}
+                        {!!Form::label('nombre', 'Nombre:', array( 'class' => 'col-md-4  ')) !!}
                         <div class="col-sm-8">
                             {!!Form::text('nombre', $usuarios->nombre ,array('required', 'class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('apellido', 'Apellido',  array( 'class' => 'col-md-4 control-label'))!!}
+                        {!!Form::label('apellido', 'Apellido:',  array( 'class' => 'col-md-4  '))!!}
                         <div class="col-sm-8">
                             {!!Form::text('apellido', $usuarios->apellido ,array('required','class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('documento_identidad', 'Documento de Identidad',  array( 'class' => 'col-md-4 control-label'))!!}
+                        {!!Form::label('documento_identidad', 'Documento de Identidad:',  array( 'class' => 'col-md-4'))!!}
                         <div class="col-sm-8">
                             {!!Form::text('documento_identidad', $datos_usuario->documento_identidad ,array('required','class' => 'form-control'))!!}
                         </div>
                     </div>
+                    @if($es_participante)
+                        <div class="form-group">
+                            {!!Form::label('di_file', 'Archivo documento de identidad:',  array( 'class' => 'col-md-4 '))!!}
+                            <div class="col-sm-8">
+                                @if (Session::has('di_f'))
+                                    {!!Form::hidden('di_f','yes')!!}
+                                    {!!Form::file('archivo_documento_identidad',['id' => 'di_file', 'accept' => 'application/pdf'])!!}
+                                @else
+                                    <a class="btn btn-info btn-sm" href="{{URL::to('/')}}/usuarios/archivo/{{$datos_usuario->di_file}}/ver" data-toggle="tooltip" data-placement="bottom" title="Ver archivo" target="_blank">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    </a>
+                                    {!!Form::hidden('di_f', null)!!}
+                                    <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/usuarios/{{$usuarios->id}}/documento_identidad">Cambiar archivo</a>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
                     @if(!($es_participante))
                         <div class="form-group">
-                            {!!Form::label('rol', 'Rol',  array( 'class' => 'col-md-4 control-label'))!!}
+                            {!!Form::label('rol', 'Rol:',  array( 'class' => 'col-md-4  '))!!}
                             <div class="col-sm-8">
                                 @foreach($roles as $index => $role)
                                     @if($rols[$index] == true)
@@ -60,38 +77,38 @@
                         </div>
                     @endif
                     <div class="form-group">
-                        {!!Form::label('telefono', 'Teléfono de Fijo',  array( 'class' => 'col-md-4 control-label'))!!}
+                        {!!Form::label('telefono', 'Teléfono de Fijo:',  array( 'class' => 'col-md-4  '))!!}
                         <div class="col-sm-8">
                             {!!Form::text('telefono', $datos_usuario->telefono ,array('required','class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('celular', 'Teléfono Móvil: ',  array( 'class' => 'col-md-4 control-label'))!!}
+                        {!!Form::label('celular', 'Teléfono Móvil: ',  array( 'class' => 'col-md-4  '))!!}
                         <div class="col-sm-8">
                             {!!Form::text('celular', $datos_usuario->celular, array('class' => 'form-control'))!!}
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        {!!Form::label('email', 'Correo electrónico',  array( 'class' => 'col-md-4 control-label'))!!}
+                        {!!Form::label('email', 'Correo electrónico:',  array( 'class' => 'col-md-4  '))!!}
                         <div class="col-sm-8">
                             {!! Form::email('email', $usuarios->email, array('required','class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('password', 'Contraseña',  array( 'class' => 'col-md-4 control-label'))!!}
+                        {!!Form::label('password', 'Contraseña:',  array( 'class' => 'col-md-4  '))!!}
                         <div class="col-sm-8">
                             {!! Form::password('password', array('required','class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('password1', 'Confirme su contraseña',  array( 'class' => 'col-md-4 control-label'))!!}
+                        {!!Form::label('password1', 'Confirme su contraseña:',  array( 'class' => 'col-md-4  '))!!}
                         <div class="col-sm-8">
                             {!! Form::password('password_confirmation', array('required','class' => 'form-control')) !!}
                         </div>
                     </div>
                     {{--<div class="form-group">--}}
-                        {{--{!!Form::label('imagen', 'Imagen de perfil: ',  array( 'class' => 'col-md-4 control-label'))!!}--}}
+                        {{--{!!Form::label('imagen', 'Imagen de perfil: ',  array( 'class' => 'col-md-4  '))!!}--}}
                         {{--<div class="col-sm-8">--}}
                             {{--{!!Form::file('imagen', $datos_usuario->foto, array('class' => 'form-control'))!!}--}}
                         {{--</div>--}}
@@ -99,31 +116,46 @@
 
                     @if($es_participante)
                         <div class="form-group">
-                            {!!Form::label('correo_alternativo', 'Correo electrónico alternativo: ',  array( 'class' => 'col-md-4 control-label'))!!}
+                            {!!Form::label('correo_alternativo', 'Correo electrónico alternativo: ',  array( 'class' => 'col-md-4  '))!!}
                             <div class="col-sm-8">
                                 {!! Form::email('correo_alternativo', $datos_usuario->correo_alternativo, array('class' => 'form-control'))!!}
                             </div>
                         </div>
                         <div class="form-group" >
-                            {!!Form::label('twitter', 'Usuario twitter: ',  array( 'class' => 'col-md-4 control-label'))!!}
+                            {!!Form::label('twitter', 'Usuario twitter: ',  array( 'class' => 'col-md-4  '))!!}
                             <div class="col-sm-8">
                                 {!! Form::text('twitter', $datos_usuario->twitter, array('class' => 'form-control'))!!}
                             </div>
                         </div>
                         <div class="form-group" >
-                            {!!Form::label('ocupacion', 'Ocupacion: ',  array( 'class' => 'col-md-4 control-label'))!!}
+                            {!!Form::label('ocupacion', 'Ocupacion: ',  array( 'class' => 'col-md-4  '))!!}
                             <div class="col-sm-8">
                                 {!! Form::text('ocupacion', $datos_usuario->ocupacion, array('class' => 'form-control'))!!}
                             </div>
                         </div>
                         <div class="form-group" >
-                            {!!Form::label('titulo', 'Titulo de pregrado: ',  array( 'class' => 'col-md-4 control-label'))!!}
+                            {!!Form::label('titulo', 'Titulo de pregrado: ',  array( 'class' => 'col-md-4 '))!!}
                             <div class="col-sm-8">
-                                {!! Form::text('titulo', $datos_usuario->titulo_pregrado, array('class' => 'form-control'))!!}
+                                @if (Session::has('titulo_'))
+                                    {!!Form::hidden('titulo_','yes')!!}
+                                    {!!Form::file('titulo',['id' => 'di_file', 'accept' => 'application/pdf'])!!}
+                                @else
+                                    <a class="btn btn-info btn-sm" href="{{URL::to('/')}}/usuarios/archivo/{{$datos_usuario->titulo_pregrado}}/ver" data-toggle="tooltip" data-placement="bottom" title="Ver archivo" target="_blank">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    </a>
+                                    {!!Form::hidden('titulo_', null)!!}
+                                    <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/usuarios/{{$usuarios->id}}/titulo">Cambiar archivo</a>
+                                @endif
                             </div>
                         </div>
+                        {{--<div class="form-group" >--}}
+                            {{--{!!Form::label('titulo', 'Titulo de pregrado: ',  array( 'class' => 'col-md-4  '))!!}--}}
+                            {{--<div class="col-sm-8">--}}
+                                {{--{!! Form::text('titulo', $datos_usuario->titulo_pregrado, array('class' => 'form-control'))!!}--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <div class="form-group">
-                            {!!Form::label('univ', 'Universidad dónde obtuvo el título: ',  array( 'class' => 'col-md-4 control-label'))!!}
+                            {!!Form::label('univ', 'Universidad dónde obtuvo el título: ',  array( 'class' => 'col-md-4  '))!!}
                             <div class="col-sm-8">
                                 {!! Form::text('univ', $datos_usuario->universidad, array('class' => 'form-control'))!!}
                             </div>

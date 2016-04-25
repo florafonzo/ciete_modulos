@@ -30,14 +30,14 @@
                                     {!!Form::hidden('dir',$ruta)!!}
                                     {!!Form::hidden('file_viejo',$foto)!!}
                                     <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                    <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/participante/perfil/imagen">Cambiar</a>
+                                    <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/participante/perfil/imagen">Cambiar imágen</a>
                                 @else
                                     <br>
                                     {!!Form::hidden('img_carg',null)!!}
                                     {!!Form::hidden('cortar',null)!!}
                                     <img src="{{URL::to('/')}}/images/images_perfil/{{$foto}}" id="imagen_cortada" width="150" height="150"><br><br>
                                     {{--{!!Html::image('/img/images_perfil/'.$perfil->file_perfil,null, ['height'=>'279', 'width'=>'270 ']) !!} <br><br>--}}
-                                    <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/participante/perfil/imagen" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>
+                                    <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/participante/perfil/imagen" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar imágen</a>
                                 @endif
                             @endif
                         </div>
@@ -60,6 +60,25 @@
                         {!!Form::label('documento_identidad', 'Documento de Identidad:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
                             {!!Form::text('documento_identidad', $datos[0]->documento_identidad ,array('required','class' => 'form-control'))!!}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {!!Form::label('di_file', 'Archivo documento de identidad:',  array( 'class' => 'col-md-4 '))!!}
+                        <div class="col-sm-8">
+                            @if (Session::has('di_f'))
+                                {!!Form::hidden('di_f','yes')!!}
+                                {!!Form::file('archivo_documento_identidad',['id' => 'di_file', 'accept' => 'application/pdf'])!!}
+                            @else
+                                <a class="btn btn-info btn-sm" href="{{URL::to('/')}}/participante/perfil/archivo/{{$datos[0]->di_file}}/ver" data-toggle="tooltip" data-placement="bottom" title="Ver archivo" target="_blank">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </a>
+                                {!!Form::hidden('di_f', null)!!}
+                                <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/participante/perfil/documento_identidad">Cambiar archivo</a>
+
+                                {{--<button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Ver archivo"><span class="glyphicon glyphicon-eye-open"></span></button>--}}
+                                {{--<a class="btn btn-success btn-xs" href="{{URL::to('/')}}/participante/perfil/documento_identidad">Cambiar archivo</a>--}}
+                            @endif
                         </div>
                     </div>
                     <div class="form-group">
@@ -170,7 +189,16 @@
                     <div class="form-group" >
                         {!!Form::label('titulo', 'Titulo de pregrado: ',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
-                            {!! Form::text('titulo', $datos[0]->titulo_pregrado, array(  'class' => 'form-control'))!!}
+                            @if (Session::has('titulo_'))
+                                {!!Form::hidden('titulo_','yes')!!}
+                                {!!Form::file('titulo',['id' => 'di_file', 'accept' => 'application/pdf'])!!}
+                            @else
+                                <a class="btn btn-info btn-sm" href="{{URL::to('/')}}/participante/perfil/archivo/{{$datos[0]->titulo_pregrado}}/ver" data-toggle="tooltip" data-placement="bottom" title="Ver archivo" target="_blank">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </a>
+                                {!!Form::hidden('titulo_', null)!!}
+                                <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/participante/perfil/titulo">Cambiar archivo</a>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group">

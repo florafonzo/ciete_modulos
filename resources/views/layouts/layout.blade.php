@@ -37,6 +37,7 @@
             {{--Fin Footer--}}
         </div>
         <script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
+        {{--<script src="{{URL::to('/')}}/js/polyfiller.js"></script>--}}
         <script>
             webshims.setOptions('forms-ext', {types: 'date'});
             webshims.polyfill('forms forms-ext');
@@ -44,10 +45,10 @@
         <script src="{{URL::to('/')}}/js/jquery.js"></script>
         <script src="{{URL::to('/')}}/js/jquery-1.11.3.min.js"></script>
         <script src="{{URL::to('/')}}/js/jquery-ui.min.js"></script>
-        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script src="{{URL::to('/')}}/js/jquery-2.2.0.min.js"></script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="{{URL::to('/')}}/js/jquery.min.js"></script>
+        <script src="{{URL::to('/')}}/js/bootstrap.min.js"></script>
         <script src="{{URL::to('/')}}/plugins/ckeditor/ckeditor.js"></script>
         <script src="{{URL::to('/')}}/js/component.js"></script>
         <script src="{{URL::to('/')}}/js/generic.js"></script>

@@ -34,6 +34,12 @@
                             {!!Form::text('documento_identidad', $datos[0]->documento_identidad ,array('disabled','class' => 'form-control'))!!}
                         </div>
                     </div>
+                    <div class="form-group" >
+                        {!!Form::label('di_file', 'Archivo documento de identidad: ',  array('disabled', 'class' => 'col-md-4 '))!!}
+                        <div class="col-sm-8">
+                            {!! Form::text('di_file', $datos[0]->di_file, array('disabled','class' => 'form-control'))!!}
+                        </div>
+                    </div>
                     <div class="form-group">
                         {!!Form::label('telefono', 'Teléfono Fijo:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">

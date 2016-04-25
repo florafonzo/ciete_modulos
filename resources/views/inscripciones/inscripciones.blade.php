@@ -20,7 +20,7 @@
                                 <option value="0"  selected="selected">Buscar por</option>
                                 <option value="nombre"  >Nombre</option>
                                 <option value="apellido"  >Apellido</option>
-                                {{--<option value="documento_identidad"  >Dcocumento de identidad</option>--}}
+                                <option value="di"  >Dcocumento de identidad</option>
                                 <option value="email"  >Correo</option>
                                 <option value="tipo">Tipo curso</option>
                             </select>
@@ -38,9 +38,13 @@
                             <th>#</th>
                             <th>Nombre</th>
                             <th>Apellido</th>
-                            {{--<th>Documento de identidad</th>--}}
-                            <th>Email</th>
-                            <th>Tipo</th>
+                            <th>Documento de identidad</th>
+                            {{--<th>Email</th>--}}
+                            <th>Actividad</th>
+                            {{--<th>Tipo</th>--}}
+                            <th>Modalidad de pago</th>
+                            <th>Número de pago</th>
+                            <th>Monto del pago</th>
                             <th>Acciones</th>
                             <th></th>
                         </tr>
@@ -53,24 +57,36 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $user->nombre }}</td>
                                         <td>{{ $user->apellido  }}</td>
-{{--                                        <td>{{ $user[0]->doc_id  }}</td>--}}
-                                        <td>{{ $user->email }}</td>
-                                        <td>
-                                            {{$user->tipo}}
-                                        </td>
-                                        @if($user->tipo == 'curso')
+                                        <td>{{ $user->di  }}</td>
+{{--                                        <td>{{ $user->email }}</td>--}}
+                                        <td>{{ $user->curso_nombre }}</td>
+                                        {{--<td>--}}
+                                            {{--{{$user->tipo}}--}}
+                                        {{--</td>--}}
+                                        @if($user->tipo == 'Diplomado' || $user->tipo == 'Cápsula')
                                             <td>
-                                                @if(Entrust::can('activar_inscripcion'))
-                                                    {!! Form::open(array('method' => 'GET','route' => array('inscripcion.documentos', $user->id))) !!}
-                                                        <button type="submit" class='btn btn-info' data-toggle='tooltip' data-placement="bottom" title="Ver documentos">
-                                                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-                                                        </button>
-                                                        {{--{!! Form::button('<span class="glyphicon glyphicon-file" data-toggle="tooltip" data-placement="bottom" title="Ver documentos" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-info'))!!}--}}
-                                                    {!! Form::close() !!}
-                                                @endif
+                                                {{ $user->modalidad }}
                                             </td>
+                                            <td>
+                                                {{ $user->numero_pago }}
+                                            </td>
+                                            <td>
+                                                {{ $user->monto }}
+                                            </td>
+                                            {{--<td>--}}
+                                                {{--@if(Entrust::can('activar_inscripcion'))--}}
+                                                    {{--{!! Form::open(array('method' => 'GET','route' => array('inscripcion.documentos', $user->id))) !!}--}}
+                                                        {{--<button type="submit" class='btn btn-info' data-toggle='tooltip' data-placement="bottom" title="Ver documentos">--}}
+                                                            {{--<span class="glyphicon glyphicon-file" aria-hidden="true"></span>--}}
+                                                        {{--</button>--}}
+                                                        {{--{!! Form::button('<span class="glyphicon glyphicon-file" data-toggle="tooltip" data-placement="bottom" title="Ver documentos" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-info'))!!}--}}
+                                                    {{--{!! Form::close() !!}--}}
+                                                {{--@endif--}}
+                                            {{--</td>--}}
                                         @else
-                                            <td></td>
+                                            <td>NA</td>
+                                            <td>NA</td>
+                                            <td>NA</td>
                                         @endif
                                         <td>
                                             @if(Entrust::can('activar_inscripcion'))
@@ -112,36 +128,4 @@
             </div>
         @endif
     </div>
-
-    {{--Modal para rechazar inscripción--}}
-    {{--<div class="modal fade" id="rechazarModal" role="dialog">--}}
-        {{--<div class="modal-dialog">--}}
-            {{--<!-- Modal content-->--}}
-            {{--<div class="modal-content">--}}
-                {{--<div class="modal-header">--}}
-                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                    {{--<h4> Calificar </h4>--}}
-                {{--</div>--}}
-                {{--<div class="modal-body">--}}
-                    {{--{!! Form::open(array('method' => 'DELETE','route' => array('inscripcion.destroy', $user->id), 'id' => 'form_inscripcion2'.$user->id)) !!}--}}
-                    {{--<div class="row">--}}
-                        {{--<div class="col-md-10 col-md-offset-1 col-xs-12">--}}
-                            {{--<div class="form-group">--}}
-                                {{--{!!Form::label('motvio', 'Motivo por el cual se rechaza la inscripción:', array( 'class' => '')) !!}--}}
-                                {{--{!!Form::textarea('motivo', null ,array('required', 'class' => 'form-control')) !!}--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="modal-footer">--}}
-                    {{--<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>--}}
-                    {{--<button type="button" onclick="desactivarInscripcion('{{$user->id}}')" class="btn btn-success btn-success pull-right" ><span class="glyphicon glyphicon-remove"></span> Rechazar</button>--}}
-                {{--</div>--}}
-                {{--{!! Form::close() !!}--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-    {{--Fin Modal--}}
-
-
 @stop

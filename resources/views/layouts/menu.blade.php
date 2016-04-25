@@ -46,11 +46,8 @@
                         @endforeach
                     </ul>
                 </li>
-                {{--<li class="fondo ">--}}
-                    {{--<a class="lista-menu" href="">Preinscripción</a>--}}
-                {{--</li>--}}
                 <li class="fondo">
-                    <a class="lista-menu dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Preinscripciones <span class="caret"></span></a>
+                    <a class="lista-menu dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Inscripciones <span class="caret"></span></a>
                     <ul class="dropdown-menu menu_bajo">
                         <li >
                             <a href="{{URL::to('/')}}/preinscripcion/procedimiento">Procedimiento</a>

@@ -55,6 +55,9 @@ Route::group([
     Route::get('usuarios/buscar', [
         'as' => 'usuarios.buscar', 'uses' => 'UsuariosController@buscar'
     ]);
+        Route::get('usuarios/{id}/documento_identidad','UsuariosController@cambiarArchivoDi');
+        Route::get('usuarios/{id}/titulo','UsuariosController@cambiarArchivoT');
+        Route::get('usuarios/archivo/{doc}/ver', 'UsuariosController@verPdf');
     Route::resource('usuarios','UsuariosController');
 
     //Rutas manejo de cursos
@@ -185,6 +188,9 @@ Route::group([
     Route::get('participante/perfil/{id}/editar','ParticipantesController@editarPerfil');
     Route::get('participante/perfil/imagen','ParticipantesController@cambiarImagen');
     Route::post('participante/perfil/procesar','ParticipantesController@procesarImagen');
+    Route::get('participante/perfil/documento_identidad','ParticipantesController@cambiarArchivoDi');
+    Route::get('participante/perfil/titulo','ParticipantesController@cambiarArchivoT');
+    Route::get('participante/perfil/archivo/{doc}/ver', 'ParticipantesController@verPdf');
 //    Route::patch('participante/perfil/{id}','ParticipantesController@update');
     Route::get('participante/cursos','ParticipantesController@verCursos');
     Route::get('participante/cursos/{id}/modulos','ParticipantesController@verModulosCurso');

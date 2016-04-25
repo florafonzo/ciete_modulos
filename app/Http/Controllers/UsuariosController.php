@@ -11,18 +11,19 @@ use App\Models\Estado;
 use App\Models\Municipio;
 use App\Models\Ciudad;
 use App\Models\Parroquia;
-use Illuminate\Validation\Validator;
 use App\Http\Requests\UsuarioRequest;
 use App\Http\Requests\UsuarioEditarRequest;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Facades\Auth;
-//use Validator;
 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\RedirectResponse;
 use DB;
 use Exception;
+use Response;
+use Storage;
 
 use Illuminate\Http\Request;
 
@@ -378,7 +379,6 @@ class UsuariosController extends Controller {
                         $dir = $pais;
                     }
 
-                    //dd("direccion: ".$dir);
                     $create2 = Participante::findOrNew($request->id);
                     $create2->id_usuario = $usuario->id;
                     $create2->nombre = $request->nombre;
@@ -390,9 +390,79 @@ class UsuariosController extends Controller {
                     $create2->correo_alternativo = $request->email_alternativo;
                     $create2->twitter = Input::get('twitter');
                     $create2->ocupacion = Input::get('ocupacion');
-                    $create2->titulo_pregrado = Input::get('titulo');
                     $create2->universidad = Input::get('univ');
                     $create2->nuevo = false;
+
+                    //  Se valida que los archivos esten en formato PDF
+                    if($request->hasFile('archivo_documento_identidad')) {
+                        $validar_di = Validator::make(array('archivo_documento_identidad' => $request->file('archivo_documento_identidad')), array('archivo_documento_identidad' => 'mimes:pdf'));
+                        if ($validar_di->fails()) {
+                            DB::table('users')->where('id', '=', $usuario->id)->delete();
+                            $data['roles'] = Role::all()->lists('display_name', 'id');
+                            $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                            $data['estados'] = Estado::all()->lists('estado','id_estado');
+                            $data['es_participante'] = true;
+                            // Se guardan los datos ingresados por el usuario en sesion pra utilizarlos en caso de que se redirija
+                            // al usuari al formulario por algún error y no se pierdan los datos ingresados
+                            Session::set('nombre', $request->nombre);
+                            Session::set('apellido', $request->apellido);
+                            Session::set('email', $request->email);
+                            Session::set('documento_identidad', $request->documento_identidad);
+                            Session::set('telefono', $request->telefono);
+                            Session::set('celular', $request->celular);
+                            Session::set('email_alternativo', $request->email_alternativo);
+                            Session::set('twitter', $request->twitter);
+                            Session::set('ocupacion', $request->ocupacion);
+                            Session::set('titulo', $request->titulo);
+                            Session::set('univ', $request->univ);
+
+                            Session::set('error', 'El archivo documento identidad debe estar en formato PDF');
+                            return view('usuarios.crear', $data);
+                        }
+                        // Se crea el nombre del archivo y se guarda
+                        $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
+                        $create2->di_file = $nombreDI;
+                        // se guardan los archivos PDF en la carpeta correcta
+                        $pdfDI = $request->file('archivo_documento_identidad');
+                        Storage::put('/documentos/participantes/'.$nombreDI, \File::get($pdfDI ));
+                    }else{
+                        $create2->di_file = '';
+                    }
+                    if($request->hasFile('titulo')) {
+                        $validar_di = Validator::make(array('archivo_documento_identidad' => $request->file('archivo_documento_identidad')), array('archivo_documento_identidad' => 'mimes:pdf'));
+                        if ($validar_di->fails()) {
+                            DB::table('users')->where('id', '=', $usuario->id)->delete();
+                            $data['roles'] = Role::all()->lists('display_name', 'id');
+                            $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
+                            $data['estados'] = Estado::all()->lists('estado','id_estado');
+                            $data['es_participante'] = true;
+                            // Se guardan los datos ingresados por el usuario en sesion pra utilizarlos en caso de que se redirija
+                            // al usuari al formulario por algún error y no se pierdan los datos ingresados
+                            Session::set('nombre', $request->nombre);
+                            Session::set('apellido', $request->apellido);
+                            Session::set('email', $request->email);
+                            Session::set('documento_identidad', $request->documento_identidad);
+                            Session::set('telefono', $request->telefono);
+                            Session::set('celular', $request->celular);
+                            Session::set('email_alternativo', $request->email_alternativo);
+                            Session::set('twitter', $request->twitter);
+                            Session::set('ocupacion', $request->ocupacion);
+                            Session::set('titulo', $request->titulo);
+                            Session::set('univ', $request->univ);
+
+                            Session::set('error', 'El archivo Título de pregrado debe estar en formato PDF');
+                            return view('usuarios.crear', $data);
+
+                        }
+                        // Se crea el nombre del archivo y se guarda
+                        $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
+                        $create2->titulo_pregrado = $nombreTitulo;
+                        // se guarda el archivo PDF en la carpeta correcta
+                        $pdfTitulo = $request->file('titulo');
+                        Storage::put('/documentos/participantes/'.$nombreTitulo, \File::get($pdfTitulo) );
+                    }else{
+                        $create2->titulo_pregrado = '';
+                    }
 
                 } elseif (($request->es_participante) == 'no') {    //  Si no es Perticipante entonces es Profesor
                     // Se verifica que el usuario haya seleccionado que roles tendrá el usuario que se está creando
@@ -440,6 +510,7 @@ class UsuariosController extends Controller {
                                 $usuario->attachRole($role->id);
                             }
                         }
+                        Session::set('mensaje', 'Usuario creado con éxito.');
                         return redirect('/usuarios');
                     } else {    // Si el usuario no se ha creado bien se redirige al formulario de creación y se le indica al usuario el error
                         Session::set('error', 'Ha ocurrido un error inesperado');
@@ -494,6 +565,7 @@ class UsuariosController extends Controller {
                 $userRoles = $data['usuarios']->roles()->get(); // Se obtienen los roles del usuario que se desea editar
                 $data['rol'] = $userRoles;
                 $data['roles'] = Role::where('name', '!=', 'participante')->lists('display_name', 'id');
+
                 /*$data['paises'] = Pais::all()->lists('pais', 'id');
                 $data['estados'] = Estado::all()->lists('estado','id_estado');
                 $data['ciudades'] = Ciudad::all()->lists('ciudad', 'id_ciudad');
@@ -516,6 +588,16 @@ class UsuariosController extends Controller {
                             $data['municipio'] = $dir[3];
                             $data['parroquia'] = $dir[4];
                         }*/
+                        if($data['datos_usuario']->di_file == ''){
+                            Session::flash('di_f', 'yes');
+                        }else{
+                            Session::flash('di_f', null);
+                        }
+                        if($data['datos_usuario']->titulo_pregrado == ''){
+                            Session::flash('titulo_', 'yes');
+                        }else{
+                            Session::flash('titulo_', null);
+                        }
                         
                     } else {
                         $data['datos_usuario'] = DB::table('profesores')->where('id_usuario', '=', $usuario->id)->first();
@@ -643,9 +725,48 @@ class UsuariosController extends Controller {
                     $tipo_usuario->correo_alternativo = $request->correo_alternativo;
                     $tipo_usuario->twitter = Input::get('twitter');
                     $tipo_usuario->ocupacion = Input::get('ocupacion');
-                    $tipo_usuario->titulo_pregrado = Input::get('titulo');
                     $tipo_usuario->universidad = Input::get('univ');
                     $tipo_usuario->nuevo = false;
+
+                    $di_f = Input::get('di_f');
+                    $titulo_ = Input::get('titulo_');
+                    if($request->hasFile('archivo_documento_identidad') && $di_f == 'yes') {
+                        $validar_di = Validator::make(array('archivo_documento_identidad' => $request->file('archivo_documento_identidad')), array('archivo_documento_identidad' => 'mimes:pdf'));
+                        if ($validar_di->fails()) {
+                            $data['datos'] = Participante::where('id_usuario', '=', $id)->get(); // Se obtienen los datos del participante
+                            $data['email']= User::where('id', '=', $id)->get(); // Se obtiene el correo principal del participante;
+                            Session::set('error', 'El archivo documento identidad debe estar en formato PDF');
+                            return view('participantes.editar-perfil', $data);
+                        }
+                        // Se crea el nombre del archivo y se guarda
+                        $nombreDI = 'D_identidad_' . date('dmY') . '_' . date('His') . '.pdf';
+                        if($tipo_usuario->di_file != ''){ // se borra el qrchivo anterior si existe
+                            Storage::delete('/documentos/participantes/'.$tipo_usuario->di_file);
+                        }
+                        $tipo_usuario->di_file = $nombreDI;
+                        // se guardan los archivos PDF en la carpeta correcta
+                        $pdfDI = $request->file('archivo_documento_identidad');
+                        Storage::put('/documentos/participantes/'.$nombreDI, \File::get($pdfDI ));
+                    }
+                    if($request->hasFile('titulo') && $titulo_ == 'yes') {
+                        $validar_di = Validator::make(array('archivo_documento_identidad' => $request->file('archivo_documento_identidad')), array('archivo_documento_identidad' => 'mimes:pdf'));
+                        if ($validar_di->fails()) {
+                            $data['datos'] = Participante::where('id_usuario', '=', $id)->get(); // Se obtienen los datos del participante
+                            $data['email']= User::where('id', '=', $id)->get(); // Se obtiene el correo principal del participante;
+                            Session::set('error', 'El archivo título de pregrado debe estar en formato PDF');
+                            return view('participantes.editar-perfil', $data);
+
+                        }
+                        // Se crea el nombre del archivo y se guarda
+                        $nombreTitulo = 'Titulo_' . date('dmY') . '_' . date('His') . '.pdf';
+                        if($tipo_usuario->titulo_pregrado != ''){ // se borra el archivo anterior si existe
+                            Storage::delete('/documentos/participantes/'.$tipo_usuario->di_file);
+                        }
+                        $tipo_usuario->titulo_pregrado = $nombreTitulo;
+                        // se guarda el archivo PDF en la carpeta correcta
+                        $pdfTitulo = $request->file('titulo');
+                        Storage::put('/documentos/participantes/'.$nombreTitulo, \File::get($pdfTitulo) );
+                    }
 
                     $tipo_usuario->save(); // Se guardan los nuevos datos en la tabla Participentes
 
@@ -705,6 +826,7 @@ class UsuariosController extends Controller {
                                 $usuario->attachRole($role->id);
                             }
                         }
+                        Session::set('mensaje', 'Usuario actualizado con éxito.');
                         return redirect('/usuarios');
                     } else {    // Si el usuario no se ha actualizo con exito en la tabla Participantes o Profesores se
                     // redirige al formulario  y se le indica al usuario el error
@@ -813,5 +935,153 @@ class UsuariosController extends Controller {
         } 
 	        
 	}
+
+    public function cambiarArchivoDi($id)
+    {
+        try {
+
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('editar_usuarios')) {  // Si el usuario posee los permisos necesarios continua con la acción
+                $data['estado'] = '';
+                $data['ciudad'] = '';
+                $data['municipio'] = '';
+                $data['parroquia'] = '';
+                $data['es_VE'] = false;
+
+                $data['errores'] = '';
+                $data['es_participante'] = false;
+                $usuario = User::find($id);
+                $data['usuarios'] = $usuario;    //Se obtienen los datos del usuario que se desea editar
+                $userRoles = $data['usuarios']->roles()->get(); // Se obtienen los roles del usuario que se desea editar
+                $data['rol'] = $userRoles;
+                $data['roles'] = Role::where('name', '!=', 'participante')->lists('display_name', 'id');
+
+                foreach ($userRoles as $role) { //  Se verifica el rol del usuario que se desea editar
+                    // (si es Participante o Profesor) y se obtienen su datos
+                    if (($role->name) == 'participante') {
+                        $data['es_participante'] = true;
+                        $data['datos_usuario'] = DB::table('participantes')->where('id_usuario', '=', $usuario->id)->first();
+                    } else {
+                        $data['datos_usuario'] = DB::table('profesores')->where('id_usuario', '=', $usuario->id)->first();
+
+                        $arr = [];
+                        $usuario_rol = array($userRoles);
+
+                        foreach ($data['roles'] as $index => $rol) {
+                            $arr[$index] = false;
+                        }
+                        foreach ($usuario_rol[0] as $index => $rol) {
+                            $arr[$rol->id] = true;
+                        }
+                        $data['rols'] = $arr;
+                    }
+                    break;
+                }
+                Session::flash('di_f', 'yes');
+                return view('usuarios.edit', $data);
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+
+        } catch (Exception $e) {
+            return view('errors.error')->with('error', $e->getMessage());
+        }
+    }
+    public function cambiarArchivoT($id)
+    {
+        try {
+
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('editar_usuarios')) {  // Si el usuario posee los permisos necesarios continua con la acción
+                $data['estado'] = '';
+                $data['ciudad'] = '';
+                $data['municipio'] = '';
+                $data['parroquia'] = '';
+                $data['es_VE'] = false;
+
+                $data['errores'] = '';
+                $data['es_participante'] = false;
+                $usuario = User::find($id);
+                $data['usuarios'] = $usuario;    //Se obtienen los datos del usuario que se desea editar
+                $userRoles = $data['usuarios']->roles()->get(); // Se obtienen los roles del usuario que se desea editar
+                $data['rol'] = $userRoles;
+                $data['roles'] = Role::where('name', '!=', 'participante')->lists('display_name', 'id');
+
+                foreach ($userRoles as $role) { //  Se verifica el rol del usuario que se desea editar
+                    // (si es Participante o Profesor) y se obtienen su datos
+                    if (($role->name) == 'participante') {
+                        $data['es_participante'] = true;
+                        $data['datos_usuario'] = DB::table('participantes')->where('id_usuario', '=', $usuario->id)->first();
+                    } else {
+                        $data['datos_usuario'] = DB::table('profesores')->where('id_usuario', '=', $usuario->id)->first();
+
+                        $arr = [];
+                        $usuario_rol = array($userRoles);
+
+                        foreach ($data['roles'] as $index => $rol) {
+                            $arr[$index] = false;
+                        }
+                        foreach ($usuario_rol[0] as $index => $rol) {
+                            $arr[$rol->id] = true;
+                        }
+                        $data['rols'] = $arr;
+                    }
+                    break;
+                }
+                Session::flash('titulo_', 'yes');
+                return view('usuarios.edit', $data);
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+
+        } catch (Exception $e) {
+            return view('errors.error')->with('error', $e->getMessage());
+        }
+    }
+
+    public function verPdf($doc) {
+        try {
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if ($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            } else {
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if ($usuario_actual->can('editar_usuarios')) {
+                $data['errores'] = '';
+                $data['busq_'] = false;
+                $path = public_path() . '/documentos/participantes/' . $doc;
+
+                return Response::make(file_get_contents($path), 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; ' . $doc,
+                ]);
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
 
 }

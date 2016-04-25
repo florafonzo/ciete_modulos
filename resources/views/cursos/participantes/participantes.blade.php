@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Participantes del curso {{$curso->nombre}}
+                Participantes de la actividad {{$curso->nombre}}
             </h3>
         </div>
 

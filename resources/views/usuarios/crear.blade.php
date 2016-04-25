@@ -43,10 +43,14 @@
                             {!!Form::text('documento_identidad', Session::get('documento_identidad'),array('required','class' => 'form-control'))!!}
                         </div>
                     </div>
+                    <div class="form-group mostrar" id="mostrar">
+                        {!!Form::label('di_file', 'Archivo documento de Identidad: ',  array( 'class' => 'col-md-4 control-label'))!!}
+                        <div class="col-sm-8">
+                            {!!Form::file('archivo_documento_identidad',['id' => 'di_file', 'accept' => 'application/pdf'])!!}
+                        </div>
+                    </div>
                     <div class="form-group" id="ocultar">
                         {!!Form::label('rol', 'Rol(es): ',  array( 'class' => 'col-md-4 control-label'))!!}
-
-{{--                            {{$rol}}--}}
                             <div class="col-sm-8">
                                 @foreach($roles as $rol)
                                     @if ($rol == "Participante")
@@ -169,8 +173,8 @@
                     </div>
                     <div class="form-group mostrar" id="mostrar">
                         {!!Form::label('titulo', 'Titulo de pregrado: ',  array( 'class' => 'col-md-4 control-label'))!!}
-                        <div class="col-sm-8">
-                            {!! Form::text('titulo', Session::get('titulo'), array('class' => 'form-control'))!!}
+                        <div class="col-sm-8">.
+                            {!!Form::file('titulo',['id' => 'di_file', 'accept' => 'application/pdf'])!!}
                         </div>
                     </div>
                     <div class="form-group mostrar" id="mostrar">
