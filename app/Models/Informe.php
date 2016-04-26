@@ -1,4 +1,4 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +16,6 @@ class Informe extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id_modulo','fecha_descarga', 'conclusion', 'aspectos_positivos', 'aspectos_negativos', 'sugerencias'];
+    protected $fillable = ['id_modulo', 'seccion','fecha_descarga', 'conclusion', 'aspectos_positivos', 'aspectos_negativos', 'sugerencias'];
 
 }

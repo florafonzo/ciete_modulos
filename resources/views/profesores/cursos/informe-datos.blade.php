@@ -13,19 +13,7 @@
             @include('partials.menu_usuarios')
             <div class="col-md-8 col-sm-8 opciones_part2">
                 @include('partials.mensajes'){{--Errores--}}
-                {!! Form::open(array('method' => 'POST', 'route' => array('profesor.informe', $curso->id, $modulo->id), 'class' => 'form-horizontal col-md-10', 'enctype' => "multipart/form-data", "target" => "_blank")) !!}
-                    <div class="form-group">
-                        {!!Form::label('cohorte', 'Cohorte:', array( 'class' => 'col-md-4 ')) !!}
-                        <div class="col-sm-8">
-                            {!!Form::text('cohorte', old('cohorte'),array('required', 'class' => 'form-control')) !!}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {!!Form::label('grupo', 'Grupo:', array( 'class' => 'col-md-4 ')) !!}
-                        <div class="col-sm-8">
-                            {!!Form::text('grupo', old('grupo'),array('required', 'class' => 'form-control')) !!}
-                        </div>
-                    </div>
+                {!! Form::open(array('method' => 'POST', 'route' => array('profesor.informe', $curso->id, $modulo->id, $seccion), 'class' => 'form-horizontal col-md-10', 'enctype' => "multipart/form-data", "target" => "_blank")) !!}
                     <div class="form-group">
                         {!!Form::label('conclu', 'Conclusión del curso:', array( 'class' => 'col-md-4 ')) !!}
                         <div class="col-sm-8">

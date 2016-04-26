@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\Informe;
 use App\Models\Curso;
 use App\Models\Modulo;
 use App\Models\Nota;
@@ -1222,7 +1223,7 @@ class ProfesoresController extends Controller {
     }
 
     //------------------------------------- Informe Acedemicos ---------------------------------------
-    public function datosInforme($id_curso, $modulo)
+    public function datosInforme($id_curso, $modulo, $seccion)
     {
         try {
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -1235,6 +1236,7 @@ class ProfesoresController extends Controller {
 
             if($usuario_actual->can('ver_perfil_prof')) { // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $data['seccion'] = $seccion;
                 $data['curso'] = Curso::find($id_curso);
                 $data['modulo'] = Modulo::find($modulo);
                 return view('profesores.cursos.informe-datos', $data);
@@ -1251,7 +1253,7 @@ class ProfesoresController extends Controller {
         }
     }
 
-    public function generarInformeAc(InformeRequest $request, $id_curso, $modulo) {
+    public function generarInformeAc(InformeRequest $request, $id_curso, $modulo, $seccion) {
         try {
 
             $usuario_actual = Auth::user();
@@ -1268,8 +1270,12 @@ class ProfesoresController extends Controller {
                 $data['fin'] = new DateTime($data['curso']->fecha_fin);
                 $data['modulo'] = Modulo::find($modulo);
                 $profesor = Profesor::where('id_usuario', '=', $usuario_actual->id)->get();
-                $data['cohorte'] = $request->cohorte;
-                $data['grupo'] = $request->grupo;
+                if($data['curso']->id_tipo == '1'){
+                    $data['cohorte'] = $data['curso']->cohorte;
+                }else{
+                    $data['cohorte'] = '';
+                }
+                $data['grupo'] = $seccion;
                 $data['conclusion'] = $request->conclusion;
                 $data['positivo'] = $request->positivo;
                 $data['negativo'] = $request->negativo;
@@ -1284,6 +1290,16 @@ class ProfesoresController extends Controller {
                 $data['reprobados'] = 0;
                 $data['desertores'] = 0;
                 $data['fecha_actual'] = date("d-m-Y");
+
+                $informe = new Informe();
+                $informe->id_modulo = $modulo;
+                $informe->seccion = $seccion;
+                $informe->fecha_descarga = date('d-m-Y');
+                $informe->conclusion = $request->conclusion;
+                $informe->aspectos_positivos = $request->positivo;
+                $informe->aspectos_negativos = $request->negativo;
+                $informe->sugerencias = $request->sugerencias;
+                $informe->save();
 
                 $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->select('id_participante')->get();
                 $data['total'] = $participantes->count();
@@ -1337,7 +1353,7 @@ class ProfesoresController extends Controller {
                         $data['modulos'][$index] = Modulo::find($mod->id_modulo);
                     }
                     Session::set('error', 'Disculpe, no existen participantes en el modulo '.$data['modulo']->nombre);
-                    return view('profesores.cursos.modulos', $data);
+                    return view('profesores.cursos.secciones', $data);
                 }
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error

@@ -28,7 +28,7 @@ class CursoRequest extends Request {
     public function rules()
     {
         return [
-            'nombre' => 'required|max:255|unique:cursos',
+            'nombre' => 'required|max:255',
             'secciones' => 'required|integer|min:1',
             'mini' => 'required|integer|min:1',
             'maxi' => 'required|integer|min:1',

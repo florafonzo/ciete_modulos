@@ -70,7 +70,6 @@
                                         <td>
                                             @if(Entrust::can('eliminar_usuarios'))
                                                 @foreach($user[0]->roles as $rol)
-                                                    {{--{{ $rol->display_name }} <br/>--}}
                                                     @if($rol->name == 'admin')
                                                         {!! Form::open(array('method' => 'DELETE', 'route' => array('usuarios.destroy', $user[0]->id), 'id' => 'form_eliminar')) !!}
                                                         {!! Form::button('<span class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Eliminar" aria-hidden="true"></span>', array('type' => 'button','class' => 'btn btn-danger', 'disabled'))!!}
@@ -125,14 +124,12 @@
                                         <td>
                                         @if(Entrust::can('eliminar_usuarios'))
                                             @foreach($user->roles as $rol)
-                                                {{--{{ $rol->display_name }} <br/>--}}
                                                 @if($rol->name == 'admin')
                                                     {!! Form::open(array('method' => 'DELETE', 'route' => array('usuarios.destroy', $user->id), 'id' => 'form_eliminar')) !!}
                                                         {!! Form::button('<span class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Eliminar" aria-hidden="true"></span>', array('type' => 'button','class' => 'btn btn-danger', 'disabled'))!!}
                                                     {!! Form::close() !!}
                                                 @else
                                                     {!! Form::open(array('method' => 'DELETE', 'route' => array('usuarios.destroy', $user->id), 'id' => 'form_eliminar'.$user->id)) !!}
-        {{--                                                {!! Form::button('<span class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Eliminar" aria-hidden="true"></span>', array('type' => 'button', 'class' => 'btn btn-danger', 'onclick' => 'mostrarModal($user->id)'))!!}--}}
                                                         <button type="button" onclick="mostrarModal('{{$user->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar" aria-hidden="true">
                                                             <span class="glyphicon glyphicon-trash" ></span>
                                                         </button>

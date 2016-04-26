@@ -4,7 +4,6 @@ use App\Http\Requests;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CursoRequest;
-use App\Http\Requests\CursoEditRequest;
 
 use App\Models\CursoModalidadPago;
 use App\Models\ModalidadCurso;
@@ -276,7 +275,6 @@ class CursosController extends Controller {
             }
 
             if($usuario_actual->can('crear_cursos')) {    // Si el usuario posee los permisos necesarios continua con la acción
-                $data['activo_'] = false;
 //                 Se eliminan los datos guardados en sesión anteriormente
                 Session::forget('nombre');
                 Session::forget('secciones');
@@ -332,13 +330,10 @@ class CursosController extends Controller {
                 $img_nueva = Input::get('cortar');
                 $img_cargada = Input::get('img_');
 
-                if($img_nueva == 'yes'){
-                    $data['activo_'] =  true;
+                if($img_nueva == 'yes') {
                     $data['ruta'] = Input::get('dir');
                     Session::flash('cortar', 'yes');
 //                    Session::flash('img_carg', 'yes');
-                }else{
-                    $data['activo_'] =  false;
                 }
 
                 // Se guardan los datos ingresados por el usuario en sesion pra utilizarlos en caso de que se redirija
@@ -373,6 +368,23 @@ class CursosController extends Controller {
                 }elseif($request->id_tipo == '2'){  //Cápsula
                     $cohorte = '';
                 }
+
+                //Se verifica que el nombre sea único si el curso es Cápsula y si es Diplomado se verifica la cohorte
+                if($request->id_tipo == '1'){  //Diplomado
+                    $existe = Curso::where('nombre', '=', $request->nombre)->where('cohorte', '=', $request->cohorte)->get();
+                    dd($existe->count());
+                    if($existe->count()){
+                        Session::set('error', 'El Diplomado '.$request->nombre.' ya existe con la cohorte '.$request->cohorte.'. Ingrese otra cohorte');
+                        return view('cursos.crear', $data);
+                    }
+                }elseif($request->id_tipo == '2'){  //Cápsula
+                    $existe = Curso::where('nombre', '=', $request->nombre)->where('id_tipo', '=', '2')->get();
+                    if($existe->count()) {
+                        Session::set('error', 'La Cápsula ' . $request->nombre . ' ya existe. Ingrese otro nombre');
+                        return view('cursos.crear', $data);
+                    }
+                }
+
 
                 $fecha_actual = date('Y-m-d');// Se obtiene la fecha actual para validar las fechas de inicio y fin del curso
                 if(($request->fecha_inicio) <= $fecha_actual) {
@@ -585,7 +597,6 @@ class CursosController extends Controller {
 //                dd('edittt');
                 $data['errores'] = '';
                 $data['cursos'] = Curso::find($id); // Se obtiene la información del curso seleccionado
-                $data['activo_'] =  $data['cursos']->activo_carrusel;
                 //Se obtienen todos los tipos de cursos, modalidades de pago y modalidades de curso.
                 $tipo =  TipoCurso::where('id', '=', $data['cursos']->id_tipo)->get();
                 $data['tipo'] = $tipo[0]->nombre;
@@ -632,7 +643,7 @@ class CursosController extends Controller {
      *
 	 * @return Retorna la lista de cursos con los datos actualizados.
 	 */
-	public function update(CursoEditRequest $request, $id)
+	public function update(CursoRequest $request, $id)
 	{
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -651,12 +662,9 @@ class CursosController extends Controller {
                 $img_cargada = Input::get('img_');
 
                 if($img_nueva == 'yes'){
-                    $data['activo_'] =  true;
                     $data['ruta'] = Input::get('dir');
                     Session::flash('cortar', 'yes');
                     Session::flash('img_carg', 'yes');
-                }else{
-                    $data['activo_'] =  $cursos->activo_carrusel;
                 }
 
                 $data['cursos'] = Curso::find($id);
@@ -693,6 +701,22 @@ class CursosController extends Controller {
                     }
                 }elseif($request->id_tipo == '2'){
                     $cohorte = '';
+                }
+
+                //Se verifica que el nombre sea único si el curso es Cápsula y si es Diplomado se verifica la cohorte
+                if($request->id_tipo == '1'){  //Diplomado
+                    $existe = Curso::where('nombre', '=', $request->nombre)->where('cohorte', '=', $request->cohorte)->get();
+                    dd($existe->count());
+                    if($existe->count()){
+                        Session::set('error', 'El Diplomado '.$request->nombre.' ya existe con la cohorte '.$request->cohorte.'. Ingrese otra cohorte');
+                        return view('cursos.crear', $data);
+                    }
+                }elseif($request->id_tipo == '2'){  //Cápsula
+                    $existe = Curso::where('nombre', '=', $request->nombre)->where('id_tipo', '=', '2')->get();
+                    if($existe->count()) {
+                        Session::set('error', 'La Cápsula ' . $request->nombre . ' ya existe. Ingrese otro nombre');
+                        return view('cursos.crear', $data);
+                    }
                 }
 
                 $fecha_actual = date('Y-m-d');// Se obtiene la fecha actual para validar las fechas de inicio y fin del curso
@@ -1022,7 +1046,6 @@ class CursosController extends Controller {
                 $data['tipos'] = TipoCurso::all()->lists('nombre', 'id');
                 $data['modalidad_pago'] = ModalidadPago::all()->lists('nombre', 'id');
                 $data['modalidad_curso'] = ModalidadCurso::all()->lists('nombre', 'id');
-                $data['activo_'] = true;
                 Session::flash('imagen', 'yes');
                 Session::flash('img_carg', 'yes');
 
@@ -1057,7 +1080,6 @@ class CursosController extends Controller {
                 $data['tipos'] = TipoCurso::all()->lists('nombre', 'id');
                 $data['modalidad_pago'] = ModalidadPago::all()->lists('nombre', 'id');
                 $data['modalidad_curso'] = ModalidadCurso::all()->lists('nombre', 'id');
-                $data['activo_'] = true;
                 Session::flash('imagen', null);
                 Session::flash('cortar', 'yes');
                 Session::flash('img_carg', 'yes');
@@ -1087,7 +1109,6 @@ class CursosController extends Controller {
             }
 
             if($usuario_actual->can('crear_cursos')) {  // Si el usuario posee los permisos necesarios continua con la acción
-                $data['activo_'] = true;
                 Session::flash('imagen', 'yes');
                 Session::flash('img_carg', 'yes');
 
@@ -1140,7 +1161,6 @@ class CursosController extends Controller {
             if($usuario_actual->can('crear_cursos')) {  // Si el usuario posee los permisos necesarios continua con la acción
 
                 $data['ruta'] = Input::get('rutas');
-                $data['activo_'] = true;
                 Session::flash('imagen', null);
                 Session::flash('cortar', 'yes');
                 Session::flash('img_carg', 'yes');
@@ -1156,6 +1176,8 @@ class CursosController extends Controller {
                 $data['tipos'] = TipoCurso::all()->lists('nombre', 'id');
                 $data['inicio'] = new DateTime($data['cursos']->fecha_inicio);
                 $data['fin'] = new DateTime($data['cursos']->fecha_fin);
+                $data['modulos'] = Modulo::where('id_curso', '=', $id)->get();
+                $data['cant_modulos'] = Modulo::where('id_curso', '=', $id)->count();
 
                 $arr = [];
                 foreach ($data['modalidad_pago'] as $index => $mod) {

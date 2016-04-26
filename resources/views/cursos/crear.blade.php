@@ -17,7 +17,7 @@
                     {!!Form::label('imagen_carrusel', 'Imagen curso: ',  array( 'class' => 'col-md-4 '))!!}
                     <div class="col-sm-8" id="borde">
                         @if(!(Session::has('img_carg')))
-                            {!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
+                            {!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg', 'required' =>'true'])!!}
                             {!!Form::hidden('img_carg',null)!!}
                         @else
                             @if (Session::has('imagen'))
@@ -54,7 +54,6 @@
                                 <option value="{{$index}}">{{$tipo}}</option>
                             @endforeach
                         </select>
-{{--                        {!! Form::select('id_tipo', $tipos, null, array('required','class' => 'form-control')) !!}--}}
                     </div>
                 </div>
                 <div class="form-group" id="cohorte" hidden>
@@ -78,7 +77,7 @@
                 <div class="form-group">
                     {!!Form::label('id_modalidad_curso', 'Modalidad del curso:',  array( 'class' => 'col-md-4 '))!!}
                     <div class="col-sm-8">
-                        {!! Form::select('id_modalidad_curso', $modalidad_curso, null, array('required','class' => 'form-control')) !!}
+                        {!! Form::select('id_modalidad_curso', $modalidad_curso, null, array('class' => 'form-control')) !!}
                     </div>
                 </div>
                 <div class="form-group">
@@ -129,11 +128,7 @@
                 <div class="form-group">
                     {!!Form::label('activo_carrusel', 'Curso activo en el carrusel?',  array( 'class' => 'col-md-4 '))!!}
                     <div class="col-sm-8">
-                        @if($activo_)
-                            {!! Form::checkbox('activo_carrusel',null, true)!!}
-                        @else
-                            {!! Form::checkbox('activo_carrusel',null, false)!!}
-                        @endif
+                        {!! Form::checkbox('activo_carrusel',null, false)!!}
                     </div>
                 </div>
                 <div class="form-group" id="descripcion_carrusel">

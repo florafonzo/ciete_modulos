@@ -28,8 +28,6 @@ class InformeRequest extends Request {
     public function rules()
     {
         return [
-            'cohorte' => 'required',
-            'grupo' => 'required',
             'conclusion' => 'required',
             'positivo' => 'required',
             'negativo' => 'required',

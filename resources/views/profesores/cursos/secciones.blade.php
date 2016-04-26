@@ -45,6 +45,15 @@
                                             {!! Form::close() !!}
                                         @endif
                                     </td>
+                                    <td class="boton_">
+                                        @if(Entrust::can('informe_academico'))
+                                            {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/informe/datos",  "method" => "GET" ])!!}
+                                            <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Informe academico">
+                                                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                                            </button>
+                                            {!! Form::close() !!}
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -169,11 +169,12 @@
                     <div class="form-group">
                         {!!Form::label('activo_carrusel', 'Curso activo en el carrusel?:',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8">
-                            @if($activo_)
-                                {!! Form::checkbox('activo_carrusel',null, true)!!}
-                            @else
-                                {!! Form::checkbox('activo_carrusel',null, $cursos->activo_carrusel)!!}
-                            @endif
+                            {!! Form::checkbox('activo_carrusel',null, $cursos->activo_carrusel)!!}
+                            {{--@if($activo_)--}}
+                                {{--{!! Form::checkbox('activo_carrusel',null, true)!!}--}}
+                            {{--@else--}}
+                                {{--{!! Form::checkbox('activo_carrusel',null, $cursos->activo_carrusel)!!}--}}
+                            {{--@endif--}}
                         </div>
                     </div>
                     <div class="form-group" id="descripcion_carrusel">

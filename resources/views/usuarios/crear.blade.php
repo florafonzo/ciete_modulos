@@ -53,9 +53,7 @@
                         {!!Form::label('rol', 'Rol(es): ',  array( 'class' => 'col-md-4 control-label'))!!}
                             <div class="col-sm-8">
                                 @foreach($roles as $rol)
-                                    @if ($rol == "Participante")
-                                        <?php continue; ?>
-                                    @else
+                                    @if ($rol != "Participante")
                                         {!! Form::checkbox('id_rol[]', $rol, false) !!} {{$rol}} <br>
                                     @endif
                                 @endforeach
@@ -174,7 +172,8 @@
                     <div class="form-group mostrar" id="mostrar">
                         {!!Form::label('titulo', 'Titulo de pregrado: ',  array( 'class' => 'col-md-4 control-label'))!!}
                         <div class="col-sm-8">.
-                            {!!Form::file('titulo',['id' => 'di_file', 'accept' => 'application/pdf'])!!}
+                            {!!Form::file('archivo_documento_identidad',['id' => 'di_file', 'accept' => 'application/pdf'])!!}
+                            {!! Form::text('titulo', Session::get('titulo'), array('class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group mostrar" id="mostrar">

@@ -248,8 +248,8 @@ Route::group([
         'as' => 'profesor.cursos.buscar', 'uses' => 'ProfesoresController@buscarCurso'
     ]);
     Route::get('profesor/cursos/{id}/modulos','ProfesoresController@verModulosCurso');
-    Route::get('profesor/cursos/{id}/modulos/{modulo}/informe/datos','ProfesoresController@datosInforme');
-    Route::post('profesor/cursos/{id}/modulos/{modulo}/informe/datos/generar',[
+    Route::get('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/informe/datos','ProfesoresController@datosInforme');
+    Route::post('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/informe/datos/generar',[
         'as' => 'profesor.informe','uses' => 'ProfesoresController@generarInformeAc']);
     Route::get('profesor/cursos/{id}/modulos/{modulo}/secciones','ProfesoresController@verSeccionesCurso');
     Route::get('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/participantes','ProfesoresController@verParticipantesSeccion');
