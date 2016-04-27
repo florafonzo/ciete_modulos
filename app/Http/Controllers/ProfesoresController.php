@@ -1294,6 +1294,11 @@ class ProfesoresController extends Controller {
                 $informe = new Informe();
                 $informe->id_modulo = $modulo;
                 $informe->seccion = $seccion;
+//                $informe->nombre = $usuario_actual->nombre;;
+//                $informe->apellido = $usuario_actual->apellido;
+//                $informe->apellido = $usuario_actual->email;
+//                $informe->apellido = $profesor[0]->documento_identidad;
+//                $informe->apellido = $profesor[0]->celular;
                 $informe->fecha_descarga = date('d-m-Y');
                 $informe->conclusion = $request->conclusion;
                 $informe->aspectos_positivos = $request->positivo;
@@ -1301,12 +1306,17 @@ class ProfesoresController extends Controller {
                 $informe->sugerencias = $request->sugerencias;
                 $informe->save();
 
-                $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->select('id_participante')->get();
+                $data['ausentes'] = 0;
+                $data['aprobados'] = 0;
+                $data['reprobados'] = 0;
+                $data['desertores'] = 0;
+                $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->where('seccion', '=', $seccion)->select('id_participante')->get();
                 $data['total'] = $participantes->count();
                 if($participantes->count()) {
                     foreach ($participantes as $index => $part) {
                         $alumno = Participante::where('id', '=', $part->id_participante)->get();
-                        $notas = Nota::where('id_participante_curso', '=', $part->id_participante)->get();
+                        $notas = Nota::where('id_participante_curso', '=', $part->id)
+                                    ->where('id_modulo', '=', $modulo)->get();
                         if($notas->count()) {
                             $final = 0;
                             $porcentaje = 0;
@@ -1316,20 +1326,24 @@ class ProfesoresController extends Controller {
                                 $porcentaje = ($porcentaje + $porcent);
                                 $final = $final + ($calif * ($porcent / 100));
                             }
-                            if ($final >= 15) {
-                                $proyecto = 'A';
-                                $data['aprobados'] = $data['aprobados'] + 1;
-                            } elseif(($final > 0) && ($final < 15)) {
-                                $proyecto = 'R';
-                                $data['reprobados'] = $data['reprobados'] + 1;
-                            }else{
+
+                            $proyecto = '';
+                            if($notas->count() == 1){
                                 $proyecto = 'D';
                                 $data['desertores'] = $data['desertores'] + 1;
+                            }elseif($notas->count() > 1 && $final < 10) {
+                                $proyecto = 'R';
+                                $data['reprobados'] = $data['reprobados'] + 1;
                             }
+                            if ($final >= 10) {
+                                $proyecto = 'A';
+                                $data['aprobados'] = $data['aprobados'] + 1;
+                            }
+
                             $data['participantes'][$index] = [[$alumno[0]->nombre], [$alumno[0]->apellido], [$final], [$proyecto]];
                         }else{
-                            $data['participantes'][$index] = [[$alumno[0]->nombre], [$alumno[0]->apellido], [0], ['D']];
-                            $data['desertores'] = $data['desertores'] + 1;
+                            $data['participantes'][$index] = [[$alumno[0]->nombre], [$alumno[0]->apellido], [0], ['AU']];
+                            $data['ausentes'] = $data['ausentes'] + 1;
                         }
                     }
                 }else{

@@ -230,8 +230,28 @@ class PermisionsSeeder extends Seeder {
 
         $activar_inscripcion = new Permission();
         $activar_inscripcion->name = 'activar_inscripcion';
-        $activar_inscripcion->display_name = 'activar inscripcion para personas preinscritas';
+        $activar_inscripcion->display_name = 'activar inscripcion de personas preinscritas';
         $activar_inscripcion->save();
+
+        $desactivar_inscripcion = new Permission();
+        $desactivar_inscripcion->name = 'desactivar_inscripcion';
+        $desactivar_inscripcion->display_name = 'desactivar inscripcion de personas preinscritas';
+        $desactivar_inscripcion->save();
+
+        $lista_moodle = new Permission();
+        $lista_moodle->name = 'lista_moodle';
+        $lista_moodle->display_name = 'generar lista para inscripción masiva aen Moodle';
+        $lista_moodle->save();
+
+        $informe_academico = new Permission();
+        $informe_academico->name = 'informe_academico';
+        $informe_academico->display_name = 'generar informe academico por modulo y grupo';
+        $informe_academico->save();
+
+        $ver_informes_academicos = new Permission();
+        $ver_informes_academicos->name = 'ver_informes_academicos';
+        $ver_informes_academicos->display_name = 'ver los informes académicos generados por los profesores';
+        $ver_informes_academicos->save();
     }
 
 

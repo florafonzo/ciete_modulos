@@ -235,6 +235,8 @@ Route::group([
         Route::resource('inscripcion','InscripcionController');
 
 
+    //Rutas informes académicos
+    Route::resource('informes','InformesController');
 
 
 

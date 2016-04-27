@@ -84,6 +84,11 @@
                             <a class="menu_usu" href="{{URL::to('/')}}/inscripcion/procesar"> Gestión Inscripciones </a>
                         </li>
                     @endif
+                    @if(Entrust::can('ver_informes_academicos'))
+                        <li class="menu_usuarios @if(Request::is('informes*')) active @endif">
+                            <a class="menu_usu" href="{{URL::to('/')}}/informes"> Informes académicos </a>
+                        </li>
+                    @endif
                     {{--@if(Entrust::can('activar_preinscripcion'))--}}
                         {{--<li class="menu_usuarios @if(Request::is('')) active @endif">--}}
                             {{--<a class="menu_usu" href="{{URL::to('/')}}">  Gestión Inscripciones Webinars </a>--}}

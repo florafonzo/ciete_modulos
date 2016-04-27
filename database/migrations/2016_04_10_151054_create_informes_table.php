@@ -19,6 +19,11 @@ class CreateInformesTable extends Migration {
 			$table->integer('id_modulo')->unsigned();
 			$table->date('fecha_descarga');
 			$table->string('conclusion');
+			$table->string('nombre');
+			$table->string('apellido');
+			$table->string('email');
+			$table->string('documento_identidad');
+			$table->string('celular');
 			$table->integer('seccion');
 			$table->string('aspectos_positivos');
 			$table->string('aspectos_negativos');

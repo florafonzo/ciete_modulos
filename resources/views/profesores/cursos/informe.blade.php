@@ -80,13 +80,13 @@
         <table class="tabla1" style="width:100%">
             <tr>
                 <td style="width: 30%;"><strong>Nombre del módulo:</strong></td>
-                <td >{{$modulo->nombre}}</td>
+                <td>{{$modulo->nombre}}</td>
                 <td style="border-left: none !important;"></td>
             </tr>
             <tr>
                 <td><strong>Diplomado:</strong> {{$curso->nombre}}</td>
                 <td><strong>Cohorte:</strong> {{$cohorte}}</td>
-                <td><strong>Gruppo:</strong> {{$grupo}}</td>
+                <td><strong>Grupo:</strong> {{$grupo}}</td>
             </tr>
             <tr>
                 <td><strong>Fecha de inicio:</strong> {{$inicio->format('d-m-Y')}}</td>
@@ -140,7 +140,7 @@
         <table class="tabla1" style="width:100%">
             <tr>
                 <td style="width: 30%;"><strong>Total estudiantes: </strong>{{$total}}</td>
-                <td ><strong>Aprobados: </strong>{{$aprobados}} <strong style="border-left:1px solid #000;height:500px">  Reprobados: </strong>{{$reprobados}} <strong style="border-left:1px solid #000;height:500px">  Desertores: </strong>{{$desertores}}</td>
+                <td ><strong>Aprobados: </strong>{{$aprobados}} <strong style="border-left:1px solid #000;height:500px">  Reprobados: </strong>{{$reprobados}} <strong style="border-left:1px solid #000;height:500px">  Ausentes: </strong>{{$ausentes}} <strong style="border-left:1px solid #000;height:500px">  Desertores: </strong>{{$desertores}}</td>
             </tr>
             <tr>
                 <td style="width: 30%;"><strong>Conclusión del curso</strong> <br>(en relación a las competencias previstas)</td>
