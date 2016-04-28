@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Curso;
+use App\Models\Pago;
 use App\Models\ModalidadPago;
 use App\Models\Participante;
 use App\Models\ParticipanteCurso;
@@ -81,37 +82,50 @@ class InscripcionController extends Controller {
 				$data['errores'] = '';
 				$data['busq_'] = true;
 				$val = '';
+                $data['usuarios'] = Preinscripcion::all();
+                foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
+                    if($usuario->tipo != 'Webinar') {
+                        $curso = Curso::where('id', '=', $usuario->id_curso)->get();
+                    }else{
+                        $curso = Webinar::where('id', '=', $usuario->id_curso)->get();
+                    }
+                    $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
+                    $usuario['curso_nombre'] = $curso[0]->nombre;
+                    $usuario['modalidad'] = $modo[0]->nombre;
+
+                }
+                $data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
 				$param = Input::get('parametro');
 				if($param == '0'){
-					$data['usuarios'] = Preinscripcion::all();
-                    foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
-                        if($usuario->tipo != 'Webinar') {
-                            $curso = Curso::where('id', '=', $usuario->id_curso)->get();
-                        }else{
-                            $curso = Webinar::where('id', '=', $usuario->id_curso)->get();
-                        }
-                        $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
-                        $usuario['curso_nombre'] = $curso[0]->nombre;
-                        $usuario['modalidad'] = $modo[0]->nombre;
-
-                    }
+//					$data['usuarios'] = Preinscripcion::all();
+//                    foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
+//                        if($usuario->tipo != 'Webinar') {
+//                            $curso = Curso::where('id', '=', $usuario->id_curso)->get();
+//                        }else{
+//                            $curso = Webinar::where('id', '=', $usuario->id_curso)->get();
+//                        }
+//                        $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
+//                        $usuario['curso_nombre'] = $curso[0]->nombre;
+//                        $usuario['modalidad'] = $modo[0]->nombre;
+//
+//                    }
 					Session::set('error', 'Debe seleccionar el parametro por el cual desea buscar');
 					return view('inscripciones.inscripciones', $data);
 				}
 				if ($param != 'tipo'){
 					if (empty(Input::get('busqueda'))) {
-						$data['usuarios'] = Preinscripcion::all();
-                        foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
-                            if($usuario->tipo != 'Webinar') {
-                                $curso = Curso::where('id', '=', $usuario->id_curso)->get();
-                            }else{
-                                $curso = Webinar::where('id', '=', $usuario->id_curso)->get();
-                            }
-                            $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
-                            $usuario['curso_nombre'] = $curso[0]->nombre;
-                            $usuario['modalidad'] = $modo[0]->nombre;
-
-                        }
+//						$data['usuarios'] = Preinscripcion::all();
+//                        foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
+//                            if($usuario->tipo != 'Webinar') {
+//                                $curso = Curso::where('id', '=', $usuario->id_curso)->get();
+//                            }else{
+//                                $curso = Webinar::where('id', '=', $usuario->id_curso)->get();
+//                            }
+//                            $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
+//                            $usuario['curso_nombre'] = $curso[0]->nombre;
+//                            $usuario['modalidad'] = $modo[0]->nombre;
+//
+//                        }
 						Session::set('error', 'Coloque el elemento que desea buscar');
 						return view('cursos.cursos', $data);
 					}else{
@@ -178,13 +192,28 @@ class InscripcionController extends Controller {
                 $usuario = Preinscripcion::find($id);
                 $existe = User::where('email', '=', $usuario->email)->get();// se verifica si el usuario ya está registrado
 
-                if($usuario->tipo == 'curso'){
+                $data['usuarios'] = Preinscripcion::all();
+                foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
+                    if($usuario->tipo != 'Webinar') {
+                        $curso = Curso::where('id', '=', $usuario->id_curso)->get();
+                    }else{
+                        $curso = Webinar::where('id', '=', $usuario->id_curso)->get();
+                    }
+                    $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
+                    $usuario['curso_nombre'] = $curso[0]->nombre;
+                    $usuario['modalidad'] = $modo[0]->nombre;
+
+                }
+                $data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
+
+                if($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula'){
                     $actividad = Curso::find($usuario->id_curso);
                     $data['tipo'] = 'curso';
-                }elseif($usuario->tipo == 'webinar'){
+                }elseif($usuario->tipo == 'Webinar'){
                     $actividad = Webinar::find($usuario->id_curso);
                     $data['tipo'] = 'webinar';
                 }
+
                 $data['email'] = $usuario->email;
                 $data['nombre'] = $usuario->nombre;
                 $data['apellido'] = $usuario->apellido;
@@ -193,7 +222,7 @@ class InscripcionController extends Controller {
                 $clave = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, $tam);
                 $data['clave'] = $clave;
 
-                if($usuario->tipo == 'curso'){
+                if($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula'){
                     if(ParticipanteCurso::all()->count() != 0) {
                         $max_secc = $actividad->max;
                         $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id)->orderBy('created_at')->get();
@@ -232,15 +261,25 @@ class InscripcionController extends Controller {
                         $seccion = '1';
                     }
                 }
-//                dd($seccion);
 
                 if($existe->count()){           //Caso en que el usuario ya se encuentre registrado.
-                    if($usuario->tipo == 'curso'){
+                    if($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula'){
                         $participante = Participante::where('id_usuario', '=', $existe[0]->id)->get();
                         $registrado = ParticipanteCurso::where('id_participante','=', $participante[0]->id)->where('id_curso', '=', $actividad->id)->get();
                         if($registrado->count()) {
-                            $data['usuarios'] = Preinscripcion::all();
-                            $data['tipos'] = ['curso', 'webinar'];
+//                            $data['usuarios'] = Preinscripcion::all();
+//                            foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
+//                                if($usuario->tipo != 'Webinar') {
+//                                    $curso = Curso::where('id', '=', $usuario->id_curso)->get();
+//                                }else{
+//                                    $curso = Webinar::where('id', '=', $usuario->id_curso)->get();
+//                                }
+//                                $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
+//                                $usuario['curso_nombre'] = $curso[0]->nombre;
+//                                $usuario['modalidad'] = $modo[0]->nombre;
+//
+//                            }
+//                            $data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
                             Session::set('error', 'El usuario ya se encuentra inscrito en la actividad');
                             return view('inscripciones.inscripciones', $data);
 
@@ -257,7 +296,18 @@ class InscripcionController extends Controller {
                         $registrado = ParticipanteWebinar::where('id_participante','=', $participante[0]->id)->where('id_webinar', '=', $actividad->id)->get();
                         if($registrado->count()) {
                             $data['usuarios'] = Preinscripcion::all();
-                            $data['tipos'] = ['curso', 'webinar'];
+//                            foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
+//                                if($usuario->tipo != 'Webinar') {
+//                                    $curso = Curso::where('id', '=', $usuario->id_curso)->get();
+//                                }else{
+//                                    $curso = Webinar::where('id', '=', $usuario->id_curso)->get();
+//                                }
+//                                $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
+//                                $usuario['curso_nombre'] = $curso[0]->nombre;
+//                                $usuario['modalidad'] = $modo[0]->nombre;
+//
+//                            }
+//                            $data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
                             Session::set('error', 'El usuario ya se encuentra inscrito en la actividad');
                             return view('inscripciones.inscripciones', $data);
                         }
@@ -271,20 +321,37 @@ class InscripcionController extends Controller {
                     }
 
                     if($participante_nuevo->save()) {
-                        Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
-                            $message->subject('CIETE - Inscripción')
-                                ->to($data['email'], 'CIETE')
-                                ->replyTo($data['email']);
-                        });
+                        if($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula'){ // Registro de pago
+                            $por_partes = false;
+                            $completo = true;
+                            if($usuario->monto < $actividad->costo){
+                                $por_partes = true;
+                                $completo = false;
+                            }
+                            $pago = new Pago();
+                            $pago->id_participante = $participante_nuevo->id;
+                            $pago->id_curso = $actividad->id;
+                            $pago->por_partes = $por_partes;
+                            $pago->monto = $usuario->monto;
+                            $pago->id_modalidad_pago = $usuario->id_modalidad_pago;
+                            $pago->completo = $completo;
+                            $pago->save();
+                        }
+
+//                        Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
+//                            $message->subject('CIETE - Inscripción')
+//                                ->to($data['email'], 'CIETE')
+//                                ->replyTo($data['email']);
+//                        });
 
                         DB::table('preinscripciones')->where('id', '=', $id)->delete();
                         $data['usuarios'] = Preinscripcion::all();
-                        $data['tipos'] = ['curso', 'webinar'];
+                        $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
                         Session::set('mensaje', 'El usuario fue inscrito con éxito.');
                         return view('inscripciones.inscripciones', $data);
                     }else{
                         $data['usuarios'] = Preinscripcion::all();
-                        $data['tipos'] = ['curso', 'webinar'];
+                        $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
                         Session::set('error', 'Ha ocurrido un error inesperado');
                         return view('inscripciones.inscripciones', $data);
                     }
@@ -325,7 +392,7 @@ class InscripcionController extends Controller {
                         $participante->save();
 
                         if($participante->save()) {
-                            if ($usuario->tipo == 'curso') {
+                            if ($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula') {
                                 $participante = Participante::find($participante->id);
                                 $participante_nuevo = new ParticipanteCurso();
                                 $participante_nuevo->id_participante = $participante->id;
@@ -342,41 +409,53 @@ class InscripcionController extends Controller {
                                 $participante_nuevo->save();
                             }
                             if($participante_nuevo->save()) {
+                                if($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula'){ // Registro de pago
+                                    $por_partes = false;
+                                    $completo = true;
+                                    if($usuario->monto < $actividad->costo){
+                                        $por_partes = true;
+                                        $completo = false;
+                                    }
+                                    $pago = new Pago();
+                                    $pago->id_participante = $participante_nuevo->id;
+                                    $pago->id_curso = $actividad->id;
+                                    $pago->por_partes = $por_partes;
+                                    $pago->monto = $usuario->monto;
+                                    $pago->id_modalidad_pago = $usuario->id_modalidad_pago;
+                                    $pago->completo = $completo;
+                                    $pago->save();
+                                }
 
-                                Mail::send('emails.inscripcion', $data, function ($message) use ($data) {
-                                    $message->subject('CIETE - Inscripción')
-                                        ->to($data['email'], 'CIETE')
-                                        ->replyTo($data['email']);
-                                });
+//                                Mail::send('emails.inscripcion', $data, function ($message) use ($data) {
+//                                    $message->subject('CIETE - Inscripción')
+//                                        ->to($data['email'], 'CIETE')
+//                                        ->replyTo($data['email']);
+//                                });
 
                                 DB::table('preinscripciones')->where('id', '=', $id)->delete();
                                 $data['usuarios'] = Preinscripcion::all();
-                                $data['tipos'] = ['curso', 'webinar'];
+                                $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
                                 Session::set('mensaje', 'El usuario fue inscrito con éxito.');
                                 return view('inscripciones.inscripciones', $data);
                             }else{
                                 $data['usuarios'] = Preinscripcion::all();
-                                $data['tipos'] = ['curso', 'webinar'];
+                                $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
                                 Session::set('error', 'Ha ocurrido un error inesperado');
                                 return view('inscripciones.inscripciones', $data);
                             }
                         }else{
                             $data['usuarios'] = Preinscripcion::all();
-                            $data['tipos'] = ['curso', 'webinar'];
+                            $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
                             Session::set('error', 'Ha ocurrido un error inesperado');
                             return view('inscripciones.inscripciones', $data);
                         }
                     }else{
                         $data['usuarios'] = Preinscripcion::all();
-                        $data['tipos'] = ['curso', 'webinar'];
+                        $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
                         Session::set('error', 'Ha ocurrido un error inesperado');
                         return view('inscripciones.inscripciones', $data);
                     }
                 }
-
-
-
-
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 
@@ -483,7 +562,7 @@ class InscripcionController extends Controller {
                 $data['motivo'] = Input::get('motivo');
                 if($data['motivo'] == null){
                     $data['usuarios'] = Preinscripcion::all();
-                    $data['tipos'] = ['curso', 'webinar'];
+                    $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
                     Session::set('error', 'El motivo no puede estar vacío');
                     return view('inscripciones.inscripciones', $data);
                 }

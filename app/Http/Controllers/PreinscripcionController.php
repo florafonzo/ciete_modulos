@@ -208,11 +208,11 @@ class PreinscripcionController extends Controller {
                         $data['curso'] = $preins->getCursoName($id_curso); // aquí se retorna el nombre del curso
                         $data['email'] = $request->email;
 
-                        Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                            $message->subject('CIETE - Preinscripcion')
-                                ->to($data['email'], 'CIETE')
-                                ->replyTo($data['email']);
-                        });
+//                        Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
+//                            $message->subject('CIETE - Preinscripcion')
+//                                ->to($data['email'], 'CIETE')
+//                                ->replyTo($data['email']);
+//                        });
 
                         $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                         $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
@@ -265,14 +265,14 @@ class PreinscripcionController extends Controller {
                     $data['curso'] = $preins->getCursoName($id_curso); // aquí se retorna el nombre del curso
                     $data['email'] = $request->email;
 
-                    Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                        $message->subject('CIETE - Preinscripcion')
-                            ->to($data['email'], 'CIETE')
-                            ->replyTo($data['email']);
-                    });
+//                    Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
+//                        $message->subject('CIETE - Preinscripcion')
+//                            ->to($data['email'], 'CIETE')
+//                            ->replyTo($data['email']);
+//                    });
                     $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                     $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
-                    Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a nsu correo.');
+                    Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo.');
                     return view('preinscripcion.curso', $data);
                 }
             }else{
@@ -382,7 +382,7 @@ class PreinscripcionController extends Controller {
                     });
                     $data['cursos'] = Webinar::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
 
-                    Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a nsu correo.');
+                    Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo.');
                     return view('preinscripcion.webinar', $data);
                 }
             }else{

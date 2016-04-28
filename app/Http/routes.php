@@ -195,6 +195,7 @@ Route::group([
     Route::get('participante/cursos','ParticipantesController@verCursos');
     Route::get('participante/cursos/{id}/modulos','ParticipantesController@verModulosCurso');
     Route::get('participante/cursos/{id}/modulos/{modulo}/notas','ParticipantesController@verNotasCurso');
+        Route::get('participante/cursos/pagos','ParticipantesController@listaPagos');
     Route::get('participante/webinars','ParticipantesController@verWebinars');
     Route::resource('participante','ParticipantesController');
 
@@ -236,6 +237,10 @@ Route::group([
 
 
     //Rutas informes académicos
+    Route::get('informes/{id}/profesor/{id_prof}/actividad/{id_actividad}/modulo/{id_modulo}/seccion/{seccion}','InformesController@verInforme');
+        Route::get('informes/buscar', [
+            'as' => 'informes.buscar', 'uses' => 'InformesController@buscarInforme'
+        ]);
     Route::resource('informes','InformesController');
 
 

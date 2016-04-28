@@ -1286,19 +1286,14 @@ class ProfesoresController extends Controller {
                 $data['correo'] = $usuario_actual->email;
                 $data['ci'] = $profesor[0]->documento_identidad;
                 $data['celular'] = $profesor[0]->celular;
-                $data['aprobados'] = 0;
-                $data['reprobados'] = 0;
-                $data['desertores'] = 0;
                 $data['fecha_actual'] = date("d-m-Y");
 
                 $informe = new Informe();
                 $informe->id_modulo = $modulo;
                 $informe->seccion = $seccion;
-//                $informe->nombre = $usuario_actual->nombre;;
-//                $informe->apellido = $usuario_actual->apellido;
-//                $informe->apellido = $usuario_actual->email;
-//                $informe->apellido = $profesor[0]->documento_identidad;
-//                $informe->apellido = $profesor[0]->celular;
+                $informe->id_profesor = $profesor[0]->id;;
+                $informe->id_usuario = $usuario_actual->id;
+                $informe->id_curso = $id_curso;
                 $informe->fecha_descarga = date('d-m-Y');
                 $informe->conclusion = $request->conclusion;
                 $informe->aspectos_positivos = $request->positivo;
