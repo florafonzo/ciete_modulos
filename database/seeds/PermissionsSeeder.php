@@ -252,6 +252,36 @@ class PermisionsSeeder extends Seeder {
         $ver_informes_academicos->name = 'ver_informes_academicos';
         $ver_informes_academicos->display_name = 'ver los informes académicos generados por los profesores';
         $ver_informes_academicos->save();
+
+        $ver_pagos = new Permission();
+        $ver_pagos->name = 'ver_pagos';
+        $ver_pagos->display_name = 'ver los pagos realizados de una actividad';
+        $ver_pagos->save();
+
+        $generar_pago = new Permission();
+        $generar_pago->name = 'generar_pago';
+        $generar_pago->display_name = 'generar un pago de una cuota';
+        $generar_pago->save();
+
+        $generar_recibo = new Permission();
+        $generar_recibo->name = 'generar_recibo';
+        $generar_recibo->display_name = 'generar recibo de un pago';
+        $generar_recibo->save();
+
+        $gestionar_pago = new Permission();
+        $gestionar_pago->name = 'gestionar_pago';
+        $gestionar_pago->display_name = 'ver lista de pagos realizados';
+        $gestionar_pago->save();
+
+        $aprobar_pago = new Permission();
+        $aprobar_pago->name = 'aprobar_pago';
+        $aprobar_pago->display_name = 'aprobar o desaprobar un pago generado por un participante';
+        $aprobar_pago->save();
+
+        $desaprobar_pago = new Permission();
+        $desaprobar_pago->name = 'desaprobar_pago';
+        $desaprobar_pago->display_name = 'desaprobar un pago generado por un participante';
+        $desaprobar_pago->save();
     }
 
 

@@ -717,5 +717,49 @@ function activarInscripcion(id) {
     }
 //-----------------------------------------------------------------------------------------//
 
+//------------------------Función para aprobar pagos ------------------//
+
+function aprobarPago(id) {
+    swal({
+            title: "¿Está seguro que desea aprobar el pago?",
+            text: "Si acepta, le aparecerá el pago aprobado al participante",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            confirmButtonText: "Aprobar",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false
+        },
+        function(){
+            $('#form_pago'+id).submit();
+        })
+}
+//------------------------------------------------------------------------------//
+//----------------------------------Modal desaprobar pago------------------------------//
+
+function rechazarPago(id) {
+    swal({
+            title: "Rechazo de pago",
+            text: "Indique el motivo del rechazo:",
+            type: "input",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Motivo..."
+        },
+        function(inputValue){
+            if (inputValue === false) return false;
+            if (inputValue === "") {
+                swal.showInputError("Debe indicar el motivo");
+                return false
+            }
+            //swal("Genial!", "Usted escribió: " + inputValue, "success");
+            $('#motivo').append('<input type="hidden" name="motivo" value="'+inputValue+'">');
+            $('#form_pago2'+id).submit();
+        });
+}
+//-----------------------------------------------------------------------------------------//
+
 CKEDITOR.replace('.ckeditor');
 

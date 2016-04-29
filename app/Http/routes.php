@@ -195,7 +195,22 @@ Route::group([
     Route::get('participante/cursos','ParticipantesController@verCursos');
     Route::get('participante/cursos/{id}/modulos','ParticipantesController@verModulosCurso');
     Route::get('participante/cursos/{id}/modulos/{modulo}/notas','ParticipantesController@verNotasCurso');
-        Route::get('participante/cursos/pagos','ParticipantesController@listaPagos');
+
+        Route::get('participante/cursos/{id}/pagos', 'ParticipantesController@verPagosCurso');
+        Route::get('participante/cursos/{id}/pagos/{id_pago}',[
+            'as' => 'participante.recibo',
+            'uses' => 'ParticipantesController@reciboPagoCurso'
+        ]);
+        Route::get('participante/cursos/{id}/nuevo/pago',[
+            'as' => 'participante.nuevo',
+            'uses' => 'ParticipantesController@generarPagoCurso'
+        ]);
+//        Route::post('participante/cursos/{id}/pagos/generar','ParticipantesController@guardarPagoCurso');
+        Route::post('participante/cursos/{id}/pagos/generar',[
+            'as' => 'participante.pago',
+            'uses' => 'ParticipantesController@guardarPagoCurso'
+        ]);
+
     Route::get('participante/webinars','ParticipantesController@verWebinars');
     Route::resource('participante','ParticipantesController');
 
@@ -242,6 +257,19 @@ Route::group([
             'as' => 'informes.buscar', 'uses' => 'InformesController@buscarInforme'
         ]);
     Route::resource('informes','InformesController');
+
+    // Pagos
+        Route::get('pagos/aprobar', [
+            'as' => 'pago.aprobar', 'uses' => 'PagosController@aprobarPago'
+        ]);
+        Route::delete('pagos/rechazar', [
+            'as' => 'pago.destroy', 'uses' => 'PagosController@destroy'
+        ]);
+        Route::get('pagos/buscar', [
+            'as' => 'pago.buscar',
+            'uses' => 'PagosController@buscarPago'
+        ]);
+    Route::resource('pagos', 'PagosController');
 
 
 

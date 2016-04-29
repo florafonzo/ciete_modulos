@@ -3,8 +3,10 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Curso;
+use App\Models\ModalidadPago;
 use App\Models\Modulo;
 use App\Models\Nota;
+use App\Models\Pago;
 use App\Models\ParticipanteCurso;
 use App\Models\ParticipanteWebinar;
 use App\Models\TipoCurso;
@@ -20,11 +22,13 @@ use DB;
 use DateTime;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade as PDF;
 
 use App\Models\Participante;
 use App\Models\Webinar;
 use Illuminate\Http\Request;
 use App\Http\Requests\ParticipanteRequest;
+use App\Http\Requests\PagoRequest;
 use App\user;
 
 
@@ -386,6 +390,235 @@ class ParticipantesController extends Controller {
             return view('errors.error')->with('error',$e->getMessage());
         }
     }
+
+    public function verPagosCurso($id_curso) {
+        try{
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('ver_pagos')) {// Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['curso'] = $curso = Curso::find($id_curso);
+                $data['tipo'] = TipoCurso::find($curso->id_tipo);
+                $participante = Participante::where('id_usuario', '=', $usuario_actual->id)->get();
+                $data['pagos'] = $pagos = Pago::where('id_curso', '=', $id_curso)
+                                                ->where('id_participante', '=', $participante[0]->id)->get();
+                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                $total = 0;
+                $data['completo'] = true;
+                if($pagos->count()){
+                    foreach($data['pagos'] as $pago){
+                        $total = $total + $pago->monto;
+                        $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                        if($pago->aprobado){
+                            $pago['estatus'] = 'Aprobado';
+                        }else{
+                            $pago['estatus'] = 'En espera';
+                        }
+                    }
+                    if($total < $curso->costo){
+                        $data['completo'] = false;
+                    }else{
+                        $data['completo'] = true;
+                    }
+                }
+                if($data['completo']){
+                    $data['pagos_restantes'] = 0;
+                }else{
+                    $data['pagos_restantes'] = 3 - $pagos->count();
+                }
+
+                return view('participantes.cursos.pagos.pagos', $data);
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+
+    public function reciboPagoCurso($id_curso, $id_pago) {
+        try{
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('ver_pagos')) {// Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['curso'] = $curso = Curso::find($id_curso);
+                $data['tipo'] = TipoCurso::find($curso->id_tipo);
+                $data['pago'] = Pago::find($id_pago);
+                $data['modalidad'] = ModalidadPago::find($data['pago']->id_modalidad_pago);
+                $data['participante'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get();
+
+                if($data['pago']->count()){
+                    $pdf = PDF::loadView('participantes.cursos.pagos.recibo',$data);
+                    return $pdf->stream("Recibo de pago-".$curso->nombre.".pdf", array('Attachment'=>0));
+                }else{
+                    Session::set('error', 'Disculpe, no existen participantes en el modulo '.$data['modulo']->nombre);
+                    return $this->index();
+                }
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+
+    public function generarPagoCurso($id_curso) {
+        try{
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('ver_pagos')) {// Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['curso'] = $curso = Curso::find($id_curso);
+                $data['tipo'] = TipoCurso::find($curso->id_tipo);
+                $participante = Participante::where('id_usuario', '=', $usuario_actual->id)->get();
+                $data['pagos'] = $pagos = Pago::where('id_curso', '=', $id_curso)
+                                                ->where('id_participante', '=', $participante[0]->id)->get();
+                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                $total = 0;
+                $data['completo'] = true;
+                if($pagos->count()){
+                    foreach($data['pagos'] as $pago){
+                        $total = $total + $pago->monto;
+                        $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                        if($pago->aprobado){
+                            $pago['estatus'] = 'Aprobado';
+                        }else{
+                            $pago['estatus'] = 'En espera';
+                        }
+                    }
+                    if($total < $curso->costo){
+                        $data['completo'] = false;
+                    }else{
+                        $data['completo'] = true;
+                        if($data['completo']){
+                            $data['pagos_restantes'] = 0;
+                        }else{
+                            $data['pagos_restantes'] = 3 - $pagos->count();
+                        }
+                        Session::set('mensaje', 'Usted ya se encuentra al día con los pagos de la actividad '.$curso->nombre);
+                        return view('participantes.cursos.pagos.pagos', $data);
+                    }
+                }
+
+                return view('participantes.cursos.pagos.nuevo', $data);
+
+
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+    public function guardarPagoCurso(PagoRequest $request, $id_curso) {
+            try{
+                //Verificación de los permisos del usuario para poder realizar esta acción
+                $usuario_actual = Auth::user();
+                if($usuario_actual->foto != null) {
+                    $data['foto'] = $usuario_actual->foto;
+                }else{
+                    $data['foto'] = 'foto_participante.png';
+                }
+
+                if($usuario_actual->can('ver_pagos')) {// Si el usuario posee los permisos necesarios continua con la acción
+                    $data['errores'] = '';
+                    $data['curso'] = $curso = Curso::find($id_curso);
+                    $data['tipo'] = TipoCurso::find($curso->id_tipo);
+                    $participante = Participante::where('id_usuario', '=', $usuario_actual->id)->get();
+                    $data['pagos'] = $pagos = Pago::where('id_curso', '=', $id_curso)
+                        ->where('id_participante', '=', $participante[0]->id)->get();
+
+                    $id_modalidad = Input::get('tipo_pago');
+                    if($id_modalidad == 0){
+                        Session::set('error', 'Debe seleccionar una modalidad de pago');
+                        return $this->verPagosCurso($id_curso);
+                    }
+
+
+                    $total = 0;
+                    $restante = 0;
+                    $data['completo'] = true;
+                    if($pagos->count()){
+                        foreach($data['pagos'] as $pago){
+                            $total = $total + $pago->monto;
+                            $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                            if($pago->aprobado){
+                                $pago['estatus'] = 'Aprobado';
+                            }else{
+                                $pago['estatus'] = 'En espera';
+                            }
+                        }
+                        if($total < $curso->costo){
+                            $data['completo'] = false;
+                        }
+                        $restante = $curso->costo - $total;
+                    }
+
+
+                    $pagos_restantes = 3 - $pagos->count();
+                    if($pagos_restantes < 3 && $data['completo'] == true){
+                        $data['pagos_restantes'] = 0;
+                    }else{
+                        $data['pagos_restantes'] = 3 - $pagos->count();
+                    }
+
+                    if($data['completo'] == false && $data['pagos_restantes'] == 0){
+                        Session::set('error', 'Le queda una última cuota y el monto de su nuevo pago es menor al monto restante. Debe realizar el pago por '.$restante.' Bs');
+                        return $this->generarPagoCurso($id_curso);
+                    }
+
+                    $pago = new Pago();
+                    $pago->id_participante = $participante[0]->id;
+                    $pago->id_curso = $id_curso;
+                    $pago->monto = $request->monto;
+                    $pago->id_modalidad_pago = $id_modalidad;
+                    $pago->aprobado = false;
+                    $pago->numero_pago = $request->numero_pago;
+                    $pago->save();
+
+
+                    return view('participantes.cursos.pagos.pagos', $data);
+
+                }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                    return view('errors.sin_permiso');
+                }
+            }
+            catch (Exception $e) {
+
+                return view('errors.error')->with('error',$e->getMessage());
+            }
+        }
 
     public function verModulosCurso($id_curso)
     {

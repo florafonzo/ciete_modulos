@@ -39,7 +39,7 @@ class InscripcionController extends Controller {
 				$data['errores'] = '';
 				$data['busq_'] = false;
 				$data['usuarios'] = Preinscripcion::all();
-                foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
+                foreach ($data['usuarios'] as $usuario) {
                     if($usuario->tipo != 'Webinar') {
                         $curso = Curso::where('id', '=', $usuario->id_curso)->get();
                     }else{
@@ -50,7 +50,7 @@ class InscripcionController extends Controller {
                     $usuario['modalidad'] = $modo[0]->nombre;
 
                 }
-				$data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
+				$data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
 
 				return view('inscripciones.inscripciones', $data);
 
@@ -77,7 +77,7 @@ class InscripcionController extends Controller {
 				$data['foto'] = 'foto_participante.png';
 			}
 			if($usuario_actual->can('ver_lista_cursos')) {   // Si el usuario posee los permisos necesarios continua con la acción
-				$data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
+                $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
 				$data['usuarios'] = [];
 				$data['errores'] = '';
 				$data['busq_'] = true;
@@ -94,7 +94,7 @@ class InscripcionController extends Controller {
                     $usuario['modalidad'] = $modo[0]->nombre;
 
                 }
-                $data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
+//                $data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
 				$param = Input::get('parametro');
 				if($param == '0'){
 //					$data['usuarios'] = Preinscripcion::all();
@@ -127,7 +127,7 @@ class InscripcionController extends Controller {
 //
 //                        }
 						Session::set('error', 'Coloque el elemento que desea buscar');
-						return view('cursos.cursos', $data);
+						return view('inscripciones.inscripciones', $data);
 					}else{
 						$busq = Input::get('busqueda');
 					}
@@ -204,8 +204,7 @@ class InscripcionController extends Controller {
                     $usuario['modalidad'] = $modo[0]->nombre;
 
                 }
-                $data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
-
+                $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                 if($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula'){
                     $actividad = Curso::find($usuario->id_curso);
                     $data['tipo'] = 'curso';
@@ -322,19 +321,13 @@ class InscripcionController extends Controller {
 
                     if($participante_nuevo->save()) {
                         if($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula'){ // Registro de pago
-                            $por_partes = false;
-                            $completo = true;
-                            if($usuario->monto < $actividad->costo){
-                                $por_partes = true;
-                                $completo = false;
-                            }
                             $pago = new Pago();
                             $pago->id_participante = $participante_nuevo->id;
                             $pago->id_curso = $actividad->id;
-                            $pago->por_partes = $por_partes;
                             $pago->monto = $usuario->monto;
                             $pago->id_modalidad_pago = $usuario->id_modalidad_pago;
-                            $pago->completo = $completo;
+                            $pago->aprobado = true;
+                            $pago->numero_pago = $usuario->numero_pago;
                             $pago->save();
                         }
 
@@ -346,12 +339,12 @@ class InscripcionController extends Controller {
 
                         DB::table('preinscripciones')->where('id', '=', $id)->delete();
                         $data['usuarios'] = Preinscripcion::all();
-                        $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
+                        $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                         Session::set('mensaje', 'El usuario fue inscrito con éxito.');
                         return view('inscripciones.inscripciones', $data);
                     }else{
                         $data['usuarios'] = Preinscripcion::all();
-                        $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
+                        $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                         Session::set('error', 'Ha ocurrido un error inesperado');
                         return view('inscripciones.inscripciones', $data);
                     }
@@ -410,19 +403,13 @@ class InscripcionController extends Controller {
                             }
                             if($participante_nuevo->save()) {
                                 if($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula'){ // Registro de pago
-                                    $por_partes = false;
-                                    $completo = true;
-                                    if($usuario->monto < $actividad->costo){
-                                        $por_partes = true;
-                                        $completo = false;
-                                    }
                                     $pago = new Pago();
                                     $pago->id_participante = $participante_nuevo->id;
                                     $pago->id_curso = $actividad->id;
-                                    $pago->por_partes = $por_partes;
                                     $pago->monto = $usuario->monto;
                                     $pago->id_modalidad_pago = $usuario->id_modalidad_pago;
-                                    $pago->completo = $completo;
+                                    $pago->aprobado = true;
+                                    $pago->numero_pago = $usuario->numero_pago;
                                     $pago->save();
                                 }
 
@@ -434,24 +421,24 @@ class InscripcionController extends Controller {
 
                                 DB::table('preinscripciones')->where('id', '=', $id)->delete();
                                 $data['usuarios'] = Preinscripcion::all();
-                                $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
+                                $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                                 Session::set('mensaje', 'El usuario fue inscrito con éxito.');
                                 return view('inscripciones.inscripciones', $data);
                             }else{
                                 $data['usuarios'] = Preinscripcion::all();
-                                $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
+                                $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                                 Session::set('error', 'Ha ocurrido un error inesperado');
                                 return view('inscripciones.inscripciones', $data);
                             }
                         }else{
                             $data['usuarios'] = Preinscripcion::all();
-                            $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
+                            $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                             Session::set('error', 'Ha ocurrido un error inesperado');
                             return view('inscripciones.inscripciones', $data);
                         }
                     }else{
                         $data['usuarios'] = Preinscripcion::all();
-                        $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
+                        $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                         Session::set('error', 'Ha ocurrido un error inesperado');
                         return view('inscripciones.inscripciones', $data);
                     }
@@ -562,7 +549,7 @@ class InscripcionController extends Controller {
                 $data['motivo'] = Input::get('motivo');
                 if($data['motivo'] == null){
                     $data['usuarios'] = Preinscripcion::all();
-                    $data['tipos'] = ['Diplomado','Cápsula', 'Webinar'];
+                    $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                     Session::set('error', 'El motivo no puede estar vacío');
                     return view('inscripciones.inscripciones', $data);
                 }

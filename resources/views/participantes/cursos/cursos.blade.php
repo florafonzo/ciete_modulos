@@ -23,7 +23,6 @@
                             <th>Fecha inicio</th>
                             <th>Fecha fin</th>
                             <th>Acciones</th>
-                            <th></th>
                         </tr>
                         </thead>
                         @if($cursos != null)
@@ -35,13 +34,20 @@
                                     <td>{{ $seccion[$index]  }}</td>
                                     <td>{{ $inicio[$index]->format('d-m-Y')  }}</td>
                                     <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
-                                    <td>
+                                    <td class="boton_">
                                         @if(Entrust::can('ver_notas_part'))
                                             {!!Form::open(["url"=>"participante/cursos/".$curso[0]->id."/modulos",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Módulos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
                                             {!! Form::close() !!}
+                                        @endif
+                                    </td>
+                                    <td class="boton_">
+                                        @if(Entrust::can('ver_pagos'))
+                                            <a type="button" class="btn btn-primary" href="{{URL::to('/')}}/participante/cursos/{{$curso[0]->id}}/pagos" data-toggle="tooltip" data-placement="bottom" title="Pagos">
+                                                <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
+                                            </a>
                                         @endif
                                     </td>
                                 </tr>
@@ -51,7 +57,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_perfil_part'))
-                    <div style="text-align: center;">
+                    <div>
                         <a href="{{URL::to("/")}}/" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                     </div>
                 @endif

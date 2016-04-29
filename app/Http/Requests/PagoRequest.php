@@ -5,7 +5,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Providers;
 
-class PreinscripcionRequest extends Request {
+class PagoRequest extends Request {
 
     /**
      * Determine if the user is authorized to make this request.
@@ -27,12 +27,6 @@ class PreinscripcionRequest extends Request {
     public function rules()
     {
         return [
-            'curso' => 'required',
-            'nombre' => 'required|max:255',
-            'apellido' => 'required|max:255',
-            'di' => 'required|max:100|min:2',
-            'email' => 'required|email|max:255',
-            'tipo_pago' => 'required',
             'monto' => 'required|integer',
             'numero_pago' => 'required',
         ];
