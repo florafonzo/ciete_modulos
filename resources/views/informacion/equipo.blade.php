@@ -79,9 +79,11 @@
                             <h4 class="">Jimena Pérez </h4>
                             <p>
                                 Miembro del Centro<br>
-                                Personal de la Coordinación de Estudios Interactivos a Distancia de la Universidad de Los Andes<br>
-                                Profesora de la Carrera de Comunicación Social, Núcleo Mérida<br>
-                                Escuela de Medios Audiovisuales. Facultad de Humanidades y Educación
+                                {{--Personal de la Coordinación de Estudios Interactivos a Distancia de la Universidad de Los Andes<br>--}}
+                                Personal del Consejo de Tecnologías de la Información y Comunicación Académica de la Universidad de los Andes<br>
+                                Investigador
+                                {{--Profesora de la Carrera de Comunicación Social, Núcleo Mérida<br>--}}
+                                {{--Escuela de Medios Audiovisuales. Facultad de Humanidades y Educación--}}
                             </p>
                         </div>
                     </div>
@@ -118,7 +120,7 @@
                             <h4 class="">Ángel Calero</h4>
                             <p>
                                 Miembro del Centro<br>
-                                Profesor de la UPTM Kleiver Ramirez<br>
+                                Profesor de la UPTM Kléber Ramírez<br>
                                 Investigador activo en el área de las TIC
                             </p>
                         </div>

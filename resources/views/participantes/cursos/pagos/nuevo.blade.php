@@ -37,7 +37,7 @@
                         {!!Form::text('numero_pago', Session::get('numero_pago') ,array('required', 'class' => 'form-control')) !!}
                     </div>
                 </div>
-                <a href="{{URL::to("/")}}/participante/curso/{{$curso->id}}/pagos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+                <a href="{{URL::to("/")}}/participante/cursos/{{$curso->id}}/pagos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
                 @if(Entrust::can('generar_pago'))
                     {!! Form::submit('Guardar', array('class' => 'btn btn-success')) !!}
                 @endif

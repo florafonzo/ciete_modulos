@@ -73,16 +73,16 @@
                         </a>
                     </div>
                 </div>
-                <aside class="col-md-4 col-md-offset-1 col-sm-12 twit">
-                    <h2 class="centro titre">Twitter:</h2>
-                    {{--<h4>Twitter</h4>--}}
-                    <a class="twitter-timeline" href="https://twitter.com/cieteula" data-widget-id="660117846270337024">Tweets por el @cieteula.</a>
-                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                </aside>
+                <div class="col-md-4 col-md-offset-1 col-sm-12">
+                    <h2 class="centro titre">Inscripciones:</h2>
+                    <div>
+                        <a href="{{URL::to('/')}}/preinscripcion/procedimiento"><img class="img-responsive" src="{{URL::to('/')}}/images/INSCRIPCION.png"></a>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <h2 class="centro titre">Capsulas:</h2>
+                    <h2 class="centro titre">Cápsulas:</h2>
                     <div id="myCarousel2" class="carousel slide myCarousel" data-ride="carousel">
                         <!-- Wrapper for slides -->
                         <div class="carousel-inner" role="listbox">
@@ -129,17 +129,16 @@
                         </a>
                     </div>
                 </div>
-                <aside class="col-md-4 col-md-offset-1 col-sm-12 ">
-                    <h2 class="centro titre">Instagram:</h2>
-                    <!-- www.intagme.com -->
-                    <div class="fondo_">
-                        <iframe class="insta" src="http://www.intagme.com/in/?u=Y2lldGUudWxhfHNsfDMwMHwyfDN8fHllc3w1fHVuZGVmaW5lZHx5ZXM="  allowTransparency="true" frameborder="0" scrolling="no" ></iframe>
-                    </div>
+                <aside class="col-md-4 col-md-offset-1 col-sm-12 twit">
+                    <h2 class="centro titre">Twitter:</h2>
+                    {{--<h4>Twitter</h4>--}}
+                    <a class="twitter-timeline" href="https://twitter.com/cieteula" data-widget-id="660117846270337024">Tweets por el @cieteula.</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                 </aside>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <h2 class="centro titre">Webinars:</h2>
+                    <h2 class="centro titre">Webinar:</h2>
                     <div id="myCarousel3" class="carousel slide myCarousel" data-ride="carousel">
                         <!-- Wrapper for slides -->
                         <div class="carousel-inner" role="listbox">
@@ -186,6 +185,13 @@
                         </a>
                     </div>
                 </div>
+                <aside class="col-md-4 col-md-offset-1 col-sm-12">
+                    <h2 class="centro titre">Instagram:</h2>
+                    <!-- www.intagme.com -->
+                    <div class="fondo_">
+                        <iframe class="insta" src="http://www.intagme.com/in/?u=Y2lldGUudWxhfHNsfDMwMHwyfDN8fHllc3w1fHVuZGVmaW5lZHx5ZXM="  allowTransparency="true" frameborder="0" scrolling="no" ></iframe>
+                    </div>
+                </aside>
             </div>
             <div class="row">
 

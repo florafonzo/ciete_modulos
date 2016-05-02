@@ -5,7 +5,7 @@
         <div class="row paneles">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel_login">
-                    <div class="panel-heading">Procedimiento para preinscribirse</div>
+                    <div class="panel-heading">Procedimiento para inscribirse</div>
                     <div class="panel-body">
                         @if (count($errors) > 0)
                             <div class="alert lista_errores">

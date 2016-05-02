@@ -27,7 +27,7 @@
                     </ul>
                 </li>
                 <li class="dropdown fondo">
-                    <a class="lista-menu dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cursos <span class="caret"></span></a>
+                    <a class="lista-menu dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Actividades <span class="caret"></span></a>
                     <ul class="dropdown-menu menu_bajo">
                         @foreach($menu['cursos'] as $curso)
                             <li>

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use Exception;
 use Response;
 use DB;
+use Mail;
 use DateTime;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Validator;
@@ -423,15 +424,22 @@ class ParticipantesController extends Controller {
                     }
                     if($total < $curso->costo){
                         $data['completo'] = false;
+                        $pagos_restantes = 3 - $pagos->count();
+                        $data['pagos_restantes'] = 3 - $pagos->count();
+                        if($pagos_restantes >= 3){
+                            Session::set('error', 'Usted ya realizó 3 cuotas y no ha cancelado la totalidad del curso, comuniquese con el centro');
+                            return $this->index();
+                        }
                     }else{
                         $data['completo'] = true;
+                        $data['pagos_restantes'] = 0;
                     }
                 }
-                if($data['completo']){
-                    $data['pagos_restantes'] = 0;
-                }else{
-                    $data['pagos_restantes'] = 3 - $pagos->count();
-                }
+//                if($data['completo']){
+//                    $data['pagos_restantes'] = 0;
+//                }else{
+//                    $data['pagos_restantes'] = 3 - $pagos->count();
+//                }
 
                 return view('participantes.cursos.pagos.pagos', $data);
 
@@ -515,13 +523,10 @@ class ParticipantesController extends Controller {
                     }
                     if($total < $curso->costo){
                         $data['completo'] = false;
+                        $data['pagos_restantes'] = 3 - $pagos->count();
                     }else{
                         $data['completo'] = true;
-                        if($data['completo']){
-                            $data['pagos_restantes'] = 0;
-                        }else{
-                            $data['pagos_restantes'] = 3 - $pagos->count();
-                        }
+                        $data['pagos_restantes'] = 0;
                         Session::set('mensaje', 'Usted ya se encuentra al día con los pagos de la actividad '.$curso->nombre);
                         return view('participantes.cursos.pagos.pagos', $data);
                     }
@@ -561,9 +566,8 @@ class ParticipantesController extends Controller {
                     $id_modalidad = Input::get('tipo_pago');
                     if($id_modalidad == 0){
                         Session::set('error', 'Debe seleccionar una modalidad de pago');
-                        return $this->verPagosCurso($id_curso);
+                        return $this->generarPagoCurso($id_curso);
                     }
-
 
                     $total = 0;
                     $restante = 0;
@@ -584,17 +588,31 @@ class ParticipantesController extends Controller {
                         $restante = $curso->costo - $total;
                     }
 
-
                     $pagos_restantes = 3 - $pagos->count();
-                    if($pagos_restantes < 3 && $data['completo'] == true){
-                        $data['pagos_restantes'] = 0;
-                    }else{
-                        $data['pagos_restantes'] = 3 - $pagos->count();
-                    }
-
-                    if($data['completo'] == false && $data['pagos_restantes'] == 0){
-                        Session::set('error', 'Le queda una última cuota y el monto de su nuevo pago es menor al monto restante. Debe realizar el pago por '.$restante.' Bs');
+                    if($pagos_restantes < 0){
+                        Session::set('error', 'Cominiquese con el centro ya que posee más de 3 cuotas de pago');
                         return $this->generarPagoCurso($id_curso);
+                    }
+                    if($data['completo'] == false && $pagos_restantes == 0){
+                        Session::set('error', 'Comuniquese con el centro ya que posee el número máximo de cuotas de pago');
+                        return $this->generarPagoCurso($id_curso);
+                    }
+                    if($data['completo'] == true){
+                        $data['pagos_restantes'] = 0;
+                        Session::set('mensaje', 'Usted ya se encuentra al día con los pagos de la actividad '.$curso->nombre);
+                        return view('participantes.cursos.pagos.pagos', $data);
+                    }elseif($pagos_restantes >= 2){
+                        $data['pagos_restantes'] = 3 - $pagos->count();
+                    }elseif($pagos_restantes == 1){
+                        if($request->monto < $restante){
+                            Session::set('error', 'Le queda una última cuota y el monto de su nuevo pago es menor al monto restante. Debe realizar el pago por '.$restante.' Bs');
+                            return $this->generarPagoCurso($id_curso);
+                        }elseif($request->monto > $restante) {
+                            Session::set('error', 'Le queda una última cuota y el monto de su nuevo pago es mayor al monto restante. Debe realizar el pago por ' . $restante . ' Bs');
+                            return $this->generarPagoCurso($id_curso);
+                        }else{
+                            $data['pagos_restantes'] = 0;
+                        }
                     }
 
                     $pago = new Pago();
@@ -606,8 +624,21 @@ class ParticipantesController extends Controller {
                     $pago->numero_pago = $request->numero_pago;
                     $pago->save();
 
-
-                    return view('participantes.cursos.pagos.pagos', $data);
+                    $data['pago_'] = $pago;
+                    $data['participante'] = Participante::find($pago->id_participante);
+                    $data['curso'] = Curso::find($pago->id_curso);
+                    if($pago->save()){
+                        Mail::send('emails.pago-espera', $data, function ($message) use ($data) {
+                            $message->subject('CIETE - Pago aprobado')
+                                ->to($data['email'], 'CIETE')
+                                ->replyTo($data['email']);
+                        });
+                        Session::set('mensaje', 'Pago guardado con éxito');
+                        return $this->verPagosCurso($id_curso);
+                    }else{
+                        Session::set('error', 'Haocurrido un error inesperado');
+                        return $this->verPagosCurso($id_curso);
+                    }
 
                 }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 

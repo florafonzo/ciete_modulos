@@ -259,10 +259,10 @@ Route::group([
     Route::resource('informes','InformesController');
 
     // Pagos
-        Route::get('pagos/aprobar', [
+        Route::post('pagos/aprobar', [
             'as' => 'pago.aprobar', 'uses' => 'PagosController@aprobarPago'
         ]);
-        Route::delete('pagos/rechazar', [
+        Route::delete('pagos/rechazar/{id}', [
             'as' => 'pago.destroy', 'uses' => 'PagosController@destroy'
         ]);
         Route::get('pagos/buscar', [
