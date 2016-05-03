@@ -626,6 +626,7 @@ class ParticipantesController extends Controller {
 
                     $data['pago_'] = $pago;
                     $data['participante'] = Participante::find($pago->id_participante);
+                    $data['email'] = $usuario_actual->email;
                     $data['curso'] = Curso::find($pago->id_curso);
                     if($pago->save()){
                         Mail::send('emails.pago-espera', $data, function ($message) use ($data) {

@@ -7,6 +7,7 @@ use App\Models\Curso;
 use App\Models\ModalidadPago;
 use App\Models\Pago;
 use App\Models\Participante;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -187,9 +188,12 @@ class PagosController extends Controller {
                         $data['pagos'] = [];
                     }
 
+                    $participante = Participante::find($pago_->id_participante);
+                    $usuario = User::find($participante->id_usuario);
                     $data['pago_'] = $pago_;
                     $data['participante'] = Participante::find($pago_->id_participante);
                     $data['curso'] = Curso::find($pago_->id_curso);
+                    $data['email'] = $usuario->email;
                     Mail::send('emails.pago-aprobado', $data, function ($message) use ($data) {
                         $message->subject('CIETE - Pago aprobado')
                             ->to($data['email'], 'CIETE')
@@ -240,6 +244,8 @@ class PagosController extends Controller {
                 $data['busq'] = false;
                 $data['tipos'] = ['Cápsula', 'Diplomado'];
                 $pago_ = Pago::find($id_pago);
+                $participante = Participante::find($pago_->id_participante);
+                $usuario = User::find($participante->id_usuario);
                 $data['motivo'] = Input::get('motivo');
                 if($data['motivo'] == null){
                     Session::set('error', 'El motivo no puede estar vacío');
@@ -249,12 +255,13 @@ class PagosController extends Controller {
                 $data['pago'] = $pago_;
                 $data['participante'] = Participante::find($pago_->id_participante);
                 $data['curso'] = Curso::find($pago_->id_curso);
+                $data['email'] = $usuario->email;
                 DB::table('pagos')->where('id', '=', $id_pago)->delete();
-//                Mail::send('emails.rechazo', $data, function ($message) use ($data) {
-//                    $message->subject('CIETE - Inscripción rechazada')
-//                        ->to($data['email'], 'CIETE')
-//                        ->replyTo($data['email']);
-//                });
+                Mail::send('emails.rechazo', $data, function ($message) use ($data) {
+                    $message->subject('CIETE - Inscripción rechazada')
+                        ->to($data['email'], 'CIETE')
+                        ->replyTo($data['email']);
+                });
                 Session::set('mensaje', 'El pago fue rechazado con éxito.');
                 return $this->index();
 
