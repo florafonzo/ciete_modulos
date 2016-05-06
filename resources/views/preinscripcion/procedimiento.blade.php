@@ -8,9 +8,9 @@
                     <div class="panel-heading">Procedimiento para inscribirse</div>
                     <div class="panel-body">
                         @if (count($errors) > 0)
-                            <div class="alert lista_errores">
+                            <div class="alert errores">
                                 <strong>Whoops!</strong> Hubo ciertos errores con los datos ingresados:<br><br>
-                                <ul class="">
+                                <ul class="lista_errores">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
                                     @endforeach

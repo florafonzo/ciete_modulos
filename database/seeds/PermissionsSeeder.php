@@ -240,7 +240,7 @@ class PermisionsSeeder extends Seeder {
 
         $lista_moodle = new Permission();
         $lista_moodle->name = 'lista_moodle';
-        $lista_moodle->display_name = 'generar lista para inscripción masiva aen Moodle';
+        $lista_moodle->display_name = 'generar lista para inscripciï¿½n masiva aen Moodle';
         $lista_moodle->save();
 
         $informe_academico = new Permission();
@@ -250,7 +250,7 @@ class PermisionsSeeder extends Seeder {
 
         $ver_informes_academicos = new Permission();
         $ver_informes_academicos->name = 'ver_informes_academicos';
-        $ver_informes_academicos->display_name = 'ver los informes académicos generados por los profesores';
+        $ver_informes_academicos->display_name = 'ver los informes acadï¿½micos generados por los profesores';
         $ver_informes_academicos->save();
 
         $ver_pagos = new Permission();
