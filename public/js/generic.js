@@ -743,6 +743,8 @@ function rechazarPago(id) {
             text: "Indique el motivo del rechazo:",
             type: "input",
             showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: "Rechazar",
             cancelButtonText: "Cancelar",
             closeOnConfirm: false,
             animation: "slide-from-top",
