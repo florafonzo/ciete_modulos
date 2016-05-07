@@ -119,7 +119,7 @@
                 </div>
                 @if(Entrust::can('crear_cursos'))
                     <div class="" style="text-align: center;">
-                        <a href="{{URL::to('/')}}/cursos/create" type="button" class="btn btn-success" >Agregar curso </a>
+                        <a href="{{URL::to('/')}}/cursos/create" type="button" class="btn btn-success" >Agregar actividad </a>
                     </div>
                 @endif
             </div>

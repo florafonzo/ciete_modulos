@@ -54,6 +54,11 @@ class PreinscripcionController extends Controller {
                     $curso['tipo_curso'] = $tipo[0]->nombre;
                     $curso['inicio'] = new DateTime($curso->fecha_inicio);
                     $curso['fin'] = new DateTime($curso->fecha_fin);
+                    if($curso->activo_preinscripcion)
+                        $curso['estado'] = "Activado";
+                    else{
+                        $curso['estado'] = "Desactivado";
+                    }
 
                 }
 
@@ -90,6 +95,11 @@ class PreinscripcionController extends Controller {
                 foreach ($data['webinars'] as $web) {
                     $web['inicio'] = new DateTime($web->fecha_inicio);
                     $web['fin'] = new DateTime($web->fecha_fin);
+                    if($web->activo_preinscripcion)
+                        $web['estado'] = "Activado";
+                    else{
+                        $web['estado'] = "Desactivado";
+                    }
 
                 }
 

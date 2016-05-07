@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Curso para preinscripción
+                Actividades para inscripción
             </h3>
         </div>
 
@@ -22,6 +22,7 @@
                             <th>Tipo</th>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
@@ -34,6 +35,7 @@
                                     <td>{{ $curso->tipo_curso  }}</td>
                                     <td>{{ $curso->inicio->format('d-m-Y') }}</td>
                                     <td>{{ $curso->fin->format('d-m-Y')  }}</td>
+                                    <td>{{ $curso->estado }}</td>
                                     @if($curso->activo_preinscripcion)
                                         <td>
                                             @if(Entrust::can('desactivar_preinscripcion'))

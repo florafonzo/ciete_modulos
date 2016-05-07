@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Webinar para preinscripción
+                Webinars para preinscripción
             </h3>
         </div>
 
@@ -21,6 +21,7 @@
                             <th>Nombre</th>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
@@ -32,6 +33,7 @@
                                     <td>{{ $webinar->nombre }}</td>
                                     <td>{{ $webinar->inicio->format('d-m-Y') }}</td>
                                     <td>{{ $webinar->fin->format('d-m-Y')  }}</td>
+                                    <td>{{ $webinar->estado }}</td>
                                     @if($webinar->activo_preinscripcion)
                                         <td>
                                             @if(Entrust::can('desactivar_preinscripcion'))
