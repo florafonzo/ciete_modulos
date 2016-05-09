@@ -30,7 +30,7 @@ class InformesController extends Controller {
 	 */
 	public function index() {
 		try {
-            //VerificaciÛn de los permisos del usuario para poder realizar esta acciÛn
+            //Verificaci√≥n de los permisos del usuario para poder realizar esta acci√≥n
             $usuario_actual = Auth::user();
             if($usuario_actual->foto != null) {
                 $data['foto'] = $usuario_actual->foto;
@@ -38,7 +38,7 @@ class InformesController extends Controller {
                 $data['foto'] = 'foto_participante.png';
             }
 
-            if($usuario_actual->can('ver_informes_academicos')) { // Si el usuario posee los permisos necesarios continua con la acciÛn
+            if($usuario_actual->can('ver_informes_academicos')) { // Si el usuario posee los permisos necesarios continua con la acci√≥n
                 $data['errores'] = '';
                 $data['busq_'] = false;
                 $data['busq'] = false;
@@ -57,7 +57,7 @@ class InformesController extends Controller {
 
                 return view('informes.informes', $data);
 
-            }else{      // Si el usuario no posee los permisos necesarios se le mostrar· un mensaje de error
+            }else{      // Si el usuario no posee los permisos necesarios se le mostrar√° un mensaje de error
 
                 return view('errors.sin_permiso');
             }
@@ -72,7 +72,7 @@ class InformesController extends Controller {
 
 	public function verInforme($id_informe, $id_profesor, $id_curso, $id_modulo, $seccion) {
         try {
-            //VerificaciÛn de los permisos del usuario para poder realizar esta acciÛn
+            //Verificaci√≥n de los permisos del usuario para poder realizar esta acci√≥n
             $usuario_actual = Auth::user();
             if($usuario_actual->foto != null) {
                 $data['foto'] = $usuario_actual->foto;
@@ -80,7 +80,7 @@ class InformesController extends Controller {
                 $data['foto'] = 'foto_participante.png';
             }
 
-            if($usuario_actual->can('ver_informes_academicos')) { // Si el usuario posee los permisos necesarios continua con la acciÛn
+            if($usuario_actual->can('ver_informes_academicos')) { // Si el usuario posee los permisos necesarios continua con la acci√≥n
                 $data['errores'] = '';
                 $data['busq_'] = false;
                 $data['busq'] = false;
@@ -168,7 +168,7 @@ class InformesController extends Controller {
                     return $this->index();
                 }
 
-            }else{      // Si el usuario no posee los permisos necesarios se le mostrar· un mensaje de error
+            }else{      // Si el usuario no posee los permisos necesarios se le mostrar√° un mensaje de error
 
                 return view('errors.sin_permiso');
             }
@@ -186,14 +186,14 @@ class InformesController extends Controller {
 
     public function buscarInforme() {
         try{
-            //VerificaciÛn de los permisos del usuario para poder realizar esta acciÛn
+            //Verificaci√≥n de los permisos del usuario para poder realizar esta acci√≥n
             $usuario_actual = Auth::user();
             if($usuario_actual->foto != null) {
                 $data['foto'] = $usuario_actual->foto;
             }else{
                 $data['foto'] = 'foto_participante.png';
             }
-            if($usuario_actual->can('ver_informes_academicos')) {   // Si el usuario posee los permisos necesarios continua con la acciÛn
+            if($usuario_actual->can('ver_informes_academicos')) {   // Si el usuario posee los permisos necesarios continua con la acci√≥n
                 $data['errores'] = '';
                 $data['busq_'] = true;
                 $data['busq'] = true;
@@ -271,7 +271,7 @@ class InformesController extends Controller {
 
                 return view('informes.informes', $data);
 
-            }else{ // Si el usuario no posee los permisos necesarios se le mostrar· un mensaje de error
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrar√° un mensaje de error
                 return view('errors.sin_permiso');
             }
         }

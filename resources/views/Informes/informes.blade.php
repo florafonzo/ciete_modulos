@@ -65,7 +65,7 @@
                                     <td> 0 resultados de la busqueda</td>
                                 @else
                                     <td></td>
-                                    <td>No se ha generado informes</td>
+                                    <td>No se han generado informes</td>
                                 @endif
                             @endif
                         @else
@@ -90,7 +90,7 @@
                                     <td> 0 resultados de la busqueda</td>
                                 @else
                                     <td></td>
-                                    <td>No se ha generado informes</td>
+                                    <td>No se han generado informes</td>
                                 @endif
                             @endif
                         @endif

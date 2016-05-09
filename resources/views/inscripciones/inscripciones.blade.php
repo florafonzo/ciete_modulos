@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Usuarios preinscritos
+                Usuarios para inscribir
             </h3>
         </div>
         @if (!(Auth::guest()))
@@ -92,7 +92,7 @@
                                             @if(Entrust::can('activar_inscripcion'))
                                                 {!! Form::open(array('method' => 'POST','route' => array('inscripcion.store'), 'id' => 'form_inscripcion'.$user->id)) !!}
                                                     <input name="val" type="hidden" value="{{$user->id}}">
-                                                    <button type="button" onclick="activarInscripcion('{{$user->id}}')" class='btn btn-success' data-toggle='tooltip' data-placement="bottom" title="Activar">
+                                                    <button type="button" onclick="activarInscripcion('{{$user->id}}')" class='btn btn-success' data-toggle='tooltip' data-placement="bottom" title="Aprobar">
                                                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                                     </button>
                                                     {{--{!! Form::button('<span class="glyphicon glyphicon-ok" data-toggle="tooltip" data-placement="bottom" title="Activar" aria-hidden="true"></span>', array('type' => 'submit', 'class' => 'btn btn-success'))!!}--}}
