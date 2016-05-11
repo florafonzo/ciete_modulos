@@ -101,6 +101,16 @@
             </ul>
         </div>-->
     </div>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-11">
+            <button type="button" id="zoom-in" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Agrandar" >
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+            <button type="button" id="zoom-out" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Reducir" >
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
 
 </nav>
 

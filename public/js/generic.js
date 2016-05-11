@@ -356,6 +356,29 @@ $(document).ready(function() {
 
 //-----------------------------------------------------------------------------------------//
 
+//-----------------------------------------------------------------------------------------//
+    $('#zoom-in').click(function() {
+        updateZoom(0.1);
+    });
+
+    $('#zoom-out').click(function() {
+        updateZoom(-0.1);
+    });
+
+
+    zoomLevel = 1;
+    var tam = 1;
+
+    var updateZoom = function(zoom) {
+        tam += zoom;
+        //alert('zoom: '+ zoomLevel);
+        if((tam <= 1.21) &&  (tam >0.6)){
+            zoomLevel += zoom;
+            $('body').css({zoom: zoomLevel, '-moz-transform': 'scale(' + zoomLevel + ')'});
+        }
+    }
+//-----------------------------------------------------------------------------------------//
+
 // --------------------------------- Imagen Crop ------------------------------------------//
 
     $('#enviar').hide();
