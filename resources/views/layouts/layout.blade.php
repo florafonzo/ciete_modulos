@@ -4,6 +4,7 @@
 	  <title>CIETE</title>
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="shortcut icon" href="{{URL::to('/')}}/images/ciete_logo.ico">
 	  <link rel="stylesheet" href="{{URL::to('/')}}/css/style.css">
 	  <link rel="stylesheet" href="{{URL::to('/')}}/css/AdminLTE.min.css">
 	  <link rel="stylesheet" href="{{URL::to('/')}}/css/bootstrap.css">
