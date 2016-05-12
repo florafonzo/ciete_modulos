@@ -356,26 +356,31 @@ $(document).ready(function() {
 
 //-----------------------------------------------------------------------------------------//
 
-//-----------------------------------------------------------------------------------------//
+//------------------------------------- Zoom ----------------------------------------------//
+    zoomLevel = 1;
+    var tam = 1;
+    var tam1 = 1;
     $('#zoom-in').click(function() {
-        updateZoom(0.1);
+        tam1 += 0.1;
+        if((tam1 <= 1.21) &&  (tam1 >0.8)) {
+            updateZoom(0.1);
+        }
     });
 
     $('#zoom-out').click(function() {
-        updateZoom(-0.1);
+        tam1 += -0.1;
+        if((tam1 <= 1.21) &&  (tam1 >0.8)) {
+            updateZoom(-0.1);
+        }
     });
 
-
-    zoomLevel = 1;
-    var tam = 1;
-
     var updateZoom = function(zoom) {
-        tam += zoom;
-        //alert('zoom: '+ zoomLevel);
-        if((tam <= 1.21) &&  (tam >0.6)){
+        //tam += zoom;
+        ////alert('zoom: '+ zoomLevel);
+        //if((tam <= 1.21) &&  (tam >0.6)){
             zoomLevel += zoom;
             $('body').css({zoom: zoomLevel, '-moz-transform': 'scale(' + zoomLevel + ')'});
-        }
+        //}
     }
 //-----------------------------------------------------------------------------------------//
 
