@@ -37,14 +37,14 @@
                                         {!!Form::hidden('dir',$ruta)!!}
                                         {!!Form::hidden('file_viejo',$cursos->imagen_carrusel)!!}
                                         <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                        <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/cursos/imagen/{{$cursos->id}}">Cambiar</a>
+                                        <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/actividades/imagen/{{$cursos->id}}">Cambiar</a>
                                     @else
                                         <br>
                                         {!!Form::hidden('img_carg','yes')!!}
                                         {!!Form::hidden('img_','yes')!!}
                                         {!!Form::hidden('cortar',null)!!}
                                         <img src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$cursos->imagen_carrusel}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                        <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/cursos/imagen/{{$cursos->id}}" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>
+                                        <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/actividades/imagen/{{$cursos->id}}" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>
                                     @endif
                                 @endif
                             @endif
@@ -183,7 +183,7 @@
                             {!! Form::text('descripcion_carrusel', $cursos->descripcion_carrusel, array('class' => 'form-control'))!!}
                         </div>
                     </div>
-                    <a href="{{URL::to("/")}}/cursos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+                    <a href="{{URL::to("/")}}/actividades" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
                     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-save" ></span> Guardar </button>
 
                     {!! Form::close() !!}
@@ -198,7 +198,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <a href="{{URL::to('/')}}/cursos/{{$cursos->id}}/edit" class="pull-right"> <span class="glyphicon glyphicon-remove" style="color: #333;"></span> </a>
+                    <a href="{{URL::to('/')}}/actividades/{{$cursos->id}}/edit" class="pull-right"> <span class="glyphicon glyphicon-remove" style="color: #333;"></span> </a>
                     <h4> Edición de imagen</h4>
                 </div>
                 <div class="modal-body">
@@ -221,8 +221,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-default pull-left" href="{{URL::to('/')}}/cursos/{{$cursos->id}}/edit"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
-                    {!!Form::open(['url' => 'cursos/procesar/'.$cursos->id,  "method" => "post", "id" => "form_imagen"])!!}
+                    <a class="btn btn-default pull-left" href="{{URL::to('/')}}/actividades/{{$cursos->id}}/edit"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+                    {!!Form::open(['url' => 'actividades/procesar/'.$cursos->id,  "method" => "post", "id" => "form_imagen"])!!}
                     <input type="hidden" class="" id="rutas" name="rutas">
                     <button type="submit" class="btn btn-success btn-success pull-right" id="aceptar" ><span class="glyphicon glyphicon-ok"></span> Aceptar</button>
                     {!! Form::close() !!}

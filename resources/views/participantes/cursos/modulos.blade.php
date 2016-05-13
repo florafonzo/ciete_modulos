@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Módulos del curso {{$curso->nombre}}
+                Módulos de la actividad {{$curso->nombre}}
             </h3>
         </div>
 
@@ -29,7 +29,7 @@
                                     <td>{{ $modulo->nombre }}</td>
                                     <td class="boton_">
                                         @if(Entrust::can('ver_notas_part'))
-                                            {!!Form::open(["url"=>"participante/cursos/".$curso->id."/modulos/".$modulo->id."/notas",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"participante/actividades/".$curso->id."/modulos/".$modulo->id."/notas",  "method" => "GET" ])!!}
                                             <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Notas">
                                                 <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
                                             </button>
@@ -44,7 +44,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_cursos_part'))
-                    <a href="{{URL::to("/")}}/participante/cursos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
+                    <a href="{{URL::to("/")}}/participante/actividades" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
                 @endif
             </div>
         @endif

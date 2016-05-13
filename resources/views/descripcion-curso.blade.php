@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="row">
-                <img src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$curso->imagen_carrusel}}" class="img-responsive insta">
+                <img src="{{URL::to('/')}}/images/images_carrusel/actividades/{{$curso->imagen_carrusel}}" class="img-responsive insta">
             </div>
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">

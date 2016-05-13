@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Cursos que dicta
+                Actividades que dicta
             </h3>
         </div>
 
@@ -56,7 +56,7 @@
                                         <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/cursos/".$curso->id."/modulos",  "method" => "GET" ])!!}
+                                                {!!Form::open(["url"=>"profesor/actividades/".$curso->id."/modulos",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Modulos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
@@ -76,7 +76,7 @@
                                         <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/cursos/".$curso[0]->id."/modulos",  "method" => "GET" ])!!}
+                                                {!!Form::open(["url"=>"profesor/actividades/".$curso[0]->id."/modulos",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Modulos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
@@ -93,7 +93,7 @@
                                 <td> 0 resultados de la busqueda</td>
                             @else
                                 <td></td>
-                                <td>No está dictando nigún curso</td>
+                                <td>No está dictando nigúna actividad</td>
                             @endif
                         @endif
                     </table>

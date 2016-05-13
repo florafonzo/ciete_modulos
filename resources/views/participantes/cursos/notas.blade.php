@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Notas del curso {{$curso->nombre}} - Módulo {{$modulo->nombre}}
+                Notas de la actividad {{$curso->nombre}} - Módulo {{$modulo->nombre}}
             </h3>
         </div>
 
@@ -48,7 +48,7 @@
                 </div>
                 @if(Entrust::can('ver_cursos_part'))
                     <div style="text-align: center;">
-                        <a href="{{URL::to("/")}}/participante/cursos/{{$curso->id}}/modulos" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
+                        <a href="{{URL::to("/")}}/participante/actividades/{{$curso->id}}/modulos" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                     </div>
                 @endif
             </div>

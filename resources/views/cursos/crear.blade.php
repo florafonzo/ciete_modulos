@@ -32,7 +32,7 @@
                                     {!!Form::hidden('cortar','yes')!!}
                                     {!!Form::hidden('dir',$ruta)!!}
                                     <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                    <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/cursos/imagen">Cambiar</a>
+                                    <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/actividades/imagen">Cambiar</a>
                                 @endif
                             @endif
                         @endif
@@ -137,7 +137,7 @@
                         {!! Form::text('descripcion_carrusel', Session::get('descripcion_carrusel'), array('class' => 'form-control'))!!}
                     </div>
                 </div>
-                <a href="{{URL::to("/")}}/cursos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+                <a href="{{URL::to("/")}}/actividades" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
                 <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-save" ></span> Crear </button>
 
                 {!! Form::close() !!}
@@ -151,7 +151,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <a href="{{URL::to('/')}}/cursos/create" class="pull-right"> <span class="glyphicon glyphicon-remove" style="color: #333;"></span> </a>
+                    <a href="{{URL::to('/')}}/actividades/create" class="pull-right"> <span class="glyphicon glyphicon-remove" style="color: #333;"></span> </a>
                     <h4> Edición de imagen</h4>
                 </div>
                 <div class="modal-body">
@@ -174,8 +174,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-default pull-left" href="{{URL::to('/')}}/cursos/create"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
-                    {!!Form::open(['url' => 'cursos/procesar',  "method" => "post", "id" => ""])!!}
+                    <a class="btn btn-default pull-left" href="{{URL::to('/')}}/actividades/create"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+                    {!!Form::open(['url' => 'actividades/procesar',  "method" => "post", "id" => ""])!!}
                         <input type="hidden" class="" id="rutas" name="rutas">
                         <button type="submit" class="btn btn-success btn-success pull-right" id="aceptar" ><span class="glyphicon glyphicon-ok"></span> Aceptar</button>
                     {!! Form::close() !!}

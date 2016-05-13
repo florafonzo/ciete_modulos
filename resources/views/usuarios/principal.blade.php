@@ -36,8 +36,8 @@
                                 {{--@foreach($diplomados as $index => $diplomado)--}}
                                     {{--@if($index == 0)--}}
                                         {{--<div class="item active Carousel">--}}
-                                            {{--<a href="{{URL::to('/')}}/descripcion/curso/{{$diplomado->id}}">--}}
-                                                {{--<img class="imgCarousel_" src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$diplomado->imagen_carrusel}}" >--}}
+                                            {{--<a href="{{URL::to('/')}}/descripcion/actividad/{{$diplomado->id}}">--}}
+                                                {{--<img class="imgCarousel_" src="{{URL::to('/')}}/images/images_carrusel/actividades/{{$diplomado->imagen_carrusel}}" >--}}
                                             {{--</a>--}}
                                             {{--<div class="carousel-caption descripcion">--}}
                                                 {{--<h4 class=""> {{$diplomado->descripcion_carrusel}} </h4>--}}
@@ -45,8 +45,8 @@
                                         {{--</div>--}}
                                     {{--@else--}}
                                         {{--<div class="item">--}}
-                                            {{--<a href="{{URL::to('/')}}/descripcion/curso/{{$diplomado->id}}">--}}
-                                                {{--<img class="imgCarousel_" src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$diplomado->imagen_carrusel}}" >--}}
+                                            {{--<a href="{{URL::to('/')}}/descripcion/actividad/{{$diplomado->id}}">--}}
+                                                {{--<img class="imgCarousel_" src="{{URL::to('/')}}/images/images_carrusel/actividades/{{$diplomado->imagen_carrusel}}" >--}}
                                             {{--</a>--}}
                                             {{--<div class="carousel-caption descripcion">--}}
                                                 {{--<h4 class=""> {{$diplomado->descripcion_carrusel}} </h4>--}}
@@ -85,8 +85,8 @@
                                 {{--@foreach($capsulas as $index => $capsula)--}}
                                     {{--@if($index == 0)--}}
                                         {{--<div class="item active">--}}
-                                            {{--<a href="{{URL::to('/')}}/descripcion/curso/{{$capsula->id}}">--}}
-                                                {{--<img class="imgCarousel_" src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$capsula->imagen_carrusel}}" >--}}
+                                            {{--<a href="{{URL::to('/')}}/descripcion/actividad/{{$capsula->id}}">--}}
+                                                {{--<img class="imgCarousel_" src="{{URL::to('/')}}/images/images_carrusel/actividades/{{$capsula->imagen_carrusel}}" >--}}
                                             {{--</a>--}}
                                             {{--<div class="carousel-caption descripcion">--}}
                                                 {{--<h4 class=""> {{$capsula->descripcion_carrusel}} </h4>--}}
@@ -94,8 +94,8 @@
                                         {{--</div>--}}
                                     {{--@else--}}
                                         {{--<div class="item">--}}
-                                            {{--<a href="{{URL::to('/')}}/descripcion/curso/{{$capsula->id}}">--}}
-                                                {{--<img class="imgCarousel_" src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$capsula->imagen_carrusel}}" >--}}
+                                            {{--<a href="{{URL::to('/')}}/descripcion/actividad/{{$capsula->id}}">--}}
+                                                {{--<img class="imgCarousel_" src="{{URL::to('/')}}/images/images_carrusel/actividades/{{$capsula->imagen_carrusel}}" >--}}
                                             {{--</a>--}}
                                             {{--<div class="carousel-caption descripcion">--}}
                                                 {{--<h4 class=""> {{$capsula->descripcion_carrusel}} </h4>--}}

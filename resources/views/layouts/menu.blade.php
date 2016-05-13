@@ -31,7 +31,7 @@
                     <ul class="dropdown-menu menu_bajo">
                         @foreach($menu['cursos'] as $curso)
                             <li>
-                                <a href="{{URL::to('/')}}/descripcion/curso/{{$curso->id}}"> {{$curso->nombre}}</a>
+                                <a href="{{URL::to('/')}}/descripcion/actividad/{{$curso->id}}"> {{$curso->nombre}}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -53,7 +53,7 @@
                             <a href="{{URL::to('/')}}/preinscripcion/procedimiento">Procedimiento</a>
                         </li>
                         <li >
-                            <a href="{{URL::to('/')}}/preinscripcion/cursos">Cápsulas y Diplomados</a>
+                            <a href="{{URL::to('/')}}/preinscripcion/actividades">Cápsulas y Diplomados</a>
                         </li>
                         <li>
                             <a href="{{URL::to('/')}}/preinscripcion/webinars"> Webinars </a>

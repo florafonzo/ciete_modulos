@@ -7,9 +7,9 @@
             <div class="row">
                 <div class="col-md-12 col-xs-12 descripcion_princ">
                     <h4>
-                        Bienvenid@ al Portal de cursos que ofrece el Centro Innovación y Emprendimiento para el uso
+                        Bienvenid@ al Portal de actividades que ofrece el Centro Innovación y Emprendimiento para el uso
                         de Tecnologías en Educación de la Universidad de los Andes.<br>
-                        El Centro ofrece asesoría a los estudiantes y profesores de la universidad, cursos de formación,
+                        El Centro ofrece asesoría a los estudiantes y profesores de la universidad, actividades de formación,
                         actualización y perfeccionamiento del uso de las TIC, promueve el Emprendimiento de proyectos y diseña, produce y evalúa recursos
                         educativos en formato digital.
                     </h4>
@@ -35,7 +35,7 @@
                                 @foreach($diplomados as $index => $diplomado)
                                     @if($index == 0)
                                         <div class="item active Carousel">
-                                            <a href="{{URL::to('/')}}/descripcion/curso/{{$diplomado->id}}">
+                                            <a href="{{URL::to('/')}}/descripcion/actividad/{{$diplomado->id}}">
                                                 <img class="imgCarousel" src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$diplomado->imagen_carrusel}}" >
                                             </a>
                                             <div class="carousel-caption descripcion">
@@ -44,7 +44,7 @@
                                         </div>
                                     @else
                                         <div class="item">
-                                            <a href="{{URL::to('/')}}/descripcion/curso/{{$diplomado->id}}">
+                                            <a href="{{URL::to('/')}}/descripcion/actividad/{{$diplomado->id}}">
                                                 <img class="imgCarousel" src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$diplomado->imagen_carrusel}}" >
                                             </a>
                                             <div class="carousel-caption descripcion">
@@ -90,7 +90,7 @@
                                 @foreach($capsulas as $index => $capsula)
                                     @if($index == 0)
                                         <div class="item active">
-                                            <a href="{{URL::to('/')}}/descripcion/curso/{{$capsula->id}}">
+                                            <a href="{{URL::to('/')}}/descripcion/actividad/{{$capsula->id}}">
                                                 <img class="imgCarousel" src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$capsula->imagen_carrusel}}" >
                                             </a>
                                             <div class="carousel-caption descripcion">
@@ -99,7 +99,7 @@
                                         </div>
                                     @else
                                         <div class="item">
-                                            <a href="{{URL::to('/')}}/descripcion/curso/{{$capsula->id}}">
+                                            <a href="{{URL::to('/')}}/descripcion/actividad/{{$capsula->id}}">
                                                 <img class="imgCarousel" src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$capsula->imagen_carrusel}}" >
                                             </a>
                                             <div class="carousel-caption descripcion">

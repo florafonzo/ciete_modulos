@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Cursos inscritos
+                Actividades inscritas
             </h3>
         </div>
 
@@ -36,7 +36,7 @@
                                     <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                     <td class="boton_">
                                         @if(Entrust::can('ver_notas_part'))
-                                            {!!Form::open(["url"=>"participante/cursos/".$curso[0]->id."/modulos",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"participante/actividades/".$curso[0]->id."/modulos",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Módulos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
@@ -45,7 +45,7 @@
                                     </td>
                                     <td class="boton_">
                                         @if(Entrust::can('ver_pagos'))
-                                            <a type="button" class="btn btn-primary" href="{{URL::to('/')}}/participante/cursos/{{$curso[0]->id}}/pagos" data-toggle="tooltip" data-placement="bottom" title="Pagos">
+                                            <a type="button" class="btn btn-primary" href="{{URL::to('/')}}/participante/actividades/{{$curso[0]->id}}/pagos" data-toggle="tooltip" data-placement="bottom" title="Pagos">
                                                 <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
                                             </a>
                                         @endif

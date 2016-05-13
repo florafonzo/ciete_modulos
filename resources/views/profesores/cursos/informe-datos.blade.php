@@ -15,7 +15,7 @@
                 @include('partials.mensajes'){{--Errores--}}
                 {!! Form::open(array('method' => 'POST', 'route' => array('profesor.informe', $curso->id, $modulo->id, $seccion), 'class' => 'form-horizontal col-md-10', 'enctype' => "multipart/form-data", "target" => "_blank")) !!}
                     <div class="form-group">
-                        {!!Form::label('conclu', 'Conclusión del curso:', array( 'class' => 'col-md-4 ')) !!}
+                        {!!Form::label('conclu', 'Conclusión de la actividad:', array( 'class' => 'col-md-4 ')) !!}
                         <div class="col-sm-8">
                             {!!Form::textarea('conclusion', old('conclusion'),array( 'class' => 'form-control')) !!}
                         </div>
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     @if(Entrust::can('informe_academico'))
-                        <a href="{{URL::to("/")}}/profesor/cursos/{{$curso->id}}/modulos/" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+                        <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos/" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
                         <button type="submit" class="btn btn-success">
                             <span class="glyphicon glyphicon-download-alt"></span> Generar
                         </button>

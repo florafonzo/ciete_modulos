@@ -15,7 +15,7 @@
                 @include('partials.mensajes')
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!! Form::open(array('method' => 'get', 'route' => array('cursos/desactivados.buscar'))) !!}
+                        {!! Form::open(array('method' => 'get', 'route' => array('actividades/desactivados.buscar'))) !!}
                         <div class="buscador">
                             <select class="form-control " id="param1" name="parametro">
                                 <option value="0"  selected="selected"> Buscar por</option>
@@ -54,7 +54,7 @@
 
                                     <td>
                                         @if(Entrust::can('activar_cursos'))
-                                            {!!Form::open(["url"=>"cursos/desactivados/activar/".$curso->id,  "method" => "GET", 'id' => 'form_activar'.$curso->id] )!!}
+                                            {!!Form::open(["url"=>"actividades/desactivados/activar/".$curso->id,  "method" => "GET", 'id' => 'form_activar'.$curso->id] )!!}
                                              <button type="button" onclick="activarCurso('{{$curso->id}}')" class="btn btn-success" title="Activar" data-toggle="tooltip" data-placement="bottom" aria-hidden="true">
                                                  <span class="glyphicon glyphicon-ok"></span>
                                              </button>
@@ -70,14 +70,14 @@
                                 <td> 0 resultados de la busqueda</td>
                             @else
                                 <td></td>
-                                <td>No existen cursos desactivados</td>
+                                <td>No existen actividades desactivadas</td>
                             @endif
                         @endif
                     </table>
                 </div>
                 @if(Entrust::can('ver_lista_cursos'))
                     <div class="" style="text-align: center;">
-                        <a href="{{URL::to('/')}}/cursos" type="button" class="btn btn-success" >Ver cursos activos </a>
+                        <a href="{{URL::to('/')}}/actividades" type="button" class="btn btn-success" >Ver actividades activas </a>
                     </div>
                 @endif
 

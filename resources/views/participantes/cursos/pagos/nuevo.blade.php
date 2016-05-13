@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Pago {{$curso->nombre}}
+                Pago de la actividad {{$curso->nombre}}
             </h3>
         </div>
 
@@ -37,7 +37,7 @@
                         {!!Form::text('numero_pago', Session::get('numero_pago') ,array('required', 'class' => 'form-control')) !!}
                     </div>
                 </div>
-                <a href="{{URL::to("/")}}/participante/cursos/{{$curso->id}}/pagos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+                <a href="{{URL::to("/")}}/participante/actividades/{{$curso->id}}/pagos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
                 @if(Entrust::can('generar_pago'))
                     {!! Form::submit('Guardar', array('class' => 'btn btn-success')) !!}
                 @endif

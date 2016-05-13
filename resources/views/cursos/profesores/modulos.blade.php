@@ -29,7 +29,7 @@
                                     <td>{{ $modulo->nombre }}</td>
                                     <td>
                                         @if(Entrust::can('listar_alumnos'))
-                                            {!!Form::open(["url"=>"cursos/".$curso->id."/modulos/".$modulo->id."/profesores",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"actividades/".$curso->id."/modulos/".$modulo->id."/profesores",  "method" => "GET" ])!!}
                                             <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="profesores">
                                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                             </button>
@@ -45,7 +45,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_cursos_profe'))
-                    <a href="{{URL::to("/")}}/cursos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
+                    <a href="{{URL::to("/")}}/actividades" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
                 @endif
             </div>
         @endif

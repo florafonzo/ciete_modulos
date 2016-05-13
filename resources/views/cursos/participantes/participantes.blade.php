@@ -15,7 +15,7 @@
                 @include('partials.mensajes'){{--Errores--}}
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/participantes/buscar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/".$seccion."/participantes/buscar",  "method" => "GET" ])!!}
                         {{--{!! Form::open(array('method' => 'get', 'route' => array('usuarios.buscar'), 'id' => 'form_busq')) !!}--}}
                         <div class="buscador">
                             <select class="form-control " name="parametro">
@@ -57,7 +57,7 @@
 
                                             <td>
                                                 @if(Entrust::can('eliminar_part_curso'))
-                                                    {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/participantes/".$participante->id."/eliminar",  "method" => "delete", "id" => "form_eliminar_part".$participante->id ])!!}
+                                                    {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/".$seccion."/participantes/".$participante->id."/eliminar",  "method" => "delete", "id" => "form_eliminar_part".$participante->id ])!!}
                                                     <button type="button" onclick="eliminarPart('{{$participante->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar">
                                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                     </button>
@@ -76,7 +76,7 @@
 
                                             <td>
                                                 @if(Entrust::can('eliminar_part_curso'))
-                                                    {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/participantes/".$participante[0]->id."/eliminar",  "method" => "delete", "id" => "form_eliminar_part".$participante[0]->id ])!!}
+                                                    {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/".$seccion."/participantes/".$participante[0]->id."/eliminar",  "method" => "delete", "id" => "form_eliminar_part".$participante[0]->id ])!!}
                                                     <button type="button" onclick="eliminarPart('{{$participante[0]->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar">
                                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                     </button>
@@ -100,13 +100,13 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('ver_lista_cursos'))
-                        <a href="{{URL::to('/')}}/cursos" type="button" class="btn btn-default" style="text-decoration: none"><span class="glyphicon glyphicon-remove"></span> Cancelar </a>
+                        <a href="{{URL::to('/')}}/actividades" type="button" class="btn btn-default" style="text-decoration: none"><span class="glyphicon glyphicon-remove"></span> Cancelar </a>
                     @endif
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('agregar_part_curso'))
-                        {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/participantes/agregar",  "method" => "GET" ])!!}
-                        <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Agregar participante al curso" >
+                        {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/".$seccion."/participantes/agregar",  "method" => "GET" ])!!}
+                        <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Agregar participante a la actividad" >
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar
                         </button>
                         {!! Form::close() !!}

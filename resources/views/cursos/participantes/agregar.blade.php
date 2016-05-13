@@ -16,7 +16,7 @@
                 {{--Seleccione los participantes que desee agregar al curso:--}}
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/participantes/agregar/buscar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/".$seccion."/participantes/agregar/buscar",  "method" => "GET" ])!!}
                         {{--{!! Form::open(array('method' => 'get', 'route' => array('usuarios.buscar'), 'id' => 'form_busq')) !!}--}}
                         <div class="buscador">
                             <select class="form-control " name="parametro">
@@ -53,7 +53,7 @@
 
                                         <td class="">
                                             @if(Entrust::can('agregar_part_curso'))
-                                                {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/participantes/".$partici->id."/agregar",  "method" => "GET", 'id' => 'part_agregar'.$partici->id] )!!}
+                                                {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/".$seccion."/participantes/".$partici->id."/agregar",  "method" => "GET", 'id' => 'part_agregar'.$partici->id] )!!}
                                                     <button type="button" onclick="agregarPart('{{$partici->id}}')" class="btn btn-info" title="Agregar participante al curso" data-toggle="tooltip" data-placement="bottom" aria-hidden="true">
                                                         <span class="glyphicon glyphicon-plus"></span>
                                                     </button>
@@ -77,12 +77,12 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('participantes_curso'))
-                        <a href="{{URL::to('/')}}/cursos/{{$curso->id}}/secciones/{{$seccion}}/participantes" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-chevron-left"></span> Volver </a>
+                        <a href="{{URL::to('/')}}/actividades/{{$curso->id}}/secciones/{{$seccion}}/participantes" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-chevron-left"></span> Volver </a>
                     @endif
                 </div>
                 {{--<div class="col-md-2" style="">--}}
                     {{--@if(Entrust::can('agregar_part_curso'))--}}
-                        {{--{!!Form::open(["url"=>"cursos/".$curso->id."/participantes/agregar",  "method" => "POST" ])!!}--}}
+                        {{--{!!Form::open(["url"=>"actividades/".$curso->id."/participantes/agregar",  "method" => "POST" ])!!}--}}
                         {{--<button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Agregar participante al curso" >--}}
                             {{--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar--}}
                         {{--</button>--}}

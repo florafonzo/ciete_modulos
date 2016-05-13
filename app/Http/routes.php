@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'InicioController@index');
-Route::get('/descripcion/curso/{id}', 'InicioController@descCurso');
+Route::get('/descripcion/actividad/{id}', 'InicioController@descCurso');
 Route::get('/descripcion/webinar/{id}', 'InicioController@descWebinar');
 
 
@@ -36,9 +36,9 @@ Route::post('Contacto','InformacionController@postContacto');
 //Ruta prenscripcion
 Route::get('preinscripcion/procedimiento','PreinscripcionController@showProcedimiento');
 
-Route::get('/preinscripcion/cursos', 'PreinscripcionController@mostrarPreinscripcionCurso');
+Route::get('/preinscripcion/actividades', 'PreinscripcionController@mostrarPreinscripcionCurso');
 Route::get('/preinscripcion/webinars', 'PreinscripcionController@mostrarPreinscripcionWebinar');
-Route::post('preinscripcion/cursos','PreinscripcionController@storePreinscripcionCurso');
+Route::post('preinscripcion/actividades','PreinscripcionController@storePreinscripcionCurso');
 Route::post('preinscripcion/webinars','PreinscripcionController@storePreinscripcionWebinar');
 
 //Rutas Loggin y recuperación de contraseñas
@@ -60,47 +60,47 @@ Route::group([
         Route::get('usuarios/archivo/{doc}/ver', 'UsuariosController@verPdf');
     Route::resource('usuarios','UsuariosController');
 
-    //Rutas manejo de cursos
-    Route::get('cursos/buscar', [
+    //Rutas manejo de actividades
+    Route::get('actividades/buscar', [
         'as' => 'cursos.buscar', 'uses' => 'CursosController@buscar'
     ]);
-    Route::get('cursos/desactivados', 'CursosController@indexDesactivados');
-    Route::get('cursos/desactivados/activar/{id}', 'CursosController@activar');
-    Route::get('cursos/desactivados/buscar', [
-        'as' => 'cursos/desactivados.buscar', 'uses' => 'CursosController@buscar2'
+    Route::get('actividades/desactivados', 'CursosController@indexDesactivados');
+    Route::get('actividades/desactivados/activar/{id}', 'CursosController@activar');
+    Route::get('actividades/desactivados/buscar', [
+        'as' => 'actividades/desactivados.buscar', 'uses' => 'CursosController@buscar2'
     ]);
 
-        Route::get('cursos/imagen','CursosController@cambiarImagen');
-        Route::post('cursos/procesar','CursosController@procesarImagen');
+        Route::get('actividades/imagen','CursosController@cambiarImagen');
+        Route::post('actividades/procesar','CursosController@procesarImagen');
 
-    Route::get('cursos/imagen/{id}','CursosController@cambiarImagen1');
-    Route::post('cursos/procesar/{id}','CursosController@procesarImagen1');
+    Route::get('actividades/imagen/{id}','CursosController@cambiarImagen1');
+    Route::post('actividades/procesar/{id}','CursosController@procesarImagen1');
 
-    Route::get('cursos/{id}/secciones', 'CursosController@seccionesMoodle');
-    Route::get('cursos/{id}/secciones/{seccion}/lista', 'CursosController@listaMoodle');
+    Route::get('actividades/{id}/secciones', 'CursosController@seccionesMoodle');
+    Route::get('actividades/{id}/secciones/{seccion}/lista', 'CursosController@listaMoodle');
 
-    Route::get('cursos/{id}/secciones/participantes', 'CursosController@cursoSeccionesParts');
-    Route::get('cursos/{id_curso}/secciones/{seccion}/participantes', 'CursosController@cursoParticipantes');
-        Route::get('cursos/{id_curso}/secciones/{seccion}/participantes/buscar', [
+    Route::get('actividades/{id}/secciones/participantes', 'CursosController@cursoSeccionesParts');
+    Route::get('actividades/{id_curso}/secciones/{seccion}/participantes', 'CursosController@cursoParticipantes');
+        Route::get('actividades/{id_curso}/secciones/{seccion}/participantes/buscar', [
             'as' => 'cursos.participantes.buscar', 'uses' => 'CursosController@buscarParticipante'
         ]);
-    Route::get('cursos/{id_curso}/secciones/{seccion}/participantes/agregar', 'CursosController@cursoParticipantesAgregar');
-        Route::get('cursos/{id_curso}/secciones/{seccion}/participantes/agregar/buscar', [
+    Route::get('actividades/{id_curso}/secciones/{seccion}/participantes/agregar', 'CursosController@cursoParticipantesAgregar');
+        Route::get('actividades/{id_curso}/secciones/{seccion}/participantes/agregar/buscar', [
             'as' => 'cursos.participantes.buscar', 'uses' => 'CursosController@buscarParticipanteAgregar'
         ]);
-    Route::get('cursos/{id_curso}/secciones/{seccion}/participantes/{id_part}/agregar', 'CursosController@cursoParticipantesGuardar');
-    Route::delete('cursos/{id_curso}/secciones/{seccion}/participantes/{id_part}/eliminar', 'CursosController@cursoParticipantesEliminar');
-    Route::get('cursos/{id}/modulos/profesores', 'CursosController@cursoModulosProfes');
-    Route::get('cursos/{id}/modulos/{modulo}/profesores', 'CursosController@cursoProfesores');
-        Route::get('cursos/{id_curso}/modulos/{modulo}/profesores/buscar', [
+    Route::get('actividades/{id_curso}/secciones/{seccion}/participantes/{id_part}/agregar', 'CursosController@cursoParticipantesGuardar');
+    Route::delete('actividades/{id_curso}/secciones/{seccion}/participantes/{id_part}/eliminar', 'CursosController@cursoParticipantesEliminar');
+    Route::get('actividades/{id}/modulos/profesores', 'CursosController@cursoModulosProfes');
+    Route::get('actividades/{id}/modulos/{modulo}/profesores', 'CursosController@cursoProfesores');
+        Route::get('actividades/{id_curso}/modulos/{modulo}/profesores/buscar', [
             'as' => 'cursos.profesores.buscar', 'uses' => 'CursosController@buscarProfesor'
         ]);
-    Route::get('cursos/{id}/modulos/{modulo}/profesores/agregar', 'CursosController@cursoProfesoresAgregar');
-        Route::get('cursos/{id_curso}/modulos/{modulo}/profesores/agregar/buscar', [
+    Route::get('actividades/{id}/modulos/{modulo}/profesores/agregar', 'CursosController@cursoProfesoresAgregar');
+        Route::get('actividades/{id_curso}/modulos/{modulo}/profesores/agregar/buscar', [
             'as' => 'cursos.participantes.buscar', 'uses' => 'CursosController@buscarProfesorAgregar'
         ]);
-    Route::get('cursos/{id_curso}/modulos/{modulo}/profesores/{id_prof}/agregar', 'CursosController@cursoProfesoresGuardar');
-    Route::delete('cursos/{id_curso}/modulos/{modulo}/profesores/{id_prof}/eliminar', 'CursosController@cursoProfesoresEliminar');
+    Route::get('actividades/{id_curso}/modulos/{modulo}/profesores/{id_prof}/agregar', 'CursosController@cursoProfesoresGuardar');
+    Route::delete('actividades/{id_curso}/modulos/{modulo}/profesores/{id_prof}/eliminar', 'CursosController@cursoProfesoresEliminar');
     Route::resource('cursos','CursosController',['only' => ['index','create','store','update','edit', 'destroy']]);
 
     //Rutas manejo de roles
@@ -192,21 +192,21 @@ Route::group([
     Route::get('participante/perfil/titulo','ParticipantesController@cambiarArchivoT');
     Route::get('participante/perfil/archivo/{doc}/ver', 'ParticipantesController@verPdf');
 //    Route::patch('participante/perfil/{id}','ParticipantesController@update');
-    Route::get('participante/cursos','ParticipantesController@verCursos');
-    Route::get('participante/cursos/{id}/modulos','ParticipantesController@verModulosCurso');
-    Route::get('participante/cursos/{id}/modulos/{modulo}/notas','ParticipantesController@verNotasCurso');
+    Route::get('participante/actividades','ParticipantesController@verCursos');
+    Route::get('participante/actividades/{id}/modulos','ParticipantesController@verModulosCurso');
+    Route::get('participante/actividades/{id}/modulos/{modulo}/notas','ParticipantesController@verNotasCurso');
 
-        Route::get('participante/cursos/{id}/pagos', 'ParticipantesController@verPagosCurso');
-        Route::get('participante/cursos/{id}/pagos/{id_pago}',[
+        Route::get('participante/actividades/{id}/pagos', 'ParticipantesController@verPagosCurso');
+        Route::get('participante/actividades/{id}/pagos/{id_pago}',[
             'as' => 'participante.recibo',
             'uses' => 'ParticipantesController@reciboPagoCurso'
         ]);
-        Route::get('participante/cursos/{id}/nuevo/pago',[
+        Route::get('participante/actividades/{id}/nuevo/pago',[
             'as' => 'participante.nuevo',
             'uses' => 'ParticipantesController@generarPagoCurso'
         ]);
-//        Route::post('participante/cursos/{id}/pagos/generar','ParticipantesController@guardarPagoCurso');
-        Route::post('participante/cursos/{id}/pagos/generar',[
+//        Route::post('participante/actividades/{id}/pagos/generar','ParticipantesController@guardarPagoCurso');
+        Route::post('participante/actividades/{id}/pagos/generar',[
             'as' => 'participante.pago',
             'uses' => 'ParticipantesController@guardarPagoCurso'
         ]);
@@ -216,14 +216,14 @@ Route::group([
 
 
     //Rutas preinscripción
-    Route::get('preinscripcion/cursos/procesar','PreinscripcionController@index');
+    Route::get('preinscripcion/actividades/procesar','PreinscripcionController@index');
     Route::get('preinscripcion/webinars/procesar','PreinscripcionController@indexWeb');
 //    Route::post('preinscripcion/principal', 'PreinscripcionController@mostrar');
-    Route::get('preinscripcion/cursos/activar/{id}',[
+    Route::get('preinscripcion/actividades/activar/{id}',[
         'as' => 'preinscripcion.activar',
         'uses' => 'PreinscripcionController@activarPreinscripcion'
     ]);
-    Route::get('preinscripcion/cursos/desactivar/{id}',[
+    Route::get('preinscripcion/actividades/desactivar/{id}',[
         'as' => 'preinscripcion.desactivar',
         'uses' => 'PreinscripcionController@desactivarPreinscripcion'
     ]);
@@ -278,23 +278,23 @@ Route::group([
     Route::get('profesor/perfil/{id}/editar','ProfesoresController@editarPerfil');
     Route::get('profesor/perfil/imagen','ProfesoresController@cambiarImagen');
     Route::post('profesor/perfil/procesar','ProfesoresController@procesarImagen');
-    Route::get('profesor/cursos','ProfesoresController@verCursos');
-    Route::get('profesor/cursos/buscar', [
+    Route::get('profesor/actividades','ProfesoresController@verCursos');
+    Route::get('profesor/actividades/buscar', [
         'as' => 'profesor.cursos.buscar', 'uses' => 'ProfesoresController@buscarCurso'
     ]);
-    Route::get('profesor/cursos/{id}/modulos','ProfesoresController@verModulosCurso');
-    Route::get('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/informe/datos','ProfesoresController@datosInforme');
-    Route::post('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/informe/datos/generar',[
+    Route::get('profesor/actividades/{id}/modulos','ProfesoresController@verModulosCurso');
+    Route::get('profesor/actividades/{id}/modulos/{modulo}/secciones/{seccion}/informe/datos','ProfesoresController@datosInforme');
+    Route::post('profesor/actividades/{id}/modulos/{modulo}/secciones/{seccion}/informe/datos/generar',[
         'as' => 'profesor.informe','uses' => 'ProfesoresController@generarInformeAc']);
-    Route::get('profesor/cursos/{id}/modulos/{modulo}/secciones','ProfesoresController@verSeccionesCurso');
-    Route::get('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/participantes','ProfesoresController@verParticipantesSeccion');
-        Route::get('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/participantes/buscar', [
+    Route::get('profesor/actividades/{id}/modulos/{modulo}/secciones','ProfesoresController@verSeccionesCurso');
+    Route::get('profesor/actividades/{id}/modulos/{modulo}/secciones/{seccion}/participantes','ProfesoresController@verParticipantesSeccion');
+        Route::get('profesor/actividades/{id}/modulos/{modulo}/secciones/{seccion}/participantes/buscar', [
             'as' => 'profesor.cursos.participantes.buscar', 'uses' => 'ProfesoresController@buscarParticipante'
         ]);
-    Route::get('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/lista','ProfesoresController@generarLista');
-    Route::get('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/participantes/{id_alumno}/notas','ProfesoresController@verNotasParticipante');
-    Route::post('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/participantes/{id_alumno}/notas','ProfesoresController@store');
-    Route::delete('profesor/cursos/{id}/modulos/{modulo}/secciones/{seccion}/participantes/{id_alumno}/notas/{id_nota}','ProfesoresController@eliminarNotasParticipante');
+    Route::get('profesor/actividades/{id}/modulos/{modulo}/secciones/{seccion}/lista','ProfesoresController@generarLista');
+    Route::get('profesor/actividades/{id}/modulos/{modulo}/secciones/{seccion}/participantes/{id_alumno}/notas','ProfesoresController@verNotasParticipante');
+    Route::post('profesor/actividades/{id}/modulos/{modulo}/secciones/{seccion}/participantes/{id_alumno}/notas','ProfesoresController@store');
+    Route::delete('profesor/actividades/{id}/modulos/{modulo}/secciones/{seccion}/participantes/{id_alumno}/notas/{id_nota}','ProfesoresController@eliminarNotasParticipante');
 //    Route::get('profesor/webinars','ProfesoresController@verWebinars');
 //    Route::get('profesor/webinars/{id}/secciones','ProfesoresController@verSeccionesWebinar');
     Route::get('/nota/{id}', function(){

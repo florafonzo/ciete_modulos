@@ -32,7 +32,7 @@
                                     <td>{{ $seccion }}</td>
                                     <td>
                                         @if(Entrust::can('listar_alumnos'))
-                                            {!!Form::open(["url"=>"cursos/".$curso->id."/secciones/".$seccion."/lista",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/".$seccion."/lista",  "method" => "GET" ])!!}
                                             <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="descargar">
                                                 <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
                                             </button>
@@ -46,7 +46,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_cursos_profe'))
-                    <a href="{{URL::to("/")}}/cursos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
+                    <a href="{{URL::to("/")}}/actividades" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
                 @endif
             </div>
         @endif
