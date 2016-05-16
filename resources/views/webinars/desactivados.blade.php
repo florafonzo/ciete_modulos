@@ -71,6 +71,11 @@
                         @endif
                     </table>
                 </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <?php echo $webinars->render(); ?>
+                    </div>
+                </div>
                 @if(Entrust::can('ver_webinars'))
                     <div class="" style="text-align: center;">
                         <a href="{{URL::to('/')}}/webinars" type="button" class="btn btn-success" >Ver webinars activos </a>

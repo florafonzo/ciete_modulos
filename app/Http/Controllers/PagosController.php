@@ -33,7 +33,7 @@ class PagosController extends Controller {
 				$data['errores'] = '';
 				$data['busq_'] = false;
 				$data['busq'] = false;
-				$data['pagos'] = Pago::where('aprobado', '=', false)->get();
+				$data['pagos'] = Pago::where('aprobado', '=', false)->paginate(5);
 				foreach ($data['pagos'] as $pago) {
 					$pago['participante'] = Participante::find($pago->id_participante);
 					$pago['curso'] = Curso::find($pago->id_curso);

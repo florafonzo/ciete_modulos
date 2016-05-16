@@ -8,6 +8,7 @@ use App\Http\Requests\ContactoRequest;
 use Validator;
 use Input;
 use Mail;
+use Response;
 
 class InformacionController extends Controller {
 
@@ -66,68 +67,17 @@ class InformacionController extends Controller {
     	//return back()->withSuccess("Gracias por tu mensaje. Ha sido enviado");
   	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
+    public function ayuda()
+    {
+        return view('informacion.ayuda');
+    }
+    public function descargarAyuda()
+    {
+        $path = public_path() . '/documentos/ayuda.pdf';
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
+        return Response::make(file_get_contents($path), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; ayuda.pdf',
+        ]);
+    }
 }

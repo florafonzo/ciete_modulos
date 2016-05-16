@@ -35,7 +35,7 @@ class RolesController extends Controller {
                 $data['errores'] = '';
                 $data['busq'] = false;
                 $data['busq_'] = false;
-                $data['roles'] = Role::orderBy('name')->get();   // Se obtienen todos los roles
+                $data['roles'] = Role::orderBy('name')->paginate(2);   // Se obtienen todos los roles
                 foreach ($data['roles'] as $rol) {
                     $rol['permisos'] = $rol->perms()->get();    //Se obtienen los permisos asociados a cada rol
                 }

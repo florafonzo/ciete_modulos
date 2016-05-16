@@ -52,7 +52,7 @@ class CursosController extends Controller {
 
             if($usuario_actual->can('ver_lista_cursos')) {    // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
-                $data['cursos'] = Curso::orderBy('created_at')->get(); // Se obtienen todos los cursos con sus datos
+                $data['cursos'] = Curso::orderBy('created_at')->paginate(5); // Se obtienen todos los cursos con sus datos
                 $data['tipos'] = TipoCurso::all()->lists('nombre', 'id');
                 $data['busq_'] = false;
                 $data['busq'] = false;
@@ -964,7 +964,7 @@ class CursosController extends Controller {
                 $data['errores'] = '';
                 $data['busq_'] = false;
                 $data['cursos'] = Curso::where('curso_activo', '=', 'false')
-                                        ->orderBy('created_at')->get(); // Se obtienen todos los cursos con sus datos
+                                        ->orderBy('created_at')->paginate(5); // Se obtienen todos los cursos con sus datos
 
                 foreach ($data['cursos'] as $curso) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
                     $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();

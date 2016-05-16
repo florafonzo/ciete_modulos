@@ -42,7 +42,7 @@ class InformesController extends Controller {
                 $data['errores'] = '';
                 $data['busq_'] = false;
                 $data['busq'] = false;
-                $data['informes'] = Informe::all();
+                $data['informes'] = Informe::paginate(5);
 
                 foreach ($data['informes'] as $informe) {
                     $informe['profesor'] = Profesor::find($informe->id_profesor);

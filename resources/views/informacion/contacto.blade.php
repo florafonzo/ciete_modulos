@@ -73,7 +73,7 @@
                             </div>
                          @endif
 
-                    <form id="form" method="POST" action="{{ url('Contacto') }}">
+                    <form id="form" method="POST" action="{{ url('contacto') }}">
 
                         <input type="hidden" name="_token" value="{!! csrf_token() !!}">
 

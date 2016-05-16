@@ -92,9 +92,10 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $rol->display_name }}</td>
                                         <td>
-                                            @foreach($rol->permisos as $permiso)
-                                                {{ $permiso->display_name }} <br/>
-                                            @endforeach
+                                            @for($i = 0; $i < 5; $i++)
+                                                {{ $rol->permisos[$i]->display_name }} <br/>
+                                            @endfor
+                                            ...
                                         </td>
                                         <td>
                                             @if(Entrust::can('editar_roles'))
@@ -133,6 +134,11 @@
                         @endif
                         </tbody>
                     </table>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <?php echo $roles->render(); ?>
+                    </div>
                 </div>
                 @if(Entrust::can('crear_roles'))
                     <div class="" style="text-align: center;">

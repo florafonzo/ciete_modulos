@@ -18,11 +18,13 @@ Route::get('/descripcion/webinar/{id}', 'InicioController@descWebinar');
 
 
 //Rutas Información CIETE y Créditos
-Route::get('Misión-y-Visión','InformacionController@mision_vision');
-Route::get('Estructura','InformacionController@estructura');
-Route::get('Servicios','InformacionController@servicios');
-Route::get('Equipo','InformacionController@equipo');	
-Route::get('Créditos','InformacionController@creditos');
+Route::get('mision-y-vision','InformacionController@mision_vision');
+Route::get('estructura','InformacionController@estructura');
+Route::get('servicios','InformacionController@servicios');
+Route::get('equipo','InformacionController@equipo');
+Route::get('creditos','InformacionController@creditos');
+Route::get('ayuda','InformacionController@ayuda');
+Route::get('ayuda/manual', 'InformacionController@descargarAyuda');
 
 //Rutas de correo
 Route::post('/password/email', 'Auth\PasswordController@postEmail');
@@ -30,8 +32,8 @@ Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('/password/reset', 'Auth\PasswordController@postReset');
 
 //Ruta de contacto
-Route::get('Contacto','InformacionController@getcontacto');
-Route::post('Contacto','InformacionController@postContacto');
+Route::get('contacto','InformacionController@getcontacto');
+Route::post('contacto','InformacionController@postContacto');
 
 //Ruta prenscripcion
 Route::get('inscripcion/procedimiento','PreinscripcionController@showProcedimiento');

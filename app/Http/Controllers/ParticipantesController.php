@@ -408,7 +408,7 @@ class ParticipantesController extends Controller {
                 $data['tipo'] = TipoCurso::find($curso->id_tipo);
                 $participante = Participante::where('id_usuario', '=', $usuario_actual->id)->get();
                 $data['pagos'] = $pagos = Pago::where('id_curso', '=', $id_curso)
-                                                ->where('id_participante', '=', $participante[0]->id)->get();
+                                                ->where('id_participante', '=', $participante[0]->id)->paginate(5);
                 $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
                 $total = 0;
                 $data['completo'] = true;
@@ -422,6 +422,7 @@ class ParticipantesController extends Controller {
                             $pago['estatus'] = 'En espera';
                         }
                     }
+                    dd($total);
                     if($total < $curso->costo){
                         $data['completo'] = false;
                         $pagos_restantes = 3 - $pagos->count();
@@ -434,6 +435,8 @@ class ParticipantesController extends Controller {
                         $data['completo'] = true;
                         $data['pagos_restantes'] = 0;
                     }
+                }else{
+                    $data["completo"] = false;
                 }
 //                if($data['completo']){
 //                    $data['pagos_restantes'] = 0;

@@ -90,7 +90,6 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
                             @else
                                 @if($busq_)
                                     <td></td>
@@ -155,6 +154,11 @@
                         @endif
                         </tbody>
                     </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <?php echo $usuarios->render(); ?>
+                    </div>
                 </div>
                 @if(Entrust::can('crear_usuarios'))
                     <div class="" style="text-align: center;">

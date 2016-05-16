@@ -38,7 +38,7 @@ class InscripcionController extends Controller {
 			if($usuario_actual->can('activar_inscripcion')) {    // Si el usuario posee los permisos necesarios continua con la acción
 				$data['errores'] = '';
 				$data['busq_'] = false;
-				$data['usuarios'] = Preinscripcion::all();
+				$data['usuarios'] = Preinscripcion::paginate(5);
                 foreach ($data['usuarios'] as $usuario) {
                     if($usuario->tipo != 'Webinar') {
                         $curso = Curso::where('id', '=', $usuario->id_curso)->get();

@@ -75,12 +75,18 @@
                         @endif
                     </table>
                 </div>
-                @if(Entrust::can('ver_lista_cursos'))
-                    <div class="" style="text-align: center;">
-                        <a href="{{URL::to('/')}}/actividades" type="button" class="btn btn-success" >Ver actividades activas </a>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <?php echo $cursos->render(); ?>
                     </div>
-                @endif
-
+                </div>
+                <div class="row">
+                    @if(Entrust::can('ver_lista_cursos'))
+                        <div class="" style="text-align: center;">
+                            <a href="{{URL::to('/')}}/actividades" type="button" class="btn btn-success" >Ver actividades activas </a>
+                        </div>
+                    @endif
+                </div>
             </div>
         @endif
     </div>

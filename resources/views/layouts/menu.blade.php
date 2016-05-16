@@ -19,11 +19,11 @@
                 <li class="dropdown fondo">
                     <a class="lista-menu" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nosotros <span class="caret"></span></a>
                     <ul class="dropdown-menu menu_bajo">
-                        <li><a href="{{URL::to('/')}}/Misión-y-Visión">¿Quiénes somos?</a></li>
-                        <li><a href="{{URL::to('/')}}/Estructura">Estructura</a></li>
-                        <li><a href="{{URL::to('/')}}/Servicios">Servicios</a></li>
-                        <li><a href="{{URL::to('/')}}/Equipo">Equipo</a></li>
-                        <li><a href="{{URL::to('/')}}/Contacto">Contacto</a></li>
+                        <li><a href="{{URL::to('/')}}/mision-y-vision">¿Quiénes somos?</a></li>
+                        <li><a href="{{URL::to('/')}}/estructura">Estructura</a></li>
+                        <li><a href="{{URL::to('/')}}/servicios">Servicios</a></li>
+                        <li><a href="{{URL::to('/')}}/equipo">Equipo</a></li>
+                        <li><a href="{{URL::to('/')}}/contacto">Contacto</a></li>
                     </ul>
                 </li>
                 <li class="dropdown fondo">
@@ -71,11 +71,14 @@
                         </li>
                     </ul>
                 </li>
+                <li class="fondo">
+                    <a class="lista-menu" href="{{URL::to('/')}}/creditos">Créditos</a>
+                </li>
                 <li class="fondo borde_no">
-                    <a class="lista-menu" href="{{URL::to('/')}}/Créditos">Créditos</a>
+                    <a class="lista-menu" href="{{URL::to('/')}}/ayuda">Ayuda  <span class="glyphicon glyphicon-question-sign"></span></a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" style="margin-right: -1%">
                 <li class="redes">
                     <ul class="list-inline">
                         <li><a href="https://www.facebook.com/ciete.ula"><img class="img-responsive" src="{{URL::to('/')}}/images/logo-facebook.png" alt=""/></a></li>
@@ -83,7 +86,7 @@
                         <li><a href="https://www.youtube.com/channel/UCY9f2COL913LKZoxeFcoQPA"><img class="img-responsive" src="{{URL::to('/')}}/images/logo-youtube.png" alt=""/></a></li>
                         <li><a href="http://instagram.com/ciete.ula"><img class="img-responsive" src="{{URL::to('/')}}/images/logo-instagram.png" alt=""/></a></li>
                         <li><a href="https://plus.google.com/u/0/+CIETEULA/"><img class="img-responsive" src="{{URL::to('/')}}/images/logo-googleplus.png" alt=""/></a></li>
-                        <li><a href="http://cieteula.tumblr.com/"><img class="img-responsive" src="{{URL::to('/')}}/images/logo-tumblr.png" alt=""/></a></li>
+                        {{--<li><a href="http://cieteula.tumblr.com/"><img class="img-responsive" src="{{URL::to('/')}}/images/logo-tumblr.png" alt=""/></a></li>--}}
                         <li><a href="https://www.pinterest.com/raymarq/"><img class="img-responsive" src="{{URL::to('/')}}/images/logo-pinterest.png" alt=""/></a></li>
                     </ul>
                 </li>

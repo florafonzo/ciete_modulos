@@ -108,7 +108,20 @@ $(document).ready(function() {
 // ------ FadeOut para desaparecer notificaciones en un tiempo estimado ------ //
     $('.flash_time').fadeToggle(4000);
 
-//--------------------------------------------
+//-------------------------------------------------------------------------------
+//
+// ---------------------------- Buscador menú lateral-------------------------------- //
+
+    $('#buscador').keyup(function(){
+        var valThis = $(this).val().toLowerCase();
+        $('.menuItem').each(function(){
+            var text = $(this).attr("id").toLowerCase();
+            //var text = $(this).text().toLowerCase();
+            (text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+        });
+    });
+
+//--------------------------------------------------------------------------------
 
 
 // ------ Mostrar estado, ciudad, municipio y parroquia si el País es igual a Venezuela ------//

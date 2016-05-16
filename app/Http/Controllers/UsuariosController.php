@@ -46,7 +46,7 @@ class UsuariosController extends Controller {
             }
 
             if($usuario_actual->can('ver_usuarios')) {   // Si el usuario posee los permisos necesarios continua con la acción
-                $data['usuarios'] = User::orderBy('id')->get();
+                $data['usuarios'] = User::orderBy('id')->paginate(5);
                 $data['errores'] = '';
                 $data['roles'] = Role::all()->lists('display_name', 'id');
                 $data['busq'] = false;

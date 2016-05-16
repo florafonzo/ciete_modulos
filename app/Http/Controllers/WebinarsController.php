@@ -44,7 +44,7 @@ class WebinarsController extends Controller {
 				$data['errores'] = '';
                 $data['busq_'] = false;
 				$data['webinars'] = Webinar::where('webinar_activo', '=', true)
-                                        ->orderBy('created_at')->get();   // Se obtienen todos los webinars
+                                        ->orderBy('created_at')->paginate(5);   // Se obtienen todos los webinars
                 foreach ($data['webinars'] as $web) {   //Formato fechas
                     $web['inicio'] = new DateTime($web->fecha_inicio);
                     $web['fin'] = new DateTime($web->fecha_fin);
@@ -607,7 +607,7 @@ class WebinarsController extends Controller {
                 $data['busq_'] = false;
 //                $data['busq'] = false;
                 $data['webinars'] = Webinar::where('webinar_activo', '=', false)
-                                            ->orderBy('created_at')->get(); // Se obtienen todos los webinars descativados con sus datos
+                                            ->orderBy('created_at')->paginate(5); // Se obtienen todos los webinars descativados con sus datos
                 foreach ($data['webinars'] as $web) {   //Formato fechas
                     $web['inicio'] = new DateTime($web->fecha_inicio);
                     $web['fin'] = new DateTime($web->fecha_fin);

@@ -47,19 +47,20 @@ class PreinscripcionController extends Controller {
                 $data['errores'] = '';
                 $data['cursos'] = Curso::where('curso_activo', '=', true)
                                         ->where('fecha_inicio', '>', new DateTime('today'))
-                                        ->orderBy('created_at')->get();
+                                        ->orderBy('created_at')->paginate(5);
+                if(count($data['cursos']) != 0) {
+                    foreach ($data['cursos'] as $curso) {   // Se asocia el tipo a cada curso (Cápsula o Diplomado)
+                        $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
+                        $curso['tipo_curso'] = $tipo[0]->nombre;
+                        $curso['inicio'] = new DateTime($curso->fecha_inicio);
+                        $curso['fin'] = new DateTime($curso->fecha_fin);
+                        if ($curso->activo_preinscripcion)
+                            $curso['estado'] = "Activado";
+                        else {
+                            $curso['estado'] = "Desactivado";
+                        }
 
-                foreach ($data['cursos'] as $curso) {   // Se asocia el tipo a cada curso (Cápsula o Diplomado)
-                    $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
-                    $curso['tipo_curso'] = $tipo[0]->nombre;
-                    $curso['inicio'] = new DateTime($curso->fecha_inicio);
-                    $curso['fin'] = new DateTime($curso->fecha_fin);
-                    if($curso->activo_preinscripcion)
-                        $curso['estado'] = "Activado";
-                    else{
-                        $curso['estado'] = "Desactivado";
                     }
-
                 }
 
                 return view('preinscripcion.preinscripcion-cursos', $data);
@@ -90,17 +91,19 @@ class PreinscripcionController extends Controller {
                 $data['errores'] = '';
                 $data['webinars'] = Webinar::where('webinar_activo', '=', true)
                     ->where('fecha_inicio', '>', new DateTime('today'))
-                    ->orderBy('created_at')->get();
+                    ->orderBy('created_at')->paginate(5);
 
-                foreach ($data['webinars'] as $web) {
-                    $web['inicio'] = new DateTime($web->fecha_inicio);
-                    $web['fin'] = new DateTime($web->fecha_fin);
-                    if($web->activo_preinscripcion)
-                        $web['estado'] = "Activado";
-                    else{
-                        $web['estado'] = "Desactivado";
+                if(count($data['webinars']) != 0) {
+                    foreach ($data['webinars'] as $web) {
+                        $web['inicio'] = new DateTime($web->fecha_inicio);
+                        $web['fin'] = new DateTime($web->fecha_fin);
+                        if ($web->activo_preinscripcion)
+                            $web['estado'] = "Activado";
+                        else {
+                            $web['estado'] = "Desactivado";
+                        }
+
                     }
-
                 }
 
                 return view('preinscripcion.preinscripcion-webinars', $data);
@@ -434,14 +437,20 @@ class PreinscripcionController extends Controller {
                 $data['errores'] = '';
                 $data['cursos'] = Curso::where('curso_activo', '=', true)
                     ->where('fecha_inicio', '>', new DateTime('today'))
-                    ->orderBy('created_at')->get();
+                    ->orderBy('created_at')->paginate(5);
 
-                foreach ($data['cursos'] as $curso) {   // Se asocia el tipo a cada curso (Cápsula o Diplomado)
-                    $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
-                    $curso['tipo_curso'] = $tipo[0]->nombre;
-                    $curso['inicio'] = new DateTime($curso->fecha_inicio);
-                    $curso['fin'] = new DateTime($curso->fecha_fin);
-
+                if(count($data['cursos']) != 0) {
+                    foreach ($data['cursos'] as $curso) {   // Se asocia el tipo a cada curso (Cápsula o Diplomado)
+                        $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
+                        $curso['tipo_curso'] = $tipo[0]->nombre;
+                        $curso['inicio'] = new DateTime($curso->fecha_inicio);
+                        $curso['fin'] = new DateTime($curso->fecha_fin);
+                        if ($curso->activo_preinscripcion)
+                            $curso['estado'] = "Activado";
+                        else {
+                            $curso['estado'] = "Desactivado";
+                        }
+                    }
                 }
 
 
@@ -479,14 +488,18 @@ class PreinscripcionController extends Controller {
                 $data['errores'] = '';
                 $data['cursos'] = Curso::where('curso_activo', '=', true)
                     ->where('fecha_inicio', '>', new DateTime('today'))
-                    ->orderBy('created_at')->get();
+                    ->orderBy('created_at')->paginate(5);
 
                 foreach ($data['cursos'] as $curso) {   // Se asocia el tipo a cada curso (Cápsula o Diplomado)
                     $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
                     $curso['tipo_curso'] = $tipo[0]->nombre;
                     $curso['inicio'] = new DateTime($curso->fecha_inicio);
                     $curso['fin'] = new DateTime($curso->fecha_fin);
-
+                    if ($curso->activo_preinscripcion)
+                        $curso['estado'] = "Activado";
+                    else {
+                        $curso['estado'] = "Desactivado";
+                    }
                 }
 
 
@@ -524,14 +537,19 @@ class PreinscripcionController extends Controller {
                 $data['errores'] = '';
                 $data['webinars'] = Webinar::where('webinar_activo', '=', true)
                     ->where('fecha_inicio', '>', new DateTime('today'))
-                    ->orderBy('created_at')->get();
+                    ->orderBy('created_at')->paginate(5);
 
-                foreach ($data['webinars'] as $web) {
-                    $web['inicio'] = new DateTime($web->fecha_inicio);
-                    $web['fin'] = new DateTime($web->fecha_fin);
-
+                if(count($data['webinars']) != 0) {
+                    foreach ($data['webinars'] as $web) {
+                        $web['inicio'] = new DateTime($web->fecha_inicio);
+                        $web['fin'] = new DateTime($web->fecha_fin);
+                        if ($web->activo_preinscripcion)
+                            $web['estado'] = "Activado";
+                        else {
+                            $web['estado'] = "Desactivado";
+                        }
+                    }
                 }
-
                 return view('preinscripcion.preinscripcion-webinars', $data);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
@@ -566,12 +584,18 @@ class PreinscripcionController extends Controller {
                 $data['errores'] = '';
                 $data['webinars'] = Webinar::where('webinar_activo', '=', true)
                     ->where('fecha_inicio', '>', new DateTime('today'))
-                    ->orderBy('created_at')->get();
+                    ->orderBy('created_at')->paginate(5);
 
-                foreach ($data['webinars'] as $web) {
-                    $web['inicio'] = new DateTime($web->fecha_inicio);
-                    $web['fin'] = new DateTime($web->fecha_fin);
-
+                if(count($data['webinars']) != 0) {
+                    foreach ($data['webinars'] as $web) {
+                        $web['inicio'] = new DateTime($web->fecha_inicio);
+                        $web['fin'] = new DateTime($web->fecha_fin);
+                        if ($web->activo_preinscripcion)
+                            $web['estado'] = "Activado";
+                        else {
+                            $web['estado'] = "Desactivado";
+                        }
+                    }
                 }
 
                 return view('preinscripcion.preinscripcion-webinars', $data);

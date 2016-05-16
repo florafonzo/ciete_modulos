@@ -317,6 +317,19 @@ img.insta{
 
 /***********/
 
+.ayuda{
+    border:none;
+    /*overflow:hidden;*/
+    height: auto;
+    width: auto;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    /*padding-left: 9%;*/
+
+}
+
 /* Pie de página (footer) */
 .pie-pag{
     background-color: lightslategrey;
@@ -493,6 +506,9 @@ img.insta{
 .opciones_part2{
     border-left: 2px solid #a3c0bd;
 }
+/*.opciones_part{*/
+    /*border-right: 2px solid #a3c0bd;*/
+/*}*/
 
 .menu_part ul{
     list-style: none;

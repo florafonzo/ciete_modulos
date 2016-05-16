@@ -26,7 +26,8 @@
                             <th>Acciones</th>
                         </tr>
                         </thead>
-                        @if($cursos->count())
+                        @if(count($cursos) != 0)
+                            {{$cursos}}
                             <tbody>
                             @foreach($cursos as $index => $curso)
                                 <tr>
@@ -62,8 +63,19 @@
                                 </tr>
                             @endforeach
                             </tbody>
+                        @else
+                            <td></td>
+                            <td>No existen cursos activos</td>
                         @endif
                     </table>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <?php echo $cursos->render(); ?>
+                    </div>
+                </div>
+                <div class="">
+                    <a href="{{URL::to("/")}}/" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                 </div>
             </div>
         @endif

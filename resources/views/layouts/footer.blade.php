@@ -20,10 +20,10 @@
         <div class="col-md-6 col-xs-12 col-sm-12">
             <ul class="nav nav-pills menu_foot">
                 <li>
-                    <a class="pie" href="/"> Inicio </a>
+                    <a class="pie" href="{{URL::to('/')}}"> Inicio </a>
                 </li>
                 <li>
-                    <a class="pie" href="/Contacto"> Contactanos </a>
+                    <a class="pie" href="{{URL::to('/')}}/contacto"> Contactanos </a>
                 </li>
                 <li>
                     <a class="pie" href="#"> Subir </a>

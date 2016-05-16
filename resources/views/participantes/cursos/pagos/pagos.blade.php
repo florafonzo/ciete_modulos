@@ -59,6 +59,11 @@
                         @endif
                     </table>
                 </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <?php echo $pagos->render(); ?>
+                    </div>
+                </div>
                 @if(Entrust::can('generar_pago'))
                     @if($completo == false)
                         <div class="" style="text-align: center;">

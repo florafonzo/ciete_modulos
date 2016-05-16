@@ -117,11 +117,18 @@
                         @endif
                     </table>
                 </div>
-                @if(Entrust::can('crear_cursos'))
-                    <div class="" style="text-align: center;">
-                        <a href="{{URL::to('/')}}/actividades/create" type="button" class="btn btn-success" >Agregar actividad </a>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <?php echo $cursos->render(); ?>
                     </div>
-                @endif
+                </div>
+                <div class="row">
+                    @if(Entrust::can('crear_cursos'))
+                        <div class="" style="text-align: center;">
+                            <a href="{{URL::to('/')}}/actividades/create" type="button" class="btn btn-success" >Agregar actividad </a>
+                        </div>
+                    @endif
+                </div>
             </div>
         @endif
     </div>
