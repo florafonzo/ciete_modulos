@@ -70,17 +70,17 @@
                         </li>
                     @endif
                     @if(Entrust::can('activar_preinscripcion'))
-                        <li class="menu_usuarios @if(Request::is('preinscripcion')) active @endif">
-                            <a class="menu_usu" href="{{URL::to('/preinscripcion/actividades/procesar')}}"> Inscripciones de Actividades </a>
+                        <li class="menu_usuarios @if(Request::is('inscripcion/actividades/procesar')) active @endif">
+                            <a class="menu_usu" href="{{URL::to('/inscripcion/actividades/procesar')}}"> Inscripciones de Actividades </a>
                         </li>
                     @endif
                     @if(Entrust::can('activar_preinscripcion'))
-                        <li class="menu_usuarios @if(Request::is('preinscripcion')) active @endif">
-                            <a class="menu_usu" href="{{URL::to('/preinscripcion/webinars/procesar')}}"> Inscripciones de Webinars </a>
+                        <li class="menu_usuarios @if(Request::is('inscripcion/webinars/procesar')) active @endif">
+                            <a class="menu_usu" href="{{URL::to('/inscripcion/webinars/procesar')}}"> Inscripciones de Webinars </a>
                         </li>
                     @endif
                     @if(Entrust::can('activar_inscripcion'))
-                        <li class="menu_usuarios @if(Request::is('inscripcion*')) active @endif">
+                        <li class="menu_usuarios @if(Request::is('inscripcion*') and (!(Request::is('inscripcion/webinars/procesar'))) and (!(Request::is('inscripcion/actividades/procesar')))) active @endif">
                             <a class="menu_usu" href="{{URL::to('/')}}/inscripcion/procesar"> Gestión Inscripciones </a>
                         </li>
                     @endif

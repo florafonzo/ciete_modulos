@@ -372,7 +372,7 @@ class CursosController extends Controller {
                 //Se verifica que el nombre sea único si el curso es Cápsula y si es Diplomado se verifica la cohorte
                 if($request->id_tipo == '1'){  //Diplomado
                     $existe = Curso::where('nombre', '=', $request->nombre)->where('cohorte', '=', $request->cohorte)->get();
-                    dd($existe->count());
+//                    dd($existe->count());
                     if($existe->count()){
                         Session::set('error', 'El Diplomado '.$request->nombre.' ya existe con la cohorte '.$request->cohorte.'. Ingrese otra cohorte');
                         return view('cursos.crear', $data);
@@ -558,7 +558,7 @@ class CursosController extends Controller {
                         ]);
                     }
                     Session::set('mensaje', 'Actividad creada con éxito');
-                    return redirect('/cursos');
+                    return redirect('/actividades');
                 } else {    // Si el curso no se ha creado bien se redirige al formulario de creación y se le indica al usuario el error
                     Session::set('error', 'Ha ocurrido un error inesperado');
                     return view('cursos.crear');
@@ -706,16 +706,16 @@ class CursosController extends Controller {
                 //Se verifica que el nombre sea único si el curso es Cápsula y si es Diplomado se verifica la cohorte
                 if($request->id_tipo == '1'){  //Diplomado
                     $existe = Curso::where('nombre', '=', $request->nombre)->where('cohorte', '=', $request->cohorte)->get();
-                    dd($existe->count());
+//                    dd($existe->count());
                     if($existe->count()){
                         Session::set('error', 'El Diplomado '.$request->nombre.' ya existe con la cohorte '.$request->cohorte.'. Ingrese otra cohorte');
-                        return view('cursos.crear', $data);
+                        return view('cursos.editar', $data);
                     }
                 }elseif($request->id_tipo == '2'){  //Cápsula
                     $existe = Curso::where('nombre', '=', $request->nombre)->where('id_tipo', '=', '2')->get();
                     if($existe->count()) {
                         Session::set('error', 'La Cápsula ' . $request->nombre . ' ya existe. Ingrese otro nombre');
-                        return view('cursos.crear', $data);
+                        return view('cursos.editar', $data);
                     }
                 }
 
@@ -806,21 +806,21 @@ class CursosController extends Controller {
                         $fecha_f = Input::get('fecha_f_' . $i);
                         if(($fecha_i) != $request->fecha_inicio) {
                             Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual a la fecha de inicio del curso '.$request->nombre);
-                            return view('cursos.crear', $data);
+                            return view('cursos.editar', $data);
                         }
                         if (($fecha_i) >= ($fecha_f)) {
                             Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser menor a la fecha fin');
-                            return view('cursos.crear', $data);
+                            return view('cursos.editar', $data);
                         }
                         if($i < ($modulos - 1)) {
                             if (($fecha_f) > $request->fecha_fin) {
                                 Session::set('error', 'La fecha fin del módulo ' . $nombre . ' debe ser menor a la fecha fin del curso ' . $request->nombre);
-                                return view('cursos.crear', $data);
+                                return view('cursos.editar', $data);
                             }
                         }elseif($i == ($modulos - 1)){
                             if (($fecha_f) != $request->fecha_fin) {
                                 Session::set('error', 'La fecha fin del último módulo debe igual a la fecha fin del curso ' . $request->nombre);
-                                return view('cursos.crear', $data);
+                                return view('cursos.editar', $data);
                             }
                         }
                         $nuevo_modulo->nombre = $nombre;
@@ -833,27 +833,27 @@ class CursosController extends Controller {
                         $fecha_f = Input::get('fecha_f_' . $i);
                         if(($fecha_i) <= $nuevo_modulo->fecha_fin) {
                             Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser mayor a la fecha fin del modulo '.$nuevo_modulo->nombre);
-                            return view('cursos.crear', $data);
+                            return view('cursos.editar', $data);
                         }
                         if (($fecha_i) >= ($fecha_f)) {
                             Session::set('error', 'La fecha de inicio del módulo '.$nombre.' debe ser igual o menor a la fecha fin');
-                            return view('cursos.crear', $data);
+                            return view('cursos.editar', $data);
                         }
                         if($i != ($modulos - 1)) {
                             if (($fecha_f) > $request->fecha_fin) {
                                 Session::set('error', 'La fecha fin del módulo ' . $nombre . ' debe ser menor a la fecha fin del curso ' . $request->nombre);
-                                return view('cursos.crear', $data);
+                                return view('cursos.editar', $data);
                             }
                         }
                         if($i < ($modulos - 1)) {
                             if (($fecha_f) > $request->fecha_fin) {
                                 Session::set('error', 'La fecha fin del módulo ' . $nombre . ' debe ser menor a la fecha fin del curso ' . $request->nombre);
-                                return view('cursos.crear', $data);
+                                return view('cursos.editar', $data);
                             }
                         }elseif($i == ($modulos - 1)){
                             if (($fecha_f) != $request->fecha_fin) {
                                 Session::set('error', 'La fecha fin del último módulo debe igual a la fecha fin del curso ' . $request->nombre);
-                                return view('cursos.crear', $data);
+                                return view('cursos.editar', $data);
                             }
                         }
                         $nuevo_modulo->nombre = $nombre;
@@ -880,7 +880,7 @@ class CursosController extends Controller {
                         ]);
                     }
                     Session::set('mensaje', 'Actividad actualizada con éxito');
-                    return redirect('/cursos');
+                    return redirect('/actividades');
                 } else {    // Si el curso no se ha creado bien se redirige al formulario de creación y se le indica al usuario el error
                     Session::set('error', 'Ha ocurrido un error inesperado');
                     return view('cursos.editar');
@@ -1122,6 +1122,8 @@ class CursosController extends Controller {
                 $data['tipos'] = TipoCurso::all()->lists('nombre', 'id');
                 $data['inicio'] = new DateTime($data['cursos']->fecha_inicio);
                 $data['fin'] = new DateTime($data['cursos']->fecha_fin);
+                $data['modulos'] = Modulo::where('id_curso', '=', $id)->get();
+                $data['cant_modulos'] = Modulo::where('id_curso', '=', $id)->count();
 
                 $arr = [];
                 foreach ($data['modalidad_pago'] as $index => $mod) {

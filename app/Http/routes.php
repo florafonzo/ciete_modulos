@@ -61,6 +61,20 @@ Route::group([
     Route::resource('usuarios','UsuariosController');
 
     //Rutas manejo de actividades
+
+//        Route::get('actividades', 'CursosController@index');
+//        Route::get('actividades/create', 'CursosController@create');
+//        Route::post('actividades', 'CursosController@store');
+//        Route::get('actividades/{id}/edit',[
+//            'as' => 'actividades.edit', 'uses' => 'CursosController@edit'
+//        ]);
+//        Route::patch('actividades/{id}', [
+//            'as' => 'actividades.update', 'uses' => 'CursosController@update'
+//        ]);
+//        Route::delete('actividades/{id}', [
+//            'as' => 'actividades.destroy', 'uses' => 'CursosController@delete'
+//        ]);
+
     Route::get('actividades/buscar', [
         'as' => 'cursos.buscar', 'uses' => 'CursosController@buscar'
     ]);
@@ -101,7 +115,8 @@ Route::group([
         ]);
     Route::get('actividades/{id_curso}/modulos/{modulo}/profesores/{id_prof}/agregar', 'CursosController@cursoProfesoresGuardar');
     Route::delete('actividades/{id_curso}/modulos/{modulo}/profesores/{id_prof}/eliminar', 'CursosController@cursoProfesoresEliminar');
-    Route::resource('cursos','CursosController',['only' => ['index','create','store','update','edit', 'destroy']]);
+
+    Route::resource('actividades','CursosController',['only' => ['index','create','store','edit','update', 'destroy']]);
 
     //Rutas manejo de roles
     Route::get('roles/buscar', [

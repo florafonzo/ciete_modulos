@@ -70,7 +70,7 @@
                 @endif
                 @if(Entrust::can('ver_cursos_part'))
                 <div class="">
-                    <a href="{{URL::to('/')}}/participante/cursos" type="button" class="btn btn-default" ><span class="glyphicon glyphicon-chevron-left"></span>Regresar</a>
+                    <a href="{{URL::to('/')}}/participante/actividades" type="button" class="btn btn-default" ><span class="glyphicon glyphicon-chevron-left"></span>Regresar</a>
                 </div>
                 @endif
             </div>

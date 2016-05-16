@@ -59,7 +59,7 @@
 
                                         <td class="boton_">
                                             @if(Entrust::can('editar_cursos'))
-                                                {!! Form::open(array('method' => 'GET','route' => array('cursos.edit', $curso->id))) !!}
+                                                {!! Form::open(array('method' => 'GET','route' => array('actividades.edit', $curso->id))) !!}
                                                     <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Editar" >
                                                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                                     </button>
@@ -68,7 +68,7 @@
                                         </td>
                                         <td class="boton_">
                                             @if(Entrust::can('eliminar_cursos'))
-                                                {!! Form::open(array('method' => 'DELETE', 'route' => array('cursos.destroy', $curso->id), 'id' => 'form_desactivar'.$curso->id)) !!}
+                                                {!! Form::open(array('method' => 'DELETE', 'route' => array('actividades.destroy', $curso->id), 'id' => 'form_desactivar'.$curso->id)) !!}
                                                     <button type="button" onclick="desactivarCurso('{{$curso->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar">
                                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                     </button>

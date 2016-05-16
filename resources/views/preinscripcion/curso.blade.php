@@ -8,7 +8,7 @@
                 <div class="panel panel_login">
                     <div class="panel-heading">Formulario de inscripción de Diplomados y Cápsulas</div>
                     <div class="panel-body">
-                        <form id="form" method="POST" action="{{ url('preinscripcion/cursos') }}" enctype="multipart/form-data">
+                        <form id="form" method="POST" action="{{ url('inscripcion/actividades') }}" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="{!! csrf_token() !!}">
                             <div class="form-group">
                                 <label for="nombre">Nombre:</label>

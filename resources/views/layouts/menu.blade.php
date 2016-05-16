@@ -14,7 +14,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active fondo">
-                    <a class="lista-menu" href="/">Inicio</a>
+                    <a class="lista-menu" href="{{URL::to('/')}}">Inicio</a>
                 </li>
                 <li class="dropdown fondo">
                     <a class="lista-menu" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nosotros <span class="caret"></span></a>
@@ -50,13 +50,13 @@
                     <a class="lista-menu dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Inscripciones <span class="caret"></span></a>
                     <ul class="dropdown-menu menu_bajo">
                         <li >
-                            <a href="{{URL::to('/')}}/preinscripcion/procedimiento">Procedimiento</a>
+                            <a href="{{URL::to('/')}}/inscripcion/procedimiento">Procedimiento</a>
                         </li>
                         <li >
-                            <a href="{{URL::to('/')}}/preinscripcion/actividades">Cápsulas y Diplomados</a>
+                            <a href="{{URL::to('/')}}/inscripcion/actividades">Cápsulas y Diplomados</a>
                         </li>
                         <li>
-                            <a href="{{URL::to('/')}}/preinscripcion/webinars"> Webinars </a>
+                            <a href="{{URL::to('/')}}/inscripcion/webinars"> Webinars </a>
                         </li>
                     </ul>
                 </li>

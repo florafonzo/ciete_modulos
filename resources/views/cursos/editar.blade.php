@@ -13,7 +13,7 @@
             <div class="col-md-8 col-sm-8 opciones_part2">
                 @include('partials.mensajes')
                 @if($cursos->count())
-                    {!! Form::open(array('method' => 'PUT', 'route' => array('cursos.update', $cursos->id), 'class' => 'form-horizontal col-md-12')) !!}
+                    {!! Form::open(array('method' => 'PUT', 'action' => ['CursosController@update', $cursos->id], 'class' => 'form-horizontal col-md-12')) !!}
                     <div class="form-group" id="imagen_carrusel">
                         {!!Form::label('imagen_carrusel', 'Imagen curso: ',  array( 'class' => 'col-md-4 '))!!}
                         <div class="col-sm-8" id="borde">

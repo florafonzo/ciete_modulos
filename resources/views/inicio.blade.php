@@ -76,7 +76,7 @@
                 <div class="col-md-4 col-md-offset-1 col-sm-12">
                     <h2 class="centro titre">Inscripciones:</h2>
                     <div>
-                        <a href="{{URL::to('/')}}/preinscripcion/procedimiento"><img class="img-responsive" src="{{URL::to('/')}}/images/INSCRIPCION.png"></a>
+                        <a href="{{URL::to('/')}}/inscripcion/procedimiento"><img class="img-responsive" src="{{URL::to('/')}}/images/INSCRIPCION.png"></a>
                     </div>
                 </div>
             </div>

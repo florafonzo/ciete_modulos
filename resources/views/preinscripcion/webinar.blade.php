@@ -8,7 +8,7 @@
                 <div class="panel panel_login">
                     <div class="panel-heading">Formulario de preinscripción de Webinar</div>
                     <div class="panel-body">
-                        <form id="form" method="POST" action="{{ url('preinscripcion/webinars') }}">
+                        <form id="form" method="POST" action="{{ url('inscripcion/webinars') }}">
 
                             <input type="hidden" name="_token" value="{!! csrf_token() !!}">
 

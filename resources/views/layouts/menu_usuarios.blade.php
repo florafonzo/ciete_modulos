@@ -14,7 +14,7 @@
                             <a href="{{URL::to('/usuarios')}}"> Usuarios </a>
                         </li>
                         <li class="menu_usuarios">
-                            <a style="text-decoration:none;" href="{{URL::to('/cursos')}}"> Lista de cursos </a>
+                            <a style="text-decoration:none;" href="{{URL::to('/actividades')}}"> Lista de cursos </a>
                         </li>
                         <li class="menu_usuarios">
                             <a href="#"> Carrusel </a>
