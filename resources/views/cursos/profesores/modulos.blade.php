@@ -17,7 +17,7 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Sección</th>
+                            <th>Grupo</th>
                             <th>Acciones</th>
                             <th></th>
                         </tr>

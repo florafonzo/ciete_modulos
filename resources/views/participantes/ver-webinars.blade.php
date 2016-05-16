@@ -18,7 +18,7 @@
                         <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Seccion</th>
+                            <th>Grupo</th>
                             <th>Fecha inicio</th>
                             <th>Fecha fin</th>
                             {{--<th>Acciones</th>--}}

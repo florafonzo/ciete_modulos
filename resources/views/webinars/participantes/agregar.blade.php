@@ -16,7 +16,7 @@
                 {{--Seleccione los participantes que desee agregar al webinar:--}}
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!!Form::open(["url"=>"webinars/".$webinar->id."/secciones/".$seccion."/participantes/agregar/buscar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"webinars/".$webinar->id."/grupos/".$seccion."/participantes/agregar/buscar",  "method" => "GET" ])!!}
                         {{--{!! Form::open(array('method' => 'get', 'route' => array('usuarios.buscar'), 'id' => 'form_busq')) !!}--}}
                         <div class="buscador">
                             <select class="form-control " name="parametro">
@@ -68,7 +68,7 @@
                                     <td><strong> 0 resultados de la busqueda </strong></td>
                                 @else
                                     <td></td>
-                                    <td> <strong> No existen cursos activos </strong></td>
+                                    <td> <strong> No existen participantes para agregar </strong></td>
                                 @endif
                             @endif
                         </tbody>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('participantes_webinar'))
-                        <a href="{{URL::to('/')}}/webinars/{{$webinar->id}}/secciones/{{$seccion}}/participantes" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-remove"></span> Cancelar </a>
+                        <a href="{{URL::to('/')}}/webinars/{{$webinar->id}}/grupos/{{$seccion}}/participantes" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-remove"></span> Cancelar </a>
                     @endif
                 </div>
             </div>

@@ -77,7 +77,7 @@
                                         </td>
                                         <td class="boton_">
                                             @if(Entrust::can('participantes_curso'))
-                                                {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/participantes",  "method" => "GET" ])!!}
+                                                {!!Form::open(["url"=>"actividades/".$curso->id."/grupos/participantes",  "method" => "GET" ])!!}
                                                     <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Participantes">
                                                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                                     </button>
@@ -95,7 +95,7 @@
                                         </td>
                                         <td class="boton_">
                                             @if(Entrust::can('lista_moodle'))
-                                                {!!Form::open(["url"=>"actividades/".$curso->id."/secciones",  "method" => "GET" ])!!}
+                                                {!!Form::open(["url"=>"actividades/".$curso->id."/grupos",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Lista Moodle">
                                                     <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
                                                 </button>

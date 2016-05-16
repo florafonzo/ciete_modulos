@@ -16,7 +16,7 @@
                 {{--Seleccione los profesores que desee que dicten el webinar:--}}
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!!Form::open(["url"=>"webinars/".$webinar->id."/secciones/".$seccion."/profesores/agregar/buscar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"webinars/".$webinar->id."/grupos/".$seccion."/profesores/agregar/buscar",  "method" => "GET" ])!!}
                         {{--{!! Form::open(array('method' => 'get', 'route' => array('usuarios.buscar'), 'id' => 'form_busq')) !!}--}}
                         <div class="buscador">
                             <select class="form-control " name="parametro">
@@ -69,7 +69,7 @@
                                 <td><strong> 0 resultados de la busqueda </strong></td>
                             @else
                                 <td></td>
-                                <td> <strong> No existen cursos activos </strong></td>
+                                <td> <strong> No existen actividades activas </strong></td>
                             @endif
                         @endif
                         </tbody>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('profesores_webinar'))
-                        <a href="{{URL::to('/')}}/webinars/{{$webinar->id}}/secciones/{{$seccion}}/profesores" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-chevron-left"></span> Volver </a>
+                        <a href="{{URL::to('/')}}/webinars/{{$webinar->id}}/grupos/{{$seccion}}/profesores" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-chevron-left"></span> Volver </a>
                     @endif
                 </div>
             </div>

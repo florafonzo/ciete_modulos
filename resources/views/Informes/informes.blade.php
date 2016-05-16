@@ -21,7 +21,7 @@
                                 <option value="0"  selected="selected">Buscar por</option>
                                 <option value="curso"  >Actividad</option>
                                 <option value="modulo"  >Módulo</option>
-                                <option value="seccion"  >Sección</option>
+                                <option value="seccion"  >Grupo</option>
                             </select>
                             {!!Form::text('busqueda', null,array('placeholder' => 'Escriba su busqueda...','class' => 'form-control bus', 'id' => 'busqueda'))!!}
                             <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" ></span> </button>
@@ -37,7 +37,7 @@
                             <th>Actividad</th>
                             <th>Profesor</th>
                             <th>Módulo</th>
-                            <th>Sección</th>
+                            <th>Grupo</th>
                             <th>Acciones</th>
                             <th></th>
                         </tr>
@@ -54,7 +54,7 @@
                                         <td>{{ $informe->seccion }}</td>
                                         <td>
                                             @if(Entrust::can('ver_informes_academicos'))
-                                                <a type="button" href="{{URL::to('/')}}/informes/{{$informe->id}}/profesor/{{$informe->profesor->id}}/actividad/{{$informe->curso->id}}/modulo/{{$informe->modulo->id}}/seccion/{{$informe->seccion}}" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Ver" aria-hidden="true" target="_blank"><span class="glyphicon glyphicon-eye-open" ></span></a>
+                                                <a type="button" href="{{URL::to('/')}}/informes/{{$informe->id}}/profesor/{{$informe->profesor->id}}/actividad/{{$informe->curso->id}}/modulo/{{$informe->modulo->id}}/grupos/{{$informe->seccion}}" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Ver" aria-hidden="true" target="_blank"><span class="glyphicon glyphicon-eye-open" ></span></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -79,7 +79,7 @@
                                         <td>{{ $informe->seccion }}</td>
                                         <td>
                                             @if(Entrust::can('ver_informes_academicos'))
-                                                <a type="button" href="{{URL::to('/')}}/informes/{{$informe->id}}/profesor/{{$informe->profesor->id}}/actividad/{{$informe->curso->id}}/modulo/{{$informe->modulo->id}}/seccion/{{$informe->seccion}}" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Ver" aria-hidden="true" target="_blank"><span class="glyphicon glyphicon-eye-open" ></span></a>
+                                                <a type="button" href="{{URL::to('/')}}/informes/{{$informe->id}}/profesor/{{$informe->profesor->id}}/actividad/{{$informe->curso->id}}/modulo/{{$informe->modulo->id}}/grupos/{{$informe->seccion}}" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Ver" aria-hidden="true" target="_blank"><span class="glyphicon glyphicon-eye-open" ></span></a>
                                             @endif
                                         </td>
                                     </tr>

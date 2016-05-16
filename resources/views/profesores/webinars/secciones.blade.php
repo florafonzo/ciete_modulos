@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Secciones del webinar {{$webinar->nombre}}
+                Grupos del webinar {{$webinar->nombre}}
             </h3>
         </div>
 
@@ -17,7 +17,7 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Sección</th>
+                            <th>Grupo</th>
                             <th>Acciones</th>
                             <th></th>
                         </tr>
@@ -29,7 +29,7 @@
                                     <td>{{ $seccion }}</td>
                                     <td  class="boton_">
                                         @if(Entrust::can('listar_alumnos'))
-                                            {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/secciones/".$seccion."/participantes",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/grupos/".$seccion."/participantes",  "method" => "GET" ])!!}
                                             <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Participantes">
                                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                             </button>
@@ -38,7 +38,7 @@
                                     </td>
                                     <td class="boton_">
                                         @if(Entrust::can('listar_alumnos'))
-                                            {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/secciones/".$seccion."/lista",  "method" => "GET", "target" => "_blank"])!!}
+                                            {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/grupos/".$seccion."/lista",  "method" => "GET", "target" => "_blank"])!!}
                                             <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Lista de alumnos">
                                                 <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                                             </button>
@@ -49,7 +49,7 @@
                             @endforeach
                             </tbody>
                         @else
-                            <td>No existen participantes en el curso</td>
+                            <td>No existen participantes en el webinar</td>
                         @endif
                     </table>
                 </div>

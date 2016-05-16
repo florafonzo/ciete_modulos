@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Secciones de la actividad {{$curso->nombre}}
+                Grupos de la actividad {{$curso->nombre}}
             </h3>
             <h3>
                 Descarga de archivo para la inscripción masiva en Moodle
@@ -20,7 +20,7 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Sección</th>
+                            <th>Grupo</th>
                             <th>Acciones</th>
                             <th></th>
                         </tr>
@@ -32,7 +32,7 @@
                                     <td>{{ $seccion }}</td>
                                     <td>
                                         @if(Entrust::can('listar_alumnos'))
-                                            {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/".$seccion."/lista",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"actividades/".$curso->id."/grupos/".$seccion."/lista",  "method" => "GET" ])!!}
                                             <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="descargar">
                                                 <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
                                             </button>

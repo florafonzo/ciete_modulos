@@ -33,7 +33,7 @@
                         <tr>
                             <th>#</th>
                             <th>Nombre</th>
-                            <th>Seccion</th>
+                            <th>Grupo</th>
                             <th>Fecha inicio</th>
                             <th>Fecha fin</th>
                             <th>Acciones</th>
@@ -52,8 +52,8 @@
                                         <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/secciones",  "method" => "GET" ])!!}
-                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Secciones">
+                                                {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/grupos",  "method" => "GET" ])!!}
+                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Grupos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
                                                 {!! Form::close() !!}
@@ -71,8 +71,8 @@
                                         <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/webinars/".$webinar[0]->id."/secciones",  "method" => "GET" ])!!}
-                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Secciones">
+                                                {!!Form::open(["url"=>"profesor/webinars/".$webinar[0]->id."/grupos",  "method" => "GET" ])!!}
+                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Grupos">
                                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 </button>
                                                 {!! Form::close() !!}
@@ -88,7 +88,7 @@
                                 <td> 0 resultados de la busqueda</td>
                             @else
                                 <td></td>
-                                <td>No está dictando ningún webinar</td>
+                                <td>No estï¿½ dictando ningï¿½n webinar</td>
                             @endif
                         @endif
                     </table>

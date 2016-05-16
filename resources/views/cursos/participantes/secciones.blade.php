@@ -17,7 +17,7 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Sección</th>
+                            <th>Grupo</th>
                             <th>Acciones</th>
                             <th></th>
                         </tr>
@@ -29,7 +29,7 @@
                                     <td>{{ $seccion }}</td>
                                     <td>
                                         @if(Entrust::can('listar_alumnos'))
-                                            {!!Form::open(["url"=>"actividades/".$curso->id."/secciones/".$seccion."/participantes",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"actividades/".$curso->id."/grupos/".$seccion."/participantes",  "method" => "GET" ])!!}
                                             <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Participantes">
                                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                             </button>

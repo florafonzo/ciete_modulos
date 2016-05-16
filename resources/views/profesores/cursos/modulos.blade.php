@@ -29,8 +29,8 @@
                                     <td>{{ $modulo->nombre }}</td>
                                     <td class="boton_">
                                         @if(Entrust::can('ver_notas_profe'))
-                                            {!!Form::open(["url"=>"profesor/actividades/".$curso->id."/modulos/".$modulo->id."/secciones",  "method" => "GET" ])!!}
-                                            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Secciones">
+                                            {!!Form::open(["url"=>"profesor/actividades/".$curso->id."/modulos/".$modulo->id."/grupos",  "method" => "GET" ])!!}
+                                            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Grupos">
                                                 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
                                             </button>
                                             {!! Form::close() !!}
@@ -39,6 +39,8 @@
                                 </tr>
                             @endforeach
                             </tbody>
+                        @else
+                            <td>No existen módulos</td>
                         @endif
                     </table>
                 </div>

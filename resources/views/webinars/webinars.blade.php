@@ -71,7 +71,7 @@
                                     </td>
                                     <td class="boton_">
                                         @if(Entrust::can('participantes_webinar'))
-                                            {!!Form::open(["url"=>"webinars/".$webinar->id."/secciones/participantes",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"webinars/".$webinar->id."/grupos/participantes",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Participantes">
                                                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                                 </button>
@@ -80,7 +80,7 @@
                                     </td>
                                     <td class="boton_">
                                         @if(Entrust::can('profesores_webinar'))
-                                            {!!Form::open(["url"=>"webinars/".$webinar->id."/secciones/profesores",  "method" => "GET" ])!!}
+                                            {!!Form::open(["url"=>"webinars/".$webinar->id."/grupos/profesores",  "method" => "GET" ])!!}
                                             <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Profesores">
                                                 <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
                                             </button>

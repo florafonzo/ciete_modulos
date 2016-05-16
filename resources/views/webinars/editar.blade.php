@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('secciones_l', 'Cantidad de secciones:',  array( 'class' => 'col-md-4'))!!}
+                        {!!Form::label('secciones_l', 'Cantidad de grupos:',  array( 'class' => 'col-md-4'))!!}
                         <div class="col-sm-8">
                             {!!Form::text('secciones', $webinars->secciones ,array('required','class' => 'form-control'))!!}
                         </div>

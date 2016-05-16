@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    {!!Form::label('secciones', 'Cantidad de secciones:',  array( 'class' => 'col-md-4'))!!}
+                    {!!Form::label('secciones', 'Cantidad de grupos:',  array( 'class' => 'col-md-4'))!!}
                     <div class="col-sm-8">
                         {!!Form::text('secciones', Session::get('secciones') ,array('required','class' => 'form-control'))!!}
                     </div>

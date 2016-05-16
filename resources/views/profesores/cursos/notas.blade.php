@@ -37,7 +37,7 @@
                                     </td>
                                     <td>
                                         @if(Entrust::can('eliminar_notas'))
-                                            {!!Form::open(["url"=>"profesor/actividades/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/participantes/".$participante->id."/notas/".$nota->id,  "method" => "DELETE", "id" => "form_eliminar".$nota->id ])!!}
+                                            {!!Form::open(["url"=>"profesor/actividades/".$curso->id."/modulos/".$modulo->id."/grupos/".$seccion."/participantes/".$participante->id."/notas/".$nota->id,  "method" => "DELETE", "id" => "form_eliminar".$nota->id ])!!}
                                             <button type="button" onclick="mostrarModal('{{$nota->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar" aria-hidden="true">
                                                 <span class="glyphicon glyphicon-trash" ></span>
                                             </button>
@@ -67,7 +67,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_notas_profe'))
-                    <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos/{{$modulo->id}}/secciones/{{$seccion}}/participantes" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
+                    <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos/{{$modulo->id}}/grupos/{{$seccion}}/participantes" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                 @endif
                 @if(Entrust::can('agregar_notas'))
                     <button data-toggle="modal" data-target="#notasModal" class="btn btn-success text-right pull-right" id="agregar_nota"><span class="glyphicon glyphicon-plus"></span> Agregar nota</button>
@@ -82,12 +82,12 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    {{--<a href="{{URL::to('/')}}/profesor/actividades/{{$curso->id}}/secciones/{{$seccion}}/participantes/{{$participante->id}}/notas" class="pull-right"> <span class="glyphicon glyphicon-remove" style="color: #333;"></span> </a>--}}
+                    {{--<a href="{{URL::to('/')}}/profesor/actividades/{{$curso->id}}/grupos/{{$seccion}}/participantes/{{$participante->id}}/notas" class="pull-right"> <span class="glyphicon glyphicon-remove" style="color: #333;"></span> </a>--}}
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4> Calificar </h4>
                 </div>
                 <div class="modal-body">
-                    {!!Form::open(['url' => 'profesor/actividades/'.$curso->id.'/modulos/'.$modulo->id.'/secciones/'.$seccion.'/participantes/'.$participante->id.'/notas',  "method" => "post", "id" => "form_notan"])!!}
+                    {!!Form::open(['url' => 'profesor/actividades/'.$curso->id.'/modulos/'.$modulo->id.'/grupos/'.$seccion.'/participantes/'.$participante->id.'/notas',  "method" => "post", "id" => "form_notan"])!!}
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-12">
                             <div class="form-group">
@@ -112,7 +112,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    {{--<a class="btn btn-default pull-left" href="{{URL::to('/')}}/profesor/actividades/{{$curso->id}}/secciones/{{$seccion}}/participantes/{{$participante->id}}/notas"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>--}}
+                    {{--<a class="btn btn-default pull-left" href="{{URL::to('/')}}/profesor/actividades/{{$curso->id}}/grupos/{{$seccion}}/participantes/{{$participante->id}}/notas"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>--}}
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-success btn-success pull-right" ><span class="glyphicon glyphicon-floppy-disk"></span> Guardar</button>
                 </div>
@@ -128,12 +128,12 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    {{--<a href="{{URL::to('/')}}/profesor/actividades/{{$curso->id}}/secciones/{{$seccion}}/participantes/{{$participante->id}}/notas" class="pull-right"> <span class="glyphicon glyphicon-remove" style="color: #333;"></span> </a>--}}
+                    {{--<a href="{{URL::to('/')}}/profesor/actividades/{{$curso->id}}/grupos/{{$seccion}}/participantes/{{$participante->id}}/notas" class="pull-right"> <span class="glyphicon glyphicon-remove" style="color: #333;"></span> </a>--}}
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4> Edición calificación </h4>
                 </div>
                 <div class="modal-body">
-                    {!!Form::open(["url"=>"profesor/actividades/".$curso->id."/modulos/".$modulo->id."/secciones/".$seccion."/participantes/".$participante->id."/notas",  "method" => "post" ])!!}
+                    {!!Form::open(["url"=>"profesor/actividades/".$curso->id."/modulos/".$modulo->id."/grupos/".$seccion."/participantes/".$participante->id."/notas",  "method" => "post" ])!!}
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-12">
                             <div class="form-group" >
