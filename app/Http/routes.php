@@ -34,12 +34,12 @@ Route::get('Contacto','InformacionController@getcontacto');
 Route::post('Contacto','InformacionController@postContacto');
 
 //Ruta prenscripcion
-Route::get('preinscripcion/procedimiento','PreinscripcionController@showProcedimiento');
+Route::get('inscripcion/procedimiento','PreinscripcionController@showProcedimiento');
 
-Route::get('/preinscripcion/actividades', 'PreinscripcionController@mostrarPreinscripcionCurso');
-Route::get('/preinscripcion/webinars', 'PreinscripcionController@mostrarPreinscripcionWebinar');
-Route::post('preinscripcion/actividades','PreinscripcionController@storePreinscripcionCurso');
-Route::post('preinscripcion/webinars','PreinscripcionController@storePreinscripcionWebinar');
+Route::get('inscripcion/actividades', 'PreinscripcionController@mostrarPreinscripcionCurso');
+Route::get('inscripcion/webinars', 'PreinscripcionController@mostrarPreinscripcionWebinar');
+Route::post('inscripcion/actividades','PreinscripcionController@storePreinscripcionCurso');
+Route::post('inscripcion/webinars','PreinscripcionController@storePreinscripcionWebinar');
 
 //Rutas Loggin y recuperación de contraseñas
 Route::controllers([
@@ -216,22 +216,22 @@ Route::group([
 
 
     //Rutas preinscripción
-    Route::get('preinscripcion/actividades/procesar','PreinscripcionController@index');
-    Route::get('preinscripcion/webinars/procesar','PreinscripcionController@indexWeb');
-//    Route::post('preinscripcion/principal', 'PreinscripcionController@mostrar');
-    Route::get('preinscripcion/actividades/activar/{id}',[
+    Route::get('inscripcion/actividades/procesar','PreinscripcionController@index');
+    Route::get('inscripcion/webinars/procesar','PreinscripcionController@indexWeb');
+//    Route::post('inscripcion/principal', 'PreinscripcionController@mostrar');
+    Route::get('inscripcion/actividades/activar/{id}',[
         'as' => 'preinscripcion.activar',
         'uses' => 'PreinscripcionController@activarPreinscripcion'
     ]);
-    Route::get('preinscripcion/actividades/desactivar/{id}',[
+    Route::get('inscripcion/actividades/desactivar/{id}',[
         'as' => 'preinscripcion.desactivar',
         'uses' => 'PreinscripcionController@desactivarPreinscripcion'
     ]);
-    Route::get('preinscripcion/webinars/activar/{id}',[
+    Route::get('inscripcion/webinars/activar/{id}',[
         'as' => 'preinscripcion.activar-web',
         'uses' => 'PreinscripcionController@activarPreinscripcionWeb'
     ]);
-    Route::get('preinscripcion/webinars/desactivar/{id}',[
+    Route::get('inscripcion/webinars/desactivar/{id}',[
         'as' => 'preinscripcion.desactivar-web',
         'uses' => 'PreinscripcionController@desactivarPreinscripcionWeb'
     ]);
@@ -252,7 +252,7 @@ Route::group([
 
 
     //Rutas informes académicos
-    Route::get('informes/{id}/profesor/{id_prof}/actividad/{id_actividad}/modulo/{id_modulo}/seccion/{seccion}','InformesController@verInforme');
+    Route::get('informes/{id}/profesor/{id_prof}/actividad/{id_actividad}/modulo/{id_modulo}/grupos/{seccion}','InformesController@verInforme');
         Route::get('informes/buscar', [
             'as' => 'informes.buscar', 'uses' => 'InformesController@buscarInforme'
         ]);
