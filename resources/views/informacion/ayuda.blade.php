@@ -47,6 +47,19 @@
                             Si, existe la posibilidad que su inscripción sea rechazada pero no se preocupe se le indicará el motivo por correo y podrá comunicarse
                             con nosotros vía el formulario de contacto al cual puede acceder por el menú principal por la opción "Nosotros".
                         </p>
+                        </br>
+                        <p style="font-weight: bold; color: lightslategrey;">Prosecución de las actividades</p>
+                        <p style="font-weight: bold;">¿Cómo realizo los pagos durante una actividad?</p>
+                        <p>
+                            Cuando ingresa a su cuenta debe pulsar la opción "Actividades inscritas" del menú lateral y luego en la lista de actividades debe
+                            pulsar el botón en forma de tarjeta de crédito con la descrpción "Pagos". En esa sección podrá ver susu pagos realizados a sí como
+                            generar nuevos pagos si no ha cancelado la totalidad.
+                        </p>
+                        <p style="font-weight: bold;">¿Puedo ver mis calificaciones?</p>
+                        <p>
+                            Claro, en la opción "Actividades inscritas" del menú lateral accede a la lista de actividades inscritas y debe pulsar el botón
+                            en forma de ojos para ver los módulos y luego pulsa el botón en forma de libro para acceder a sus calificaciones.
+                        </p>
                     </div>
                 </div>
             </div>

@@ -1,21 +1,20 @@
 <footer>
     <div class="row pie-pag">
         <div class="col-md-6 col-xs-12 col-sm-12">
-            <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
-                <img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
-            </a>
-            <br />
-            <p class="texto">
-                Esta obra está bajo una
+            {{--<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">--}}
+                {{--<img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />--}}
+            {{--</a>--}}
+            {{--<br />--}}
 
-
-                {{--<a class="correo" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">--}}
-                    {{--Licencia Creative Commons Atribución-NoComercial 4.0 Internacional--}}
-                {{--</a>--}}
-                <a class="correo" rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
-                    Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional
-                </a>
-            </p>
+                <p class="texto">
+                    Aplicación CIETE  Copyright (C) 2016  Flor Afonzo and Abraham Díaz  <a href="mailto:ciete.app@gmail.com">ciete.app@gmail.com</a> </br>
+                    Este programa viene ABSOLUTAMENTE SIN NINGUNA GARANTÍA; Para más detalles visite: <a style="color: white; font-weight: bold" href="http://www.gnu.org/licenses/gpl.html">GPL</a>.
+                    Este software es libre , y usted puede redistribuirlo
+                    bajo ciertas condiciones; Visite: <a style="color: white;font-weight: bold" href="http://www.gnu.org/licenses/gpl.html">GPL</a> para detalles.
+                    {{--<a class="correo" rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">--}}
+                        {{--Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional--}}
+                    {{--</a>--}}
+                </p>
         </div>
         <div class="col-md-6 col-xs-12 col-sm-12">
             <ul class="nav nav-pills menu_foot">
