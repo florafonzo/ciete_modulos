@@ -16,7 +16,6 @@
                 </div>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" style="text-align: justify">
-                        <h4 class=""> Manual de usuario: <a type="button" href="{{URL::to('/')}}/ayuda/manual" class="btn btn-primary" target="_blank">Descargar</a> </h4>
                         <h4 style="font-weight: bold">Preguntas frecuentes</h4>
                         <p style="font-weight: bold; color: lightslategrey;">Inscripción</p>
                         <p style="font-weight: bold;">¿Debo crear una cuenta para inscribirme en alguna actividad?</p>
