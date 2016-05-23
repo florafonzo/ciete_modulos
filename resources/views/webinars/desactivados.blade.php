@@ -66,7 +66,7 @@
                                 <td> 0 resultados de la busqueda</td>
                             @else
                                 <td></td>
-                                <td>No existen cursos activos</td>
+                                <td>No existen webinars desactivados</td>
                             @endif
                         @endif
                     </table>

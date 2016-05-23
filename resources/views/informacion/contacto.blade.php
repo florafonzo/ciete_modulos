@@ -41,8 +41,8 @@
                     <br>
                     <h4 class="tit">Correo electrónico: </h4>
                     <p>
-                        <strong>Institucional:</strong> <a class="correo" href="mailto:ciete@ula.ve" target="_top">ciete@ula.ve</a><br>
-                        <strong>Gmail:</strong> <a class="correo" href="mailto:cieteula@gmail.com" target="_top">ciete.ula@gmail.com</a>
+                        <strong>Institucional:</strong> <a class="correo" style="color: inherit;" href="mailto:ciete@ula.ve" target="_top">ciete@ula.ve</a><br>
+                        <strong>Gmail:</strong> <a class="correo" style="color: inherit;" href="mailto:cieteula@gmail.com" target="_top">ciete.ula@gmail.com</a>
                     </p>
                     <br>
                     <h4 class="tit">Redes sociales:</h4>

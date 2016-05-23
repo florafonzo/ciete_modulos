@@ -36,9 +36,17 @@ class RolesController extends Controller {
                 $data['busq'] = false;
                 $data['busq_'] = false;
                 $data['roles'] = Role::orderBy('name')->paginate(2);   // Se obtienen todos los roles
+                $i = 0;
                 foreach ($data['roles'] as $rol) {
                     $rol['permisos'] = $rol->perms()->get();    //Se obtienen los permisos asociados a cada rol
+                    $i = count($rol['permisos']);
+                    if($i >= 5){
+                        $rol['muchos'] = true;
+                    }else{
+                        $rol['muchos'] = false;
+                    }
                 }
+
                 return view('roles.roles', $data);  // Se muestra la lista de roles
 
             }else{  // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
@@ -178,6 +186,8 @@ class RolesController extends Controller {
 
             if($usuario_actual->can('crear_roles')) {   // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $data['busq'] = false;
+                $data['busq_'] = false;
                 $permisos = $request->permisos; // Permisos seleccionados en el formulario
     //            dd($permisos);
 
@@ -213,7 +223,9 @@ class RolesController extends Controller {
     //                    dd($role);
                         $role->attachPermission($perms);
                     }
-                    return redirect('/roles');
+
+                    Session::set('mensaje','Rol creado con éxito.');
+                    return view('roles.roles');
 
                 }else{  // Si el rol no se ha creado bien se redirige al formulario de creación y se le indica al usuario
                     Session::set('error','Ha ocurrido un error inesperado');
@@ -305,6 +317,8 @@ class RolesController extends Controller {
 
             if($usuario_actual->can('editar_roles')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $data['busq'] = false;
+                $data['busq_'] = false;
                 $roles = Role::findOrFail($id);   // Se obtienen los datos del rol seleccionado
                 $permisos = $request->permisos;     // Se obtienen los permisos seleccionados por el usuario en el formulario
 
@@ -348,7 +362,8 @@ class RolesController extends Controller {
                         $role->attachPermission($perms);
                     }
 
-                    return redirect('/roles');
+                    Session::set('mensaje','Rol guardado con éxito.');
+                    return view('roles.roles');
 
                 }else{      // Si el rol no se ha creado bien se redirige al formulario de creación y se le indica al usuario el error
                     Session::set('error','Ha ocurrido un error inesperado');
@@ -413,13 +428,20 @@ class RolesController extends Controller {
                 DB::table('permission_role')->where('role_id', '=', $id)->delete();
                 Role::destroy($id);
 
-                $data['roles'] = Role::all();
+                $data['roles'] = Role::paginate(2);
                 $data['errores'] = '';
 
                 foreach ($data['roles'] as $rol) {
                     $rol['permisos'] = $rol->perms()->get();
+                    $i = count($rol['permisos']);
+                    if($i >= 5){
+                        $rol['muchos'] = true;
+                    }else{
+                        $rol['muchos'] = false;
+                    }
                 }
 
+                Session::set('mensaje','Rol eliminado con éxito.');
                 return view('roles.roles', $data);
 
             }else{  // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error

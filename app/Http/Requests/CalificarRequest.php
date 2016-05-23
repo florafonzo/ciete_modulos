@@ -28,9 +28,9 @@ class CalificarRequest extends Request {
     public function rules()
     {
         return [
-            'evaluacion' => 'required|max:100',
-            'nota' => 'required|integer',
-            'porcentaje' => 'required|integer|min:1|max:100',
+//            'evaluacion' => 'required|max:100',
+            'nota' => 'required|integer|max:20|min:0',
+//            'porcentaje' => 'required|integer|min:1|max:100',
         ];
     }
 

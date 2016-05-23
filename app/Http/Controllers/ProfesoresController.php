@@ -693,21 +693,25 @@ class ProfesoresController extends Controller {
                                 ->select('id')->get();
 
                 if($participante->count()) {
-                    $data['notas'] = Nota::where('id_participante_curso', '=', $participante[0]->id)->orderBy('created_at')->get();
+                    $data['notas'] = Nota::where('id_participante_curso', '=', $participante[0]->id)
+                                            ->where('id_modulo', '=', $modulo)->orderBy('created_at')->get();
                     if($data['notas']->count()){
-                        $data['promedio'] = 0;
-                        $porcentaje = 0;
-                        foreach ($data['notas'] as $nota) {
-                            $calif = $nota->calificacion;
-                            $porcent = $nota->porcentaje;
-                            $porcentaje =  ($porcentaje + $porcent);
-                            $data['promedio'] = $data['promedio'] + ($calif * ($porcent / 100));
-                        }
-                        $data['porcentaje'] =  100 - $porcentaje;
-                    }/*else{
-                        $data['notas'] = [];
-                    }*/
+                        $data['calificado'] = true;
+//                        $data['promedio'] = 0;
+//                        $porcentaje = 0;
+//                        foreach ($data['notas'] as $nota) {
+//                            $calif = $nota->calificacion;
+//                            $porcent = $nota->porcentaje;
+//                            $porcentaje =  ($porcentaje + $porcent);
+//                            $data['promedio'] = $data['promedio'] + ($calif * ($porcent / 100));
+//                        }
+//                        $data['porcentaje'] =  100 - $porcentaje;
+                    }else{
+//                        $data['notas'] = [];
+                        $data['calificado'] = false;
+                    }
                 }else{
+                    $data['calificado'] = false;
                     $data['notas'] = '';
                 }
                 //dd($data['notas']);
@@ -746,7 +750,6 @@ class ProfesoresController extends Controller {
                 $data['seccion'] = $seccion;
                 $data['participante'] = Participante::find($id_part);
                 $nota = Nota::findOrNew($id);
-
                 $total = 0;
 
                 $part = ParticipanteCurso::where('id_curso', '=', $id_curso)
@@ -754,35 +757,47 @@ class ProfesoresController extends Controller {
                                             ->where('seccion', '=', $seccion)
                                             ->select('id')->get();
                 if($part->count()){
-                    $notas = Nota::where('id_participante_curso', '=', $part[0]->id)->select('porcentaje')->get();
+                    $notas = Nota::where('id_participante_curso', '=', $part[0]->id)
+                                    ->where('id_modulo','=', $modulo)->get();
+
                     if($notas->count()){
-                        foreach ($notas as $not){
-                            $total = $total + $not->porcentaje;
-                        }
-                        $total = $total + $request->porcentaje;
-                        if($total > 100){
-                            Session::set('error_mod', 'El porcentaje de la nota debe ser menor ya que el total supera el 100%');
+                        if($id == null) {
+                            dd("msiufsif");
+                            $data['calificado'] = false;
+                            Session::set('error', 'Ya calificó al participante para este módulo, edite la nota de ser necesario');
                             return view('profesores.cursos.notas', $data);
                         }
-                    }    
+//                        foreach ($notas as $not){
+//                            $total = $total + $not->porcentaje;
+//                        }
+//                        $total = $total + $request->porcentaje;
+//                        if($total > 100){
+//                            Session::set('error_mod', 'El porcentaje de la nota debe ser menor ya que el total supera el 100%');
+//                            return view('profesores.cursos.notas', $data);
+//                        }
+                    }
+
                     $nota->id_participante_curso = $part[0]->id;
                     $nota->id_modulo = $modulo;
-                    $nota->evaluacion = $request->evaluacion;
                     $nota->calificacion = $request->nota;
-                    $nota->porcentaje = $request->porcentaje;
+                    $nota->evaluacion = 'Final';
+                    $nota->porcentaje = 100;
                     $nota->save();
                 }
                 if ($nota->save()) {
                     if($id == null) {
 //                        dd('holaaaaa');
+                        $data['calificado'] = true;
                         Session::set('mensaje', 'Nota creada satisfactoriamente.');
                         return $this->verNotasParticipante($id_curso, $modulo, $seccion, $id_part);
                     }else{
+                        $data['calificado'] = true;
                         Session::set('mensaje', 'Nota editada satisfactoriamente.');
                         return $this->verNotasParticipante($id_curso, $modulo, $seccion, $id_part);
                     }
 
                 } else{
+                    $data['calificado'] = false;
                     Session::set('error', 'Ha ocurrido un error inesperado');
                     return $this->verNotasParticipante($id_curso, $modulo, $seccion,$id_part);
                 }
@@ -818,6 +833,7 @@ class ProfesoresController extends Controller {
 
                 DB::table('notas')->where('id', '=', $id_nota)->delete();
 
+                Session::set('mensaje', 'Nota eliminada satisfactoriamente.');
                 return $this->verNotasParticipante($id_curso, $modulo, $seccion, $id_part);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error

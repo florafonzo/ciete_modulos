@@ -15,19 +15,19 @@
                     {!! Form::open(array('method' => 'PUT', 'route' => array('roles.update', $roles->id), 'class' => 'form-horizontal col-md-12')) !!}
 
                     <div class="form-group">
-                        {!!Form::label('nombre', 'Nombre', array( 'class' => 'col-md-4 control-label')) !!}
+                        {!!Form::label('nombre', 'Nombre:', array( 'class' => 'col-md-4 ')) !!}
                         <div class="col-sm-8">
                             {!!Form::text('name', $roles->name ,array('required', 'class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('desc', 'Descripción',  array( 'class' => 'col-md-4 control-label'))!!}
+                        {!!Form::label('desc', 'Descripción:',  array( 'class' => 'col-md-4'))!!}
                         <div class="col-sm-8">
                             {!!Form::textarea('descripcion', $roles->description ,array('required','class' => 'form-control'))!!}
                         </div>
                     </div>
                     <div class="form-group">
-                        {!!Form::label('permisos', 'Permisos',  array( 'class' => 'col-md-4 control-label'))!!}
+                        {!!Form::label('permisos', 'Permisos:',  array( 'class' => 'col-md-4'))!!}
                         <div class="col-sm-8">
                             @foreach($permisos as $index => $permiso)
                                 @if ($perms[$index] == true)

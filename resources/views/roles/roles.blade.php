@@ -46,9 +46,16 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $rol->display_name }}</td>
                                         <td>
-                                            @foreach($rol->permisos as $permiso)
-                                                {{ $permiso->display_name }} <br/>
-                                            @endforeach
+                                            @if($rol->muchos)
+                                                @for($i = 0; $i < 5; $i++)
+                                                    {{ $rol->permisos[$i]->display_name }} <br/>
+                                                @endfor
+                                                ...
+                                            @else
+                                                @foreach($rol->permisos as $permiso)
+                                                    {{ $permiso->display_name }} <br/>
+                                                @endforeach
+                                            @endif
                                         </td>
                                         <td>
                                             @if(Entrust::can('editar_roles'))
@@ -92,10 +99,16 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $rol->display_name }}</td>
                                         <td>
-                                            @for($i = 0; $i < 5; $i++)
-                                                {{ $rol->permisos[$i]->display_name }} <br/>
-                                            @endfor
-                                            ...
+                                            @if($rol->muchos)
+                                                @for($i = 0; $i < 5; $i++)
+                                                    {{ $rol->permisos[$i]->display_name }} <br/>
+                                                @endfor
+                                                ...
+                                            @else
+                                                @foreach($rol->permisos as $permiso)
+                                                    {{ $permiso->display_name }} <br/>
+                                                @endforeach
+                                            @endif
                                         </td>
                                         <td>
                                             @if(Entrust::can('editar_roles'))

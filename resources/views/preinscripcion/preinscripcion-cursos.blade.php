@@ -65,7 +65,7 @@
                             </tbody>
                         @else
                             <td></td>
-                            <td>No existen cursos activos</td>
+                            <td>No existen actividades para la inscripción</td>
                         @endif
                     </table>
                 </div>

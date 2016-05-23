@@ -64,7 +64,7 @@
                                 {{--<td> 0 resultados de la busqueda</td>--}}
                             {{--@else--}}
                                 <td></td>
-                                <td>No existen webinars activos</td>
+                                <td>No existen webinars para la inscripción</td>
                             {{--@endif--}}
                         @endif
                     </table>

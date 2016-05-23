@@ -38,19 +38,19 @@
                 {!! Form::open(array('method' => 'POST', 'action' => 'RolesController@store', 'class' => 'form-horizontal col-md-10')) !!}
 
                 <div class="form-group">
-                    {!!Form::label('nombre', 'Nombre', array( 'class' => 'col-md-4 control-label')) !!}
+                    {!!Form::label('nombre', 'Nombre:', array( 'class' => 'col-md-4')) !!}
                     <div class="col-sm-8">
                         {!!Form::text('name', Session::get('nombre') ,array('required', 'class' => 'form-control')) !!}
                     </div>
                 </div>
                 <div class="form-group">
-                    {!!Form::label('descripcion', 'Descripción',  array( 'class' => 'col-md-4 control-label'))!!}
+                    {!!Form::label('descripcion', 'Descripción:',  array( 'class' => 'col-md-4'))!!}
                     <div class="col-sm-8">
                         {!!Form::textarea('descripcion', Session::get('descripcion') ,array('required','class' => 'form-control'))!!}
                     </div>
                 </div>
                 <div class="form-group">
-                    {!!Form::label('permisos', 'Permisos',  array( 'class' => 'col-md-4 control-label'))!!}
+                    {!!Form::label('permisos', 'Permisos:',  array( 'class' => 'col-md-4'))!!}
                     <div class="col-sm-8">
                         @foreach($permisos as $permiso)
                             {!! Form::checkbox('permisos[]', $permiso, false) !!} {{$permiso}} <br>

@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
+        <div class="col-md-12 col-sm-12 col-md-offset-1 bienvenida">
             <h3>
-                Notas de {{$participante->nombre}} {{$participante->apellido}}<br/>Actividad {{$curso->nombre}} - Módulo {{$modulo->nombre}}
+                Notas de {{$participante->nombre}} {{$participante->apellido}}<br/> {{$curso->nombre}} <br> Módulo {{$modulo->nombre}}
             </h3>
         </div>
 
@@ -17,7 +17,7 @@
                         <thead>
                         <tr>
                             <th>Evaluación</th>
-                            <th>Valor</th>
+                            {{--<th>Valor</th>--}}
                             <th>Nota</th>
                             <th>Acciones</th>
                         </tr>
@@ -25,8 +25,8 @@
                         @if($notas->count())
                             @foreach($notas as $index => $nota)
                                 <tr>
-                                    <td>{{ $nota->evaluacion  }}</td>
-                                    <td>{{ $nota->porcentaje  }}%</td>
+                                    <td>Final</td>
+                                    {{--<td>{{ $nota->porcentaje  }}%</td>--}}
                                     <td>{{ $nota->calificacion  }}</td>
                                     <td>
                                         @if(Entrust::can('editar_notas'))
@@ -46,20 +46,6 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            <tr>
-                                <td style="font-weight: bold">Nota Final</td>
-                                <td></td>
-                                <td><strong>{{$promedio}}</strong></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Queda por evaluar {{$porcentaje}}%</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
                         @else
                             <td>El participante no posee calificaciones por los momentos</td>
                         @endif
@@ -69,8 +55,10 @@
                 @if(Entrust::can('ver_notas_profe'))
                     <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos/{{$modulo->id}}/grupos/{{$seccion}}/participantes" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                 @endif
-                @if(Entrust::can('agregar_notas'))
-                    <button data-toggle="modal" data-target="#notasModal" class="btn btn-success text-right pull-right" id="agregar_nota"><span class="glyphicon glyphicon-plus"></span> Agregar nota</button>
+                @if(!$calificado)
+                    @if(Entrust::can('agregar_notas'))
+                        <button data-toggle="modal" data-target="#notasModal" class="btn btn-success text-right pull-right" id="agregar_nota"><span class="glyphicon glyphicon-plus"></span> Agregar nota</button>
+                    @endif
                 @endif
             </div>
         @endif
@@ -91,22 +79,8 @@
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-12">
                             <div class="form-group">
-                                {!!Form::label('nombre', 'Evaluación:', array( 'class' => 'col-md-4 izq')) !!}
-                                {{--<div class="col-sm-8">--}}
-                                    {!!Form::text('evaluacion', Session::get('evaluacion') ,array('required', 'class' => 'form-control')) !!}
-                                {{--</div>--}}
-                            </div>
-                            <div class="form-group">
                                 {!!Form::label('nota', 'Nota:', array( 'class' => 'col-md-4 izq')) !!}
-                                {{--<div class="col-sm-8">--}}
                                     {!!Form::text('nota', Session::get('nota') ,array('required', 'class' => 'form-control')) !!}
-                                {{--</div>--}}
-                            </div>
-                            <div class="form-group">
-                                {!!Form::label('porcent', 'Porcentaje:', array( 'class' => 'col-md-4 izq')) !!}
-                                {{--<div class="col-sm-8">--}}
-                                    {!!Form::text('porcentaje', Session::get('porcentaje') ,array('required', 'class' => 'form-control')) !!}
-                                {{--</div>--}}
                             </div>
                         </div>
                     </div>
@@ -136,19 +110,15 @@
                     {!!Form::open(["url"=>"profesor/actividades/".$curso->id."/modulos/".$modulo->id."/grupos/".$seccion."/participantes/".$participante->id."/notas",  "method" => "post" ])!!}
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1 col-xs-12">
-                            <div class="form-group" >
-                                {!!Form::label('nombre', 'Evaluación:', array( 'class' => 'col-md-4 izq')) !!}
-                                <input type="hidden" value="" id="id_nota" name="id_nota">
-                                <div id="eval" ></div>
-                            </div>
+                            <input type="hidden" value="" id="id_nota" name="id_nota">
                             <div class="form-group" >
                                 {!!Form::label('nota', 'Nota:', array( 'class' => 'col-md-4 izq')) !!}
                                 <div id="calif"></div>
                             </div>
-                            <div class="form-group" >
-                                {!!Form::label('porcent', 'Porcentaje:', array( 'class' => 'col-md-4 izq')) !!}
-                                <div id="porct" ></div>
-                            </div>
+                            {{--<div class="form-group" >--}}
+                                {{--{!!Form::label('porcent', 'Porcentaje:', array( 'class' => 'col-md-4 izq')) !!}--}}
+                                {{--<div id="porct" ></div>--}}
+                            {{--</div>--}}
                         </div>
                     </div>
                 </div>
