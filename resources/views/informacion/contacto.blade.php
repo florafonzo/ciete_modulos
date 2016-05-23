@@ -61,17 +61,17 @@
                             a la mayor brevedad posible.
                             <br>
                         </p>
-
-                         @if (count($errors) > 0)
-                            <div class="alert errores">
-                                <strong>Whoops!</strong> Hubo ciertos errores con los datos ingresados:<br><br>
-                                <ul class="">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                         @endif
+                        @include('partials.mensajes')
+                         {{--@if (count($errors) > 0)--}}
+                            {{--<div class="alert errores">--}}
+                                {{--<strong>Whoops!</strong> Hubo ciertos errores con los datos ingresados:<br><br>--}}
+                                {{--<ul class="">--}}
+                                    {{--@foreach ($errors->all() as $error)--}}
+                                        {{--<li>{{ $error }}</li>--}}
+                                    {{--@endforeach--}}
+                                {{--</ul>--}}
+                            {{--</div>--}}
+                         {{--@endif--}}
 
                     <form id="form" method="POST" action="{{ url('contacto') }}">
 

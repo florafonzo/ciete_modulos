@@ -17,6 +17,7 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
+                            <th>#</th>
                             <th>Nombre</th>
                             <th>Grupo</th>
                             <th>Fecha inicio</th>
@@ -29,6 +30,7 @@
                             <tbody>
                             @foreach($webinars as $index => $web)
                                 <tr>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $web[0]->nombre }}</td>
                                     <td>{{ $seccion[0]  }}</td>
                                     <td>{{ $inicio[$index]->format('d-m-Y')  }}</td>
@@ -45,9 +47,17 @@
                                 </tr>
                             @endforeach
                             </tbody>
+                        @else
+                            <td></td>
+                            <td>No se encuentra inscrito en ningún webinar por los momentos</td>
                         @endif
                     </table>
                 </div>
+                @if(Entrust::can('ver_perfil_part'))
+                    <div>
+                        <a href="{{URL::to("/")}}/" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+                    </div>
+                @endif
             </div>
         @endif
     </div>

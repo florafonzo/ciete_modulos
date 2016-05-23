@@ -14,6 +14,7 @@
                 <div class="row">
                     <img src="{{URL::to('/')}}/images/ayuda1.png" class="img-responsive ayuda">
                 </div>
+                @include('partials.mensajes')
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" style="text-align: justify">
                         <div class="row">

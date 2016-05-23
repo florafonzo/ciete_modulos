@@ -46,7 +46,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_cursos_profe'))
-                    <a href="{{URL::to("/")}}/actividades" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
+                    <a href="{{URL::to("/")}}/actividades" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                 @endif
             </div>
         @endif

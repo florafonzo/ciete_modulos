@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     @if(Entrust::can('informe_academico'))
-                        <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos/" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
+                        <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos/{{$modulo->id}}/grupos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
                         <button type="submit" class="btn btn-success">
                             <span class="glyphicon glyphicon-download-alt"></span> Generar
                         </button>

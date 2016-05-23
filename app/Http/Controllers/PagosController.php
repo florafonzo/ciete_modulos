@@ -70,7 +70,7 @@ class PagosController extends Controller {
                 $data['tipos'] = ['Cápsula', 'Diplomado'];
                 $param = Input::get('parametro');
                 if($param == '0'){
-                    $data['pagos'] = Pago::where('aprobado', '=', false)->get();
+                    $data['pagos'] = Pago::where('aprobado', '=', false)->paginate(5);
                     foreach ($data['pagos'] as $pago) {
                         $pago['participante'] = Participante::find($pago->id_participante);
                         $pago['curso'] = Curso::find($pago->id_curso);
@@ -81,7 +81,7 @@ class PagosController extends Controller {
                 }
                 if ($param != 'tipo'){
                     if (empty(Input::get('busqueda'))) {
-                        $data['pagos'] = Pago::where('aprobado', '=', false)->get();
+                        $data['pagos'] = Pago::where('aprobado', '=', false)->paginate(5);
                         foreach ($data['pagos'] as $pago) {
                             $pago['participante'] = Participante::find($pago->id_participante);
                             $pago['curso'] = Curso::find($pago->id_curso);

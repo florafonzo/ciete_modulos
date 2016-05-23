@@ -8,6 +8,7 @@ use App\Models\ModalidadPago;
 use App\Models\Participante;
 use App\Models\ParticipanteCurso;
 use App\Models\ParticipanteWebinar;
+use App\Models\Profesor;
 use App\Models\Webinar;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -82,7 +83,7 @@ class InscripcionController extends Controller {
 				$data['errores'] = '';
 				$data['busq_'] = true;
 				$val = '';
-                $data['usuarios'] = Preinscripcion::all();
+                $data['usuarios'] = Preinscripcion::paginate(5);
                 foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
                     if($usuario->tipo != 'Webinar') {
                         $curso = Curso::where('id', '=', $usuario->id_curso)->get();
@@ -136,7 +137,7 @@ class InscripcionController extends Controller {
 				}
 				if(($param != 'tipo')){
 					$data['usuarios'] = Preinscripcion::where($param, 'ilike', '%'.$busq.'%')
-						->orderBy('created_at')->get();
+						->orderBy('created_at')->paginate(5);
 				}elseif($param == 'tipo'){
 					if($busq == 0){
 						$val = 'Diplomado';
@@ -146,7 +147,7 @@ class InscripcionController extends Controller {
                         $val = 'Webinar';
                     }
 					$data['usuarios'] = Preinscripcion::where('tipo', '=', $val)
-						->orderBy('created_at')->get();
+						->orderBy('created_at')->paginate(5);
                     foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
                         if($usuario->tipo != 'Webinar') {
                             $curso = Curso::where('id', '=', $usuario->id_curso)->get();
@@ -205,6 +206,15 @@ class InscripcionController extends Controller {
 
                 }
                 $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
+
+                if($existe->count()){
+                    $es_profe = Profesor::where('id_usuario', '=', $existe[0]->id)->get();
+                    if($es_profe->count()){
+                        Session::set('error', 'El usuario está registrado como profesor, debe inscribirse con otro correo');
+                        return view('inscripciones.inscripciones', $data);
+                    }
+                }
+
                 if($usuario->tipo == 'Diplomado' || $usuario->tipo == 'Cápsula'){
                     $actividad = Curso::find($usuario->id_curso);
                     $data['tipo'] = 'curso';

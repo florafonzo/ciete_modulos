@@ -142,7 +142,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <a href="{{URL::to("/")}}/" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
+                    <a href="{{URL::to("/")}}/" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
                 </div>
             </div>
         @endif

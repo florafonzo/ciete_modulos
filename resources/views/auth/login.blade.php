@@ -7,16 +7,7 @@
                 <div class="panel panel_login">
                     <div class="panel-heading">Entrar</div>
                     <div class="panel-body">
-                        @if (count($errors) > 0)
-                            <div class="alert errores">
-                                <strong>Whoops!</strong> Hubo ciertos errores con los datos ingresados:<br><br>
-                                <ul class="lista_errores">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+                        @include('partials.mensajes')
 
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/login') }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">

@@ -10,18 +10,18 @@
         </div>
     {{--</div>--}}
 @endif
-@if ($errores != '')
+{{--@if ($errores != '')--}}
     {{--<div class="row">--}}
-        <div class="errores ">
-            <strong>Whoops!</strong> Hubo ciertos errores: <br><br>
-            <ul class="lista_errores">
+        {{--<div class="errores ">--}}
+            {{--<strong>Whoops!</strong> Hubo ciertos errores: <br><br>--}}
+            {{--<ul class="lista_errores">--}}
                 {{--@foreach ($errores->all() as $error)--}}
-                <li>{{ $errores }}</li>
+                {{--<li>{{ $errores }}</li>--}}
                 {{--@endforeach--}}
-            </ul>
-        </div>
+            {{--</ul>--}}
+        {{--</div>--}}
     {{--</div>--}}
-@endif
+{{--@endif--}}
 @if(Session::has('mensaje'))
     <div id="" class='alert alert-success flash_time'>
         {{ Session::pull('mensaje') }}

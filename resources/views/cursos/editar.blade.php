@@ -14,42 +14,42 @@
                 @include('partials.mensajes')
                 @if($cursos->count())
                     {!! Form::open(array('method' => 'PUT', 'action' => ['CursosController@update', $cursos->id], 'class' => 'form-horizontal col-md-12')) !!}
-                    <div class="form-group" id="imagen_carrusel">
-                        {!!Form::label('imagen_carrusel', 'Imagen curso: ',  array( 'class' => 'col-md-4 '))!!}
-                        <div class="col-sm-8" id="borde">
-                            @if($cursos->imagen_carrusel == null && !(Session::has('img_carg')))
-                                {!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
-                                {!!Form::hidden('img_carg',null)!!}
-                                {!!Form::hidden('img_',null)!!}
-                                {!!Form::hidden('file_viejo',$cursos->imagen_carrusel)!!}
-                            @else
-                                @if (Session::has('imagen'))
-                                    {!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
-                                    {!!Form::hidden('img_carg','yes')!!}
-                                    {!!Form::hidden('img_',null)!!}
-                                    {!!Form::hidden('file_viejo',$cursos->imagen_carrusel)!!}
-                                @else
-                                    @if (Session::get('cortar') == "yes")
-                                        <br>
-                                        {!!Form::hidden('img_carg','yes')!!}
-                                        {!!Form::hidden('img_','yes')!!}
-                                        {!!Form::hidden('cortar','yes')!!}
-                                        {!!Form::hidden('dir',$ruta)!!}
-                                        {!!Form::hidden('file_viejo',$cursos->imagen_carrusel)!!}
-                                        <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                        <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/actividades/imagen/{{$cursos->id}}">Cambiar</a>
-                                    @else
-                                        <br>
-                                        {!!Form::hidden('img_carg','yes')!!}
-                                        {!!Form::hidden('img_','yes')!!}
-                                        {!!Form::hidden('cortar',null)!!}
-                                        <img src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$cursos->imagen_carrusel}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                        <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/actividades/imagen/{{$cursos->id}}" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>
-                                    @endif
-                                @endif
-                            @endif
-                        </div>
-                    </div>
+                    {{--<div class="form-group" id="imagen_carrusel">--}}
+                        {{--{!!Form::label('imagen_carrusel', 'Imagen curso: ',  array( 'class' => 'col-md-4 '))!!}--}}
+                        {{--<div class="col-sm-8" id="borde">--}}
+                            {{--@if($cursos->imagen_carrusel == null && !(Session::has('img_carg')))--}}
+                                {{--{!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}--}}
+                                {{--{!!Form::hidden('img_carg',null)!!}--}}
+                                {{--{!!Form::hidden('img_',null)!!}--}}
+                                {{--{!!Form::hidden('file_viejo',$cursos->imagen_carrusel)!!}--}}
+                            {{--@else--}}
+                                {{--@if (Session::has('imagen'))--}}
+                                    {{--{!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}--}}
+                                    {{--{!!Form::hidden('img_carg','yes')!!}--}}
+                                    {{--{!!Form::hidden('img_',null)!!}--}}
+                                    {{--{!!Form::hidden('file_viejo',$cursos->imagen_carrusel)!!}--}}
+                                {{--@else--}}
+                                    {{--@if (Session::get('cortar') == "yes")--}}
+                                        {{--<br>--}}
+                                        {{--{!!Form::hidden('img_carg','yes')!!}--}}
+                                        {{--{!!Form::hidden('img_','yes')!!}--}}
+                                        {{--{!!Form::hidden('cortar','yes')!!}--}}
+                                        {{--{!!Form::hidden('dir',$ruta)!!}--}}
+                                        {{--{!!Form::hidden('file_viejo',$cursos->imagen_carrusel)!!}--}}
+                                        {{--<img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>--}}
+                                        {{--<a class="btn btn-success btn-xs" href="{{URL::to('/')}}/actividades/imagen/{{$cursos->id}}">Cambiar</a>--}}
+                                    {{--@else--}}
+                                        {{--<br>--}}
+                                        {{--{!!Form::hidden('img_carg','yes')!!}--}}
+                                        {{--{!!Form::hidden('img_','yes')!!}--}}
+                                        {{--{!!Form::hidden('cortar',null)!!}--}}
+                                        {{--<img src="{{URL::to('/')}}/images/images_carrusel/cursos/{{$cursos->imagen_carrusel}}" id="imagen_cortada" width="150" height="150"><br><br>--}}
+                                        {{--<a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/actividades/imagen/{{$cursos->id}}" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>--}}
+                                    {{--@endif--}}
+                                {{--@endif--}}
+                            {{--@endif--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                     <img class="" id="imagen2" src="" alt="">
                     {!!Form::hidden('file_viejo',$cursos->imagen_carrusel)!!}
                     <div class="form-group">

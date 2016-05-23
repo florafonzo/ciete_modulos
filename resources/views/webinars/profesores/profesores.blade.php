@@ -92,7 +92,7 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('ver_webinars'))
-                        <a href="{{URL::to('/')}}/webinars/{{$webinar->id}}/grupos/profesores" type="button" class="btn btn-default" style="text-decoration: none"><span class="glyphicon glyphicon-remove"></span> Cancelar </a>
+                        <a href="{{URL::to('/')}}/webinars/{{$webinar->id}}/grupos/profesores" type="button" class="btn btn-default" style="text-decoration: none"><span class="glyphicon glyphicon-remove"></span> Regresar </a>
                     @endif
                 </div>
                 <div class="col-md-2 " style="">

@@ -101,7 +101,7 @@ class UsuariosController extends Controller {
                 $data['busq_'] = true;
 
                 if($param == '0'){
-                    $data['usuarios'] = User::orderBy('id')->get();
+                    $data['usuarios'] = User::orderBy('id')->paginate(5);
                     $data['errores'] = '';
                     $data['roles'] = Role::all()->lists('display_name', 'id');
                     $data['busq'] = false;
@@ -122,7 +122,7 @@ class UsuariosController extends Controller {
 
                 if ($param != 'rol'){
                     if (empty(Input::get('busqueda'))) {
-                        $data['usuarios'] = User::orderBy('id')->get();
+                        $data['usuarios'] = User::orderBy('id')->paginate(5);
                         $data['errores'] = '';
                         $data['roles'] = Role::all()->lists('display_name', 'id');
                         $data['busq'] = false;
@@ -151,7 +151,7 @@ class UsuariosController extends Controller {
                 $usuarios = [];
                 if(($param != 'documento_identidad') && ($param != 'rol')){
                     $data['busq'] = false;
-                    $data['usuarios'] = User::where($param, 'ilike', '%'.$busq.'%')->orderBy($param)->get();
+                    $data['usuarios'] = User::where($param, 'ilike', '%'.$busq.'%')->orderBy($param)->paginate(5);
                     foreach ($data['usuarios'] as $usuario) { //se asocian los roles a cada usuario
                         $usuario['roles'] = $usuario->roles()->get();
                         $ci = Participante::where('id_usuario', '=', $usuario->id)->get();
@@ -330,7 +330,8 @@ class UsuariosController extends Controller {
                         $parroquia = Input::get('parroquia');
                         if (($estado  == 0) || ($ciudad == 0) || ($municipio == 0) || ($parroquia == 0)) {
                             DB::table('users')->where('id', '=', $usuario->id)->delete();
-                            $data['errores'] = "Debe completar todos los datos de la direecion (Estado, Ciudad, Municipio y Parroquia)";
+                            Session::set('error', 'Debe completar todos los datos de la dirección (Estado, Ciudad, Municipio y Parroquia).');
+//                            $data['errores'] = "Debe completar todos los datos de la direecion (Estado, Ciudad, Municipio y Parroquia)";
                             $data['roles'] = Role::all()->lists('display_name', 'id');
                             $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
                             $data['estados'] = Estado::all()->lists('estado','id_estado');
@@ -355,7 +356,8 @@ class UsuariosController extends Controller {
                         
                     }elseif ($pais == 0) {
                         DB::table('users')->where('id', '=', $usuario->id)->delete();
-                        $data['errores'] = "Debe completar el campo pais";
+                        Session::set('error', 'Debe completar el campo pais.');
+//                        $data['errores'] = "Debe completar el campo pais";
                         $data['roles'] = Role::all()->lists('display_name', 'id');
                         $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
                         $data['estados'] = Estado::all()->lists('estado','id_estado');
@@ -470,7 +472,8 @@ class UsuariosController extends Controller {
                     if (empty(Input::get('id_rol'))) {  // Si no ha seleccionado ningún rol, se redirige al formulario
 
                         DB::table('users')->where('id', '=', $usuario->id)->delete();
-                        $data['errores'] = "Debe seleccionar un rol";
+                        Session::set('error', 'Debe seleccionar un rol.');
+//                        $data['errores'] = "Debe seleccionar un rol";
                         $data['roles'] = Role::all()->lists('display_name', 'id');
 
                         // Se guardan los datos ingresados por el usuario en sesion pra utilizarlos en caso de que se redirija
@@ -679,7 +682,8 @@ class UsuariosController extends Controller {
                     // Si el correo conicide con alguno de la base de datos se redirige al usuario al formulario de
                     // edición indicandole el error
                     if ($existe) {
-                        $data['errores'] = "El correo ya existe, ingrese uno diferente";
+                        Session::set('error', 'El correo ya existe, ingrese uno diferente.');
+//                        $data['errores'] = "El correo ya existe, ingrese uno diferente";
                         $data['es_participante'] = false;
                         $usuario = User::find($id);
                         $data['usuarios'] = $usuario;
@@ -775,8 +779,8 @@ class UsuariosController extends Controller {
                     // Se verifica que el usuario haya seleccionado algún rol, si no seleccionó ninguno
                     // se redirige al formulario indicandole el error
                     if (empty(Input::get('id_rol'))) {
-
-                        $data['errores'] = "Debe seleccionar un Rol";
+                        Session::set('error', 'Debe seleccionar un Rol.');
+//                        $data['errores'] = "Debe seleccionar un Rol";
                         $data['es_participante'] = false;
                         $usuario = User::find($id);
                         $data['usuarios'] = $usuario;
@@ -885,7 +889,8 @@ class UsuariosController extends Controller {
                 foreach ($roles as $role) {
                     // Si el usuario que se desea eliminar es Administrador, no se puede eliminar
                     if (($role->name) == 'admin') {
-                        $data['errores'] = "El usuario Administrador no puede ser eliminado";
+                        Session::set('error', 'El usuario Administrador no puede ser eliminado.');
+//                        $data['errores'] = "El usuario Administrador no puede ser eliminado";
                         $data['usuarios'] = User::all();
                         foreach ($data['usuarios'] as $usuario) {
                             $usuario['rol'] = $usuario->roles()->first();

@@ -77,7 +77,7 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('profesores_curso'))
-                        <a href="{{URL::to('/')}}/actividades/{{$curso->id}}/modulos/{{$modulo->id}}/profesores" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-chevron-left"></span> Volver </a>
+                        <a href="{{URL::to('/')}}/actividades/{{$curso->id}}/modulos/{{$modulo->id}}/profesores" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-chevron-left"></span> Regresar </a>
                     @endif
                 </div>
             </div>

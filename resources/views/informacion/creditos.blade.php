@@ -10,6 +10,7 @@
                     </h3>
                 </div>
             </div>
+            @include('partials.mensajes')
             <div class="col-md-12 col-sm-12">
                 <h4 class="titulo"> Trabajo Especial de Grado Desarrollado en la Universidad Central de Venezuela</h4>
                 <div class="row">

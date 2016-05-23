@@ -100,7 +100,7 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('ver_lista_cursos'))
-                        <a href="{{URL::to('/')}}/actividades" type="button" class="btn btn-default" style="text-decoration: none"><span class="glyphicon glyphicon-remove"></span> Cancelar </a>
+                        <a href="{{URL::to('/')}}/actividades/{{$curso->id}}/grupos/participantes" type="button" class="btn btn-default" style="text-decoration: none"><span class="glyphicon glyphicon-chevron-left"></span> Regresar </a>
                     @endif
                 </div>
                 <div class="col-md-2 " style="">

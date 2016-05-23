@@ -92,7 +92,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_perfil_prof'))
-                    <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos/{{$modulo->id}}/grupos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
+                    <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos/{{$modulo->id}}/grupos" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left  "></span> Regresar</a>
                 @endif
             </div>
         @endif

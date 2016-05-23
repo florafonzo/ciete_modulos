@@ -15,33 +15,33 @@
                 @include('partials.mensajes'){{--Errores--}}
                 @if($datos->count())
                     {!! Form::open(array('method' => 'PUT', 'route' => array('participante.update', Auth::user()->id), 'class' => 'form-horizontal col-md-10', 'enctype' => "multipart/form-data")) !!}
-                    <div class="form-group" id="perfil">
-                        {!!Form::label('imagen_perfil', 'Imagen de Perfil: ',  array( 'class' => 'col-md-4 '))!!}
-                        <div class="col-sm-8" id="borde">
-                            @if (Session::has('imagen'))
-                                {!!Form::file('file_perfil',['required'=>'True', 'id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
-                                {!!Form::hidden('img_carg','yes',['id' => 'oculto'])!!}
-                                {!!Form::hidden('file_viejo',$foto)!!}
-                            @else
-                                @if (Session::has('cortar'))
-                                    <br>
-                                    {!!Form::hidden('img_carg',null)!!}
-                                    {!!Form::hidden('cortar','yes')!!}
-                                    {!!Form::hidden('dir',$ruta)!!}
-                                    {!!Form::hidden('file_viejo',$foto)!!}
-                                    <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                    <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/participante/perfil/imagen">Cambiar imágen</a>
-                                @else
-                                    <br>
-                                    {!!Form::hidden('img_carg',null)!!}
-                                    {!!Form::hidden('cortar',null)!!}
-                                    <img src="{{URL::to('/')}}/images/images_perfil/{{$foto}}" id="imagen_cortada" width="150" height="150"><br><br>
+                    {{--<div class="form-group" id="perfil">--}}
+                        {{--{!!Form::label('imagen_perfil', 'Imagen de Perfil: ',  array( 'class' => 'col-md-4 '))!!}--}}
+                        {{--<div class="col-sm-8" id="borde">--}}
+                            {{--@if (Session::has('imagen'))--}}
+                                {{--{!!Form::file('file_perfil',['required'=>'True', 'id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}--}}
+                                {{--{!!Form::hidden('img_carg','yes',['id' => 'oculto'])!!}--}}
+                                {{--{!!Form::hidden('file_viejo',$foto)!!}--}}
+                            {{--@else--}}
+                                {{--@if (Session::has('cortar'))--}}
+                                    {{--<br>--}}
+                                    {{--{!!Form::hidden('img_carg',null)!!}--}}
+                                    {{--{!!Form::hidden('cortar','yes')!!}--}}
+                                    {{--{!!Form::hidden('dir',$ruta)!!}--}}
+                                    {{--{!!Form::hidden('file_viejo',$foto)!!}--}}
+                                    {{--<img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>--}}
+                                    {{--<a class="btn btn-success btn-xs" href="{{URL::to('/')}}/participante/perfil/imagen">Cambiar imágen</a>--}}
+                                {{--@else--}}
+                                    {{--<br>--}}
+                                    {{--{!!Form::hidden('img_carg',null)!!}--}}
+                                    {{--{!!Form::hidden('cortar',null)!!}--}}
+                                    {{--<img src="{{URL::to('/')}}/images/images_perfil/{{$foto}}" id="imagen_cortada" width="150" height="150"><br><br>--}}
                                     {{--{!!Html::image('/img/images_perfil/'.$perfil->file_perfil,null, ['height'=>'279', 'width'=>'270 ']) !!} <br><br>--}}
-                                    <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/participante/perfil/imagen" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar imágen</a>
-                                @endif
-                            @endif
-                        </div>
-                    </div>
+                                    {{--<a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/participante/perfil/imagen" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar imágen</a>--}}
+                                {{--@endif--}}
+                            {{--@endif--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                     <img class="" id="imagen2" src="" alt="">
                     {!!Form::hidden('file_viejo',$foto)!!}
                     <div class="form-group">

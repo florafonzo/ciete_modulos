@@ -17,6 +17,7 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
+                            <th>#</th>
                             <th>Nombre</th>
                             <th>Tipo</th>
                             <th>Grupo</th>
@@ -29,6 +30,7 @@
                             <tbody>
                             @foreach($cursos as $index => $curso)
                                 <tr>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $curso[0]->nombre }}</td>
                                     <td>{{ $tipo_curso[$index] }}</td>
                                     <td>{{ $seccion[$index]  }}</td>
@@ -53,12 +55,15 @@
                                 </tr>
                             @endforeach
                             </tbody>
+                        @else
+                            <td></td>
+                            <td>No se encuentra inscrito en ninguna actividad por los momentos</td>
                         @endif
                     </table>
                 </div>
                 @if(Entrust::can('ver_perfil_part'))
                     <div>
-                        <a href="{{URL::to("/")}}/" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
+                        <a href="{{URL::to("/")}}/" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Cancelar</a>
                     </div>
                 @endif
             </div>

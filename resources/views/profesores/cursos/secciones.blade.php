@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Grupos del módulo {{$modulo->nombre}} de la actividades {{$curso->nombre}}
+                Grupos del módulo {{$modulo->nombre}} <br/> Actividad {{$curso->nombre}}
             </h3>
         </div>
 
@@ -61,7 +61,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_cursos_profe'))
-                    <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
+                    <a href="{{URL::to("/")}}/profesor/actividades/{{$curso->id}}/modulos" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                 @endif
             </div>
         @endif

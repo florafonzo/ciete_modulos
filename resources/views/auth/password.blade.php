@@ -7,25 +7,12 @@
 			<div class="panel panel-login">
 				<div class="panel-heading">Cambiar Contraseña</div>
 				<div class="panel-body">
-
-
 					@if (session('status'))
 						<div class="alert alert-success" id="flash_success">
 							{{ session('status') }}
 						</div>
 					@endif
-
-					@if (count($errors) > 0)
-						<div class="alert alert-danger">
-							<strong>Whoops!</strong> Hubo ciertos errores con los datos ingresados:<br><br>
-							<ul>
-								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
-								@endforeach
-							</ul>
-						</div>
-					@endif
-
+					@include('partials.mensajes')
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 

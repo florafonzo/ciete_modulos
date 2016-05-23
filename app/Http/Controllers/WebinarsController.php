@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
+use Mail;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 use Maatwebsite\Excel\Facades\Excel as Excel;
@@ -260,17 +261,18 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('crear_webinars')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
-                $img_nueva = Input::get('cortar');
-                $img_cargada = Input::get('img_');
-
-                if($img_nueva == 'yes'){
-                    $data['activo_'] =  true;
-                    $data['ruta'] = Input::get('dir');
-                    Session::flash('cortar', 'yes');
-//                    Session::flash('img_carg', 'yes');
-                }else{
-                    $data['activo_'] =  false;
-                }
+//                Imagen -------
+//                $img_nueva = Input::get('cortar');
+//                $img_cargada = Input::get('img_');
+//
+//                if($img_nueva == 'yes'){
+//                    $data['activo_'] =  true;
+//                    $data['ruta'] = Input::get('dir');
+//                    Session::flash('cortar', 'yes');
+////                    Session::flash('img_carg', 'yes');
+//                }else{
+//                    $data['activo_'] =  false;
+//                }
 
                 // Se guardan los datos ingresados por el usuario en sesion pra utilizarlos en caso de que se redirija
                 // al usuari al formulario por algún error y no se pierdan los datos ingresados
@@ -305,8 +307,8 @@ class WebinarsController extends Controller {
 
                 //se verifica que el MIN por seccion sea igual o menor al MAX
                 if (($request->mini) > ($request->maxi)) {
-                    //Session::set('error', 'La cantidad minima de cupos por seccion debe ser igual o menor a la canidad maxima');
-                    $data['errores'] = 'La cantidad minima de cupos por seccion debe ser igual o menor a la canidad maxima';
+                    Session::set('error', 'La cantidad mínima de cupos por seccion debe ser igual o menor a la canidad maxima');
+//                    $data['errores'] = 'La cantidad minima de cupos por seccion debe ser igual o menor a la canidad maxima';
 
                     return view('webinars.crear', $data);
                 }
@@ -319,10 +321,11 @@ class WebinarsController extends Controller {
                 //if (Input::get('activo_carrusel') == "on") {
                 if ($request->activo_carrusel == "on") {    
                     $activo_carrusel = true;
-                    // Luego se verifica si los campos referente al carrusel estén completos
-                    if ((empty(Input::get('descripcion_carrusel'))) or ($img_cargada != 'yes')) {   // Si no están completos se
+                    // Luego se verifica si los campos referente al carrusel estén completos Imagen --
+                    if ((empty(Input::get('descripcion_carrusel')))){// or ($img_cargada != 'yes')) {   // Si no están completos se
                         // redirige al usuario indicandole el error
-                        $data['errores'] = $data['errores'] . "  Debe completar los campos de descripcion y imagen del Carrusel";
+                        Session::set('error', 'Debe completar los campos de descripcion y imagen del Carrusel.');
+//                        $data['errores'] = $data['errores'] . "  Debe completar los campos de descripcion y imagen del Carrusel";
 
                         return view('webinars.crear', $data);
                     }
@@ -343,21 +346,22 @@ class WebinarsController extends Controller {
                 $create2->activo_carrusel = $activo_carrusel;
                 $create2->activo_preinscripcion = false;
 
-                if($img_nueva == 'yes'){
-                    $file = Input::get('dir');
-                    $file = str_replace('data:image/png;base64,', '', $file);
-                    $nombreTemporal = 'imagen_webinar_' . date('dmY') . '_' . date('His') . ".jpg";
-                    $create2->imagen_carrusel = $nombreTemporal;
-
-                    $imagen = Image::make($file);
-                    $payload = (string)$imagen->encode();
-                    Storage::put(
-                        '/images/images_carrusel/webinars/'. $nombreTemporal,
-                        $payload
-                    );
-                }else{
-                    $create2->imagen_carrusel = '';
-                }
+//                if($img_nueva == 'yes'){
+//                    $file = Input::get('dir');
+//                    $file = str_replace('data:image/png;base64,', '', $file);
+//                    $nombreTemporal = 'imagen_webinar_' . date('dmY') . '_' . date('His') . ".jpg";
+//                    $create2->imagen_carrusel = $nombreTemporal;
+//
+//                    $imagen = Image::make($file);
+//                    $payload = (string)$imagen->encode();
+//                    Storage::put(
+//                        '/images/images_carrusel/webinars/'. $nombreTemporal,
+//                        $payload
+//                    );
+//                }else{
+//                    $create2->imagen_carrusel = '';
+//                }
+                $create2->imagen_carrusel ='imagen_webinar_22052016_102013.jpg';
 
                 // Se verifica que se haya creado el el webinar de forma correcta
                 if ($create2->save()) {
@@ -441,18 +445,20 @@ class WebinarsController extends Controller {
                 $data['errores'] = '';
                 $data['activo_'] =  true;
                 $webinar = Webinar::find($id);
-                $img_nueva = Input::get('cortar');
-                $img_cargada = Input::get('img_');
                 $data['webinars'] = Webinar::find($id);
+//                Imagen -------
+//                $img_nueva = Input::get('cortar');
+//                $img_cargada = Input::get('img_');
 
-                if($img_nueva == 'yes'){
-                    $data['activo_'] =  true;
-                    $data['ruta'] = Input::get('dir');
-                    Session::flash('cortar', 'yes');
-                    Session::flash('img_carg', 'yes');
-                }else{
-                    $data['activo_'] =  $webinar->activo_carrusel;
-                }
+
+//                if($img_nueva == 'yes'){
+//                    $data['activo_'] =  true;
+//                    $data['ruta'] = Input::get('dir');
+//                    Session::flash('cortar', 'yes');
+//                    Session::flash('img_carg', 'yes');
+//                }else{
+//                    $data['activo_'] =  $webinar->activo_carrusel;
+//                }
 
                 $fecha_actual = date('Y-m-d');// Se obtiene la fecha actual para validar las fechas de inicio y fin del Webinar
                 if(($request->fecha_inicio) <= $fecha_actual) {
@@ -477,10 +483,11 @@ class WebinarsController extends Controller {
                 //Se verifica si el usuario seleccionó que el webinar esté activo en el carrusel
                 if (($request->activo_carrusel) == "on") {
                     $activo_carrusel = true;
-                    // Luego se verifica si los campos referente al carrusel estén completos
-                    if ((empty(Input::get('descripcion_carrusel'))) or ($img_cargada == null)) {// Si los campos no están completos se
+                    // Luego se verifica si los campos referente al carrusel estén completos Imagen ----
+                    if ((empty(Input::get('descripcion_carrusel')))){// or ($img_cargada == null)) {// Si los campos no están completos se
                         // redirige al usuario indicandole el error
-                        $data['errores'] = $data['errores'] . "  Debe completar los campos de descripcion y imagen del Carrusel";
+                        Session::set('error', 'Debe completar los campos de descripcion y imagen del Carrusel.');
+//                        $data['errores'] = $data['errores'] . "  Debe completar los campos de descripcion y imagen del Carrusel";
                         return view('webinars.editar', $data);
                     }
                 }
@@ -504,24 +511,26 @@ class WebinarsController extends Controller {
                 $webinar->descripcion_carrusel = $request->descripcion_carrusel;
                 $webinar->activo_carrusel = $activo_carrusel;
 
-                if($img_nueva == 'yes'){
-                    $file = Input::get('dir');
-                    if($webinar->imagen_carrusel != null){
-                        Storage::delete('/images/images_carrusel/webinars/' . $request->file_viejo);
-                    }
-                    $file = str_replace('data:image/png;base64,', '', $file);
-                    $nombreTemporal = 'imagen_webinar_' . date('dmY') . '_' . date('His') . ".jpg";
-                    $webinar->imagen_carrusel = $nombreTemporal;
+//                if($img_nueva == 'yes'){
+//                    $file = Input::get('dir');
+//                    if($webinar->imagen_carrusel != null){
+//                        Storage::delete('/images/images_carrusel/webinars/' . $request->file_viejo);
+//                    }
+//                    $file = str_replace('data:image/png;base64,', '', $file);
+//                    $nombreTemporal = 'imagen_webinar_' . date('dmY') . '_' . date('His') . ".jpg";
+//                    $webinar->imagen_carrusel = $nombreTemporal;
+//
+//                    $imagen = Image::make($file);
+//                    $payload = (string)$imagen->encode();
+//                    Storage::put(
+//                        '/images/images_carrusel/webinars/'. $nombreTemporal,
+//                        $payload
+//                    );
+//                }else{
+//                    $webinar->imagen_carrusel = '';
+//                }
+                $webinar->imagen_carrusel ='imagen_webinar_22052016_102013.jpg';
 
-                    $imagen = Image::make($file);
-                    $payload = (string)$imagen->encode();
-                    Storage::put(
-                        '/images/images_carrusel/webinars/'. $nombreTemporal,
-                        $payload
-                    );
-                }else{
-                    $webinar->imagen_carrusel = '';
-                }
 
                 // Se verifica que se haya creado el webinar de forma correcta
                 if ($webinar->save()) {
@@ -1179,7 +1188,18 @@ class WebinarsController extends Controller {
 //                        ]);
                         $part_web->save();
 
+                        $part = Participante::where('id', '=', $part_web->id_participante)->get();
+                        $user = User::where('id', '=', $part->id_usuario)->get();
+                        $data['nombre'] = $user->nombre;
+                        $data['apellido'] = $user->apellido;
+                        $data['curso'] = $webinar->nombre;
+                        $data['email'] = $user->email;
                         if ($part_web->save()) {
+                            Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
+                                $message->subject('CIETE - Dictado de actividad')
+                                    ->to($data['email'], 'CIETE')
+                                    ->replyTo($data['email']);
+                            });
                             Session::set('mensaje', 'Participante agregado con éxito');
                             return $this->webinarParticipantesAgregar($id_webinar, $seccion);
                         } else {
@@ -1216,7 +1236,7 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('eliminar_part_webinar')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
-
+                $webinar = Webinar::find($id_webinar);
                 $part_web = ParticipanteWebinar::where('id_webinar', '=', $id_webinar)->where('id_participante', '=', $id_part)->first();
 
                 DB::table('participante_webinars')->where('id', '=', $part_web->id)->delete();
@@ -1230,6 +1250,17 @@ class WebinarsController extends Controller {
                     }
                 }
 
+                $part = Participante::where('id', '=', $part_web->id_participante)->get();
+                $user = User::where('id', '=', $part->id_usuario)->get();
+                $data['nombre'] = $user->nombre;
+                $data['apellido'] = $user->apellido;
+                $data['curso'] = $webinar->nombre;
+                $data['email'] = $user->email;
+                Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
+                    $message->subject('CIETE - Dictado de actividad')
+                        ->to($data['email'], 'CIETE')
+                        ->replyTo($data['email']);
+                });
                 Session::set('mensaje', 'Usuario eliminado con éxito');
                 return view('webinars.participantes.participantes', $data);
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
@@ -1615,7 +1646,19 @@ class WebinarsController extends Controller {
 //                        ]);
                         $prof_web->save();
 
+                        $part = Participante::where('id', '=', $prof_web->id_profesor)->get();
+                        $user = User::where('id', '=', $part->id_usuario)->get();
+                        $data['nombre'] = $user->nombre;
+                        $data['apellido'] = $user->apellido;
+                        $data['curso'] = $webinar->nombre;
+                        $data['email'] = $user->email;
+
                         if ($prof_web->save()) {
+                            Mail::send('emails.profesor', $data, function ($message) use ($data) {
+                                $message->subject('CIETE - Dictado de actividad')
+                                    ->to($data['email'], 'CIETE')
+                                    ->replyTo($data['email']);
+                            });
                             Session::set('mensaje', 'Profesor agregado con éxito');
                             return $this->webinarProfesoresAgregar($id_web, $seccion);
                         } else {
@@ -1652,6 +1695,7 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('eliminar_prof_webinar')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $webinar = Webinar::find($id_web);
                 $prof_web = ProfesorWebinar::where('id_webinar', '=', $id_web)->where('id_profesor', '=', $id_profesor)->first();
 
                 DB::table('profesor_webinars')->where('id', '=', $prof_web->id)->delete();
@@ -1664,6 +1708,18 @@ class WebinarsController extends Controller {
                         $data['profesores'][$index] = Profesor::where('id', '=', $web->id_profesor)->orderBy('apellido')->get();
                     }
                 }
+
+                $part = Participante::where('id', '=', $prof_web->id_profesor)->get();
+                $user = User::where('id', '=', $part->id_usuario)->get();
+                $data['nombre'] = $user->nombre;
+                $data['apellido'] = $user->apellido;
+                $data['curso'] = $webinar->nombre;
+                $data['email'] = $user->email;
+                Mail::send('emails.profesor', $data, function ($message) use ($data) {
+                    $message->subject('CIETE - Dictado de actividad')
+                        ->to($data['email'], 'CIETE')
+                        ->replyTo($data['email']);
+                });
 
                 Session::set('mensaje', 'Usuario eliminado con éxito');
                 return view('webinars.profesores.profesores', $data);

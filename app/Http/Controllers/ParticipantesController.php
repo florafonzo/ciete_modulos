@@ -193,7 +193,8 @@ class ParticipantesController extends Controller {
                     // Si el correo conicide con alguno de la base de datos se redirige al participante al
                     // formulario de edición indicandole el error
                     if ($existe) {
-                        $data['errores'] = "El correo ya existe, ingrese uno diferente";
+                        Session::set('error', 'El correo ya existe, ingrese uno diferente.');
+//                        $data['errores'] = "El correo ya existe, ingrese uno diferente";
                         $data['datos'] = Participante::where('id_usuario', '=', $id)->get(); // Se obtienen los datos del participante
                         $data['email']= User::where('id', '=', $id)->get(); // Se obtiene el correo principal del participante;
 
@@ -211,7 +212,8 @@ class ParticipantesController extends Controller {
                         $municipio = Input::get('municipio');
                         $parroquia = Input::get('parroquia');
                         if (($estado == 0) || ($ciudad == 0) || ($municipio == 0) || ($parroquia == 0)) {
-                            $data['errores'] = "Debe completar todos los datos de la direecion (Estado, Ciudad, Municipio y Parroquia)";
+                            Session::set('error', 'Debe completar todos los datos de la direecion (Estado, Ciudad, Municipio y Parroquia).');
+//                            $data['errores'] = "Debe completar todos los datos de la direecion (Estado, Ciudad, Municipio y Parroquia)";
                             $data['paises'] = Pais::all()->lists('nombre_mostrar', 'id');
                             $data['estados'] = Estado::all()->lists('estado', 'id_estado');
                             $data['datos'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get(); // Se obtienen los datos del participante
@@ -222,7 +224,8 @@ class ParticipantesController extends Controller {
                         $dir = $pais . '-' . $estado . '-' . $ciudad . '-' . $municipio . '-' . $parroquia;
 
                     } elseif ($pais == 0) {
-                        $data['errores'] = "Debe completar el campo pais";
+                        Session::set('error', 'Debe completar el campo pais.');
+//                        $data['errores'] = "Debe completar el campo pais";
                         return view('participantes.editar-perfil', $data);
                     } else {
                         $dir = $pais;
@@ -270,22 +273,25 @@ class ParticipantesController extends Controller {
                     Storage::put('/documentos/participantes/'.$nombreTitulo, \File::get($pdfTitulo) );
                 }
 
-                if ($img_nueva == 'yes') {
-                    $file = Input::get('dir');
-                    if ($usuario->foto != null) {
-                        Storage::delete('/images/images_perfil/' . $request->file_viejo);
-                    }
-                    $file = str_replace('data:image/png;base64,', '', $file);
-                    $nombreTemporal = 'perfil_' . date('dmY') . '_' . date('His') . ".jpg";
-                    $usuario->foto = $nombreTemporal;
+//                Imagen ---
+//                if ($img_nueva == 'yes') {
+//                    $file = Input::get('dir');
+//                    if ($usuario->foto != null) {
+//                        Storage::delete('/images/images_perfil/' . $request->file_viejo);
+//                    }
+//                    $file = str_replace('data:image/png;base64,', '', $file);
+//                    $nombreTemporal = 'perfil_' . date('dmY') . '_' . date('His') . ".jpg";
+//                    $usuario->foto = $nombreTemporal;
+//
+//                    $imagen = Image::make($file);
+//                    $payload = (string)$imagen->encode();
+//                    Storage::put(
+//                        '/images/images_perfil/' . $nombreTemporal,
+//                        $payload
+//                    );
+//                }
 
-                    $imagen = Image::make($file);
-                    $payload = (string)$imagen->encode();
-                    Storage::put(
-                        '/images/images_perfil/' . $nombreTemporal,
-                        $payload
-                    );
-                }
+                $usuario->foto = 'foto_participante.png';
 
 
                 // Se editan los datos del participante con los datos ingresados en el formulario

@@ -63,32 +63,32 @@
                 {!! Form::password('password_confirmation', array('class' => 'form-control')) !!}
             </div>
         </div>
-        <div class="form-group" id="perfil">
-            {!!Form::label('imagen_perfil', 'Imagen de Perfil: ',  array( 'class' => 'col-md-4 '))!!}
-            <div class="col-sm-8" id="borde">
-                @if (Session::has('imagen'))
-                    {!!Form::file('file_perfil',['required'=>'True', 'id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
-                    {!!Form::hidden('img_carg','yes',['id' => 'oculto'])!!}
-                    {!!Form::hidden('file_viejo',$foto)!!}
-                @else
-                    @if (Session::has('cortar'))
-                        <br>
-                        {!!Form::hidden('img_carg',null)!!}
-                        {!!Form::hidden('cortar','yes')!!}
-                        {!!Form::hidden('dir',$ruta)!!}
-                        {!!Form::hidden('file_viejo',$foto)!!}
-                        <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
-                        <a class="btn btn-success btn-xs" id="cuadro" href="{{URL::to('/')}}/profesor/perfil/imagen">Cambiar</a>
-                    @else
-                        <br>
-                        {!!Form::hidden('img_carg',null)!!}
-                        {!!Form::hidden('cortar',null)!!}
-                        <img src="{{URL::to('/')}}/images/images_perfil/{{$foto}}" id="imagen_cortada" width="150" height="150"><br><br>
-                        <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/profesor/perfil/imagen" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>
-                    @endif
-                @endif
-            </div>
-        </div>
+        {{--<div class="form-group" id="perfil">--}}
+            {{--{!!Form::label('imagen_perfil', 'Imagen de Perfil: ',  array( 'class' => 'col-md-4 '))!!}--}}
+            {{--<div class="col-sm-8" id="borde">--}}
+                {{--@if (Session::has('imagen'))--}}
+                    {{--{!!Form::file('file_perfil',['required'=>'True', 'id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}--}}
+                    {{--{!!Form::hidden('img_carg','yes',['id' => 'oculto'])!!}--}}
+                    {{--{!!Form::hidden('file_viejo',$foto)!!}--}}
+                {{--@else--}}
+                    {{--@if (Session::has('cortar'))--}}
+                        {{--<br>--}}
+                        {{--{!!Form::hidden('img_carg',null)!!}--}}
+                        {{--{!!Form::hidden('cortar','yes')!!}--}}
+                        {{--{!!Form::hidden('dir',$ruta)!!}--}}
+                        {{--{!!Form::hidden('file_viejo',$foto)!!}--}}
+                        {{--<img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>--}}
+                        {{--<a class="btn btn-success btn-xs" id="cuadro" href="{{URL::to('/')}}/profesor/perfil/imagen">Cambiar</a>--}}
+                    {{--@else--}}
+                        {{--<br>--}}
+                        {{--{!!Form::hidden('img_carg',null)!!}--}}
+                        {{--{!!Form::hidden('cortar',null)!!}--}}
+                        {{--<img src="{{URL::to('/')}}/images/images_perfil/{{$foto}}" id="imagen_cortada" width="150" height="150"><br><br>--}}
+                        {{--<a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/profesor/perfil/imagen" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>--}}
+                    {{--@endif--}}
+                {{--@endif--}}
+            {{--</div>--}}
+        {{--</div>--}}
         <img class="" id="imagen2" src="" alt="">
         {!!Form::hidden('file_viejo',$foto)!!}
         @if(Entrust::can('editar_perfil_profe'))

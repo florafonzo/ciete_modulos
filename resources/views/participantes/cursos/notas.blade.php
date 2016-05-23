@@ -47,7 +47,7 @@
                     </table>
                 </div>
                 @if(Entrust::can('ver_cursos_part'))
-                    <div style="text-align: center;">
+                    <div style="">
                         <a href="{{URL::to("/")}}/participante/actividades/{{$curso->id}}/modulos" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                     </div>
                 @endif

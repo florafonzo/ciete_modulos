@@ -36,7 +36,6 @@ class RolesController extends Controller {
                 $data['busq'] = false;
                 $data['busq_'] = false;
                 $data['roles'] = Role::orderBy('name')->paginate(2);   // Se obtienen todos los roles
-                $i = 0;
                 foreach ($data['roles'] as $rol) {
                     $rol['permisos'] = $rol->perms()->get();    //Se obtienen los permisos asociados a cada rol
                     $i = count($rol['permisos']);
@@ -86,13 +85,19 @@ class RolesController extends Controller {
                     $data['roles'] = Role::orderBy('name')->get();
                     foreach ($data['roles'] as $rol) {
                         $rol['permisos'] = $rol->perms()->get();    //Se obtienen los permisos asociados a cada rol
+                        $i = count($rol['permisos']);
+                        if($i >= 5){
+                            $rol['muchos'] = true;
+                        }else{
+                            $rol['muchos'] = false;
+                        }
                     }
                     Session::set('error', 'Debe seleccionar el parametro por el cual desea buscar');
                     return view('roles.roles', $data);
                 }
                 if ($param == 'name'){
                     if (empty(Input::get('busqueda'))) {
-                        $data['roles'] = Role::orderBy('name')->get();
+                        $data['roles'] = Role::orderBy('name')->paginate(5);
                         foreach ($data['roles'] as $rol) {
                             $rol['permisos'] = $rol->perms()->get();    //Se obtienen los permisos asociados a cada rol
                         }
@@ -104,7 +109,7 @@ class RolesController extends Controller {
                 }
                 if(($param == 'name')){
                     $data['roles'] = Role::where($param, 'ilike', '%'.$busq.'%')
-                        ->orderBy('name')->get();
+                        ->orderBy('name')->paginate(5);
                     foreach ($data['roles'] as $rol) {
                         $rol['permisos'] = $rol->perms()->get();    //Se obtienen los permisos asociados a cada rol
                     }
@@ -194,7 +199,8 @@ class RolesController extends Controller {
                 // Se verifica si el usuario selecciono por lo menos un permiso que será asociado al nuevo rol
                 if ( empty(Input::get( 'permisos' )) ) {    //Si no selccionó ninguno, se redirige al formulario indicandole el error
     //                    dd("fallo modalidad");
-                    $data['errores'] = "Debe seleccionar al menos un (1) permiso";
+                    Session::set('error', 'Debe seleccionar al menos un (1) permiso.');
+//                    $data['errores'] = "Debe seleccionar al menos un (1) permiso";
                     $data['permisos'] = Permission::all()->lists('display_name','id');
 
                     Session::set('nombre', $request->name);
@@ -328,7 +334,8 @@ class RolesController extends Controller {
                     $existe = DB::table('users')->where('name', '=', $rol)->first();
 
                     if ($existe) {
-                        $data['errores'] = "Ya existe un Rol con ese nombre, ingrese uno diferente";
+                        Session::set('error', 'Ya existe un Rol con ese nombre, ingrese uno diferente.');
+//                        $data['errores'] = "Ya existe un Rol con ese nombre, ingrese uno diferente";
                         $data['permisos'] = Permission::all()->lists('display_name','id');
                         $data['roles'] = Role::findOrFail($id);
 
@@ -338,7 +345,8 @@ class RolesController extends Controller {
                 // Se verifica si el usuario selecciono por lo menos un permiso que será asociado al rol
                 if ( empty(Input::get( 'permisos' )) ) {   //Si no selccionó ninguno, se redirige al formulario indicandole el error
     //                    dd("fallo modalidad");
-                    $data['errores'] = "Debe seleccionar al menos un (1) permiso";
+                    Session::set('error', 'Debe seleccionar al menos un (1) permiso.');
+//                    $data['errores'] = "Debe seleccionar al menos un (1) permiso";
                     $data['permisos'] = Permission::all()->lists('display_name','id');
                     $data['roles'] = Role::findOrFail($id);
 
@@ -405,22 +413,26 @@ class RolesController extends Controller {
                 $data['busq_'] = false;
 
                 if (($rol->name) == 'admin') {
-                    $data['errores'] = "El rol Administrador no puede ser eliminado";
+                    Session::set('error', 'El rol Administrador no puede ser eliminado.');
+//                    $data['errores'] = "El rol Administrador no puede ser eliminado";
 
                     return view('roles.roles', $data);
 
                 } elseif (($rol->name) == 'coordinador') {
-                    $data['errores'] = "El rol Coordinador no puede ser eliminado";
+                    Session::set('error', 'El rol Coordinador no puede ser eliminado.');
+//                    $data['errores'] = "El rol Coordinador no puede ser eliminado";
 
                     return view('roles.roles', $data);
 
                 } elseif (($rol->name) == 'participante') {
-                    $data['errores'] = "El rol Participante no puede ser eliminado";
+                    Session::set('error', 'El rol Participante no puede ser eliminado.');
+//                    $data['errores'] = "El rol Participante no puede ser eliminado";
 
                     return view('roles.roles', $data);
 
                 } elseif (($rol->name) == 'profesor') {
-                    $data['errores'] = "El rol Profesor no puede ser eliminado";
+                    Session::set('error', 'El rol Profesor no puede ser eliminado.');
+//                    $data['errores'] = "El rol Profesor no puede ser eliminado";
 
                     return view('roles.roles', $data);
                 }

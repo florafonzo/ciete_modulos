@@ -177,7 +177,8 @@ class ProfesoresController extends Controller {
                     // Si el correo conicide con alguno de la base de datos se redirige al participante al
                     // formulario de edición indicandole el error
                     if ($existe) {
-                        $data['errores'] = "El correo ya existe, ingrese uno diferente";
+                        Session::set('error', 'El correo ya existe, ingrese uno diferente.');
+//                        $data['errores'] = "El correo ya existe, ingrese uno diferente";
                         $data['datos'] = Profesor::where('id_usuario', '=', $id)->get(); // Se obtienen los datos del profesor
                         $data['email']= User::where('id', '=', $id)->get(); // Se obtiene el correo principal del profesor
 
@@ -185,23 +186,25 @@ class ProfesoresController extends Controller {
                     }
                 }
 
-                if($img_nueva == 'yes'){
-
-                    $file = Input::get('dir');
-                    if($usuario->foto != null){
-                       Storage::delete('/images/images_perfil/' . $request->file_viejo);
-                    }                    
-                    $file = str_replace('data:image/png;base64,', '', $file);
-                    $nombreTemporal = 'perfil_' . date('dmY') . '_' . date('His') . ".jpg";
-                    $usuario->foto = $nombreTemporal;
-
-                    $imagen = Image::make($file);
-                    $payload = (string)$imagen->encode();
-                    Storage::put(
-                        '/images/images_perfil/'. $nombreTemporal,
-                        $payload
-                    );
-                }
+//                Imagen --
+//                if($img_nueva == 'yes'){
+//
+//                    $file = Input::get('dir');
+//                    if($usuario->foto != null){
+//                       Storage::delete('/images/images_perfil/' . $request->file_viejo);
+//                    }
+//                    $file = str_replace('data:image/png;base64,', '', $file);
+//                    $nombreTemporal = 'perfil_' . date('dmY') . '_' . date('His') . ".jpg";
+//                    $usuario->foto = $nombreTemporal;
+//
+//                    $imagen = Image::make($file);
+//                    $payload = (string)$imagen->encode();
+//                    Storage::put(
+//                        '/images/images_perfil/'. $nombreTemporal,
+//                        $payload
+//                    );
+//                }
+                $usuario->foto = 'foto_participante.png';
 
                 // Se editan los datos del participante con los datos ingresados en el formulario
                 $usuario->nombre = $request->nombre;

@@ -10,6 +10,7 @@
                     </h3>
                 </div>
             </div>
+            @include('partials.mensajes')
             <div class="row">
                 <div class="">
                     <img src="{{URL::to('/')}}/images/servicios.jpg" class="img-responsive center-block">
