@@ -39,7 +39,7 @@ class InscripcionController extends Controller {
 			if($usuario_actual->can('activar_inscripcion')) {    // Si el usuario posee los permisos necesarios continua con la acción
 				$data['errores'] = '';
 				$data['busq_'] = false;
-				$data['usuarios'] = Preinscripcion::paginate(5);
+				$data['usuarios'] = Preinscripcion::all();
                 foreach ($data['usuarios'] as $usuario) {
                     if($usuario->tipo != 'Webinar') {
                         $curso = Curso::where('id', '=', $usuario->id_curso)->get();
@@ -83,7 +83,7 @@ class InscripcionController extends Controller {
 				$data['errores'] = '';
 				$data['busq_'] = true;
 				$val = '';
-                $data['usuarios'] = Preinscripcion::paginate(5);
+                $data['usuarios'] = Preinscripcion::all();
                 foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
                     if($usuario->tipo != 'Webinar') {
                         $curso = Curso::where('id', '=', $usuario->id_curso)->get();
@@ -137,7 +137,7 @@ class InscripcionController extends Controller {
 				}
 				if(($param != 'tipo')){
 					$data['usuarios'] = Preinscripcion::where($param, 'ilike', '%'.$busq.'%')
-						->orderBy('created_at')->paginate(5);
+						->orderBy('created_at')->get();
 				}elseif($param == 'tipo'){
 					if($busq == 0){
 						$val = 'Diplomado';
@@ -147,7 +147,7 @@ class InscripcionController extends Controller {
                         $val = 'Webinar';
                     }
 					$data['usuarios'] = Preinscripcion::where('tipo', '=', $val)
-						->orderBy('created_at')->paginate(5);
+						->orderBy('created_at')->get();
                     foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
                         if($usuario->tipo != 'Webinar') {
                             $curso = Curso::where('id', '=', $usuario->id_curso)->get();
@@ -341,11 +341,11 @@ class InscripcionController extends Controller {
                             $pago->save();
                         }
 
-//                        Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
-//                            $message->subject('CIETE - Inscripción')
-//                                ->to($data['email'], 'CIETE')
-//                                ->replyTo($data['email']);
-//                        });
+                        Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
+                            $message->subject('CIETE - Inscripción')
+                                ->to($data['email'], 'CIETE')
+                                ->replyTo($data['email']);
+                        });
 
                         DB::table('preinscripciones')->where('id', '=', $id)->delete();
                         $data['usuarios'] = Preinscripcion::all();
@@ -423,11 +423,11 @@ class InscripcionController extends Controller {
                                     $pago->save();
                                 }
 
-//                                Mail::send('emails.inscripcion', $data, function ($message) use ($data) {
-//                                    $message->subject('CIETE - Inscripción')
-//                                        ->to($data['email'], 'CIETE')
-//                                        ->replyTo($data['email']);
-//                                });
+                                Mail::send('emails.inscripcion', $data, function ($message) use ($data) {
+                                    $message->subject('CIETE - Inscripción')
+                                        ->to($data['email'], 'CIETE')
+                                        ->replyTo($data['email']);
+                                });
 
                                 DB::table('preinscripciones')->where('id', '=', $id)->delete();
                                 $data['usuarios'] = Preinscripcion::all();
@@ -567,6 +567,8 @@ class InscripcionController extends Controller {
                 $data['nombre'] = $usuario->nombre;
                 $data['apellido'] = $usuario->apellido;
                 $data['email'] = $usuario->email;
+                $data['actividad'] = '';
+
                 if($usuario->tipo == 'Diploamdo' || $usuario->tipo == 'Cápsula'){
                     $actividad = Curso::find($usuario->id_curso);
                     $data['actividad'] = $actividad->nombre;

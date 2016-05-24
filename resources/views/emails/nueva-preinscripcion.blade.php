@@ -31,7 +31,7 @@
             <div class="panel panel-login">
                 <div class="panel-body">
                     <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" /><br>
-                    Estimado Administrador o Coordinador, una nueva presona se acaba de inscribir. Por favor, ingrese al portal para validar o recha
+                    Estimado Administrador o Coordinador, una nueva presona se acaba de inscribir. Por favor, ingrese al portal para validarla o rechazarla.
                     <br>
 
                     CIETE

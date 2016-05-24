@@ -224,7 +224,7 @@ class PreinscripcionController extends Controller {
                         $data['email'] = $request->email;
 
                         Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                            $message->subject('CIETE - Preinscripcion')
+                            $message->subject('CIETE - Inscripción')
                                 ->to($data['email'], 'CIETE')
                                 ->replyTo($data['email']);
                         });
@@ -299,7 +299,7 @@ class PreinscripcionController extends Controller {
                     $data['email'] = $request->email;
 
                     Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                        $message->subject('CIETE - Preinscripcion')
+                        $message->subject('CIETE - Inscripción')
                             ->to($data['email'], 'CIETE')
                             ->replyTo($data['email']);
                     });
@@ -390,7 +390,7 @@ class PreinscripcionController extends Controller {
                         $data['email'] = $request->email;
 
                         Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                            $message->subject('CIETE - Preinscripcion')
+                            $message->subject('CIETE - Inscripción')
                                 ->to($data['email'], 'CIETE')
                                 ->replyTo($data['email']);
                         });
@@ -428,7 +428,7 @@ class PreinscripcionController extends Controller {
                     $data['email'] = $request->email;
 
                     Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                        $message->subject('CIETE - Preinscripcion')
+                        $message->subject('CIETE - Inscripción')
                             ->to($data['email'], 'CIETE')
                             ->replyTo($data['email']);
                     });

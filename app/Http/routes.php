@@ -255,6 +255,10 @@ Route::group([
 
     //Rutas inscripcion
         Route::get('inscripcion/procesar','InscripcionController@index');
+        Route::post('inscripcion/procesar',[
+            'as' => 'inscripcion.store', 'uses' =>'InscripcionController@store']);
+        Route::delete('inscripcion/procesar/{id}',
+            ['as' => 'inscripcion.destroy', 'uses' =>'InscripcionController@destroy']);
         Route::get('inscripcion/procesar/buscar', [
             'as' => 'inscripcion.buscar', 'uses' => 'InscripcionController@buscarInscripcion'
         ]);
@@ -265,7 +269,7 @@ Route::group([
             'as' => 'inscripcion.verPdf', 'uses' => 'InscripcionController@verPdf'
         ]);
         Route::get('inscripcion/completar/{id}','InscripcionController@completarInscripcion');
-        Route::resource('inscripcion','InscripcionController');
+//        Route::resource('inscripcion','InscripcionController');
 
 
     //Rutas informes académicos
