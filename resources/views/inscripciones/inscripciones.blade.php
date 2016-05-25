@@ -39,14 +39,12 @@
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Documento de identidad</th>
-                            {{--<th>Email</th>--}}
                             <th>Actividad</th>
-                            {{--<th>Tipo</th>--}}
-                            <th>Modalidad de pago</th>
+                            <th>Modalidad</th>
                             <th>Número de pago</th>
                             <th>Monto del pago</th>
+                            <th>Banco</th>
                             <th>Acciones</th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -73,6 +71,9 @@
                                             <td>
                                                 {{ $user->monto }}
                                             </td>
+                                            <td>
+                                                {{ $user->banco->nombre }}
+                                            </td>
                                             {{--<td>--}}
                                                 {{--@if(Entrust::can('activar_inscripcion'))--}}
                                                     {{--{!! Form::open(array('method' => 'GET','route' => array('inscripcion.documentos', $user->id))) !!}--}}
@@ -84,6 +85,7 @@
                                                 {{--@endif--}}
                                             {{--</td>--}}
                                         @else
+                                            <td>NA</td>
                                             <td>NA</td>
                                             <td>NA</td>
                                             <td>NA</td>

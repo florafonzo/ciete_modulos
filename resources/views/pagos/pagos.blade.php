@@ -20,7 +20,6 @@
                                 <option value="0"  selected="selected">Buscar por</option>
                                 <option value="nombre"  >Nombre</option>
                                 <option value="apellido"  >Apellido</option>
-                                {{--<option value="di"  >Dcocumento de identidad</option>--}}
                                 <option value="curso"  >Nombre actividad</option>
                             </select>
                             {!!Form::text('busqueda', null,array('placeholder' => 'Escriba su busqueda...','class' => 'form-control bus', 'id' => 'busq'))!!}
@@ -41,8 +40,8 @@
                             <th>Modalidad</th>
                             <th>Número de pago</th>
                             <th>Monto</th>
+                            <th>banco</th>
                             <th>Acciones</th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -58,6 +57,7 @@
                                         <td>{{ $pago->modalidad->nombre }}</td>
                                         <td>{{ $pago->numero_pago }}</td>
                                         <td>{{ $pago->monto}}</td>
+                                        <td>{{ $pago->banco->nombre}}</td>
                                         <td>
                                             @if(Entrust::can('aprobar_pago'))
                                                 {!! Form::open(array('method' => 'post','route' => array('pago.aprobar'), 'id' => 'form_pago'.$pago->id)) !!}

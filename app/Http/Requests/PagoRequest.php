@@ -29,6 +29,7 @@ class PagoRequest extends Request {
         return [
             'monto' => 'required|integer',
             'numero_pago' => 'required',
+            'banco' => 'required',
         ];
     }
 

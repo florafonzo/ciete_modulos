@@ -39,7 +39,7 @@
                         <li>{{$motivo}}</li>
                     </ul>
                     <br>
-                    Le recordamos que pude pagar la actividad en un m√°ximo de tres(3) cuotas.<br><br>
+                    Le recordamos que pude pagar la actividad en un m·ximo de tres(3) cuotas.<br><br>
 
                     Gracias por formar parte de nuestra comunidad.
                 </div>

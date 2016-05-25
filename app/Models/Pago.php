@@ -16,6 +16,6 @@ class Pago extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id_participante','id_curso','por_partes', 'monto'];
+    protected $fillable = ['id_participante','id_curso','por_partes', 'monto', 'banco'];
 
 }

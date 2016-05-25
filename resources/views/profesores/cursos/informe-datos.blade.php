@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
 
-        <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
+        <div class="col-md-12 col-sm-12 bienvenida">
             <h3>
                 Informe Académico de la actividad {{$curso->nombre}}<br>Módulo - {{$modulo->nombre}}
             </h3>

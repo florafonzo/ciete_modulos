@@ -33,6 +33,7 @@ class PreinscripcionRequest extends Request {
             'di' => 'required|max:100|min:2',
             'email' => 'required|email|max:255',
             'tipo_pago' => 'required',
+            'banco' => 'required',
             'monto' => 'required|integer',
             'numero_pago' => 'required',
         ];

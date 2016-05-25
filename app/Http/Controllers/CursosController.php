@@ -2064,7 +2064,7 @@ class CursosController extends Controller {
 
             if($usuario_actual->can('agregar_prof_curso')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
-                $curso = Curso::find($id_curso);
+                $data['curso'] = $curso = Curso::find($id_curso);
                 $data['modulo'] = Modulo::find($modulo);
                 $data['busq_'] = false;
                 $data['busq'] = false;
@@ -2088,7 +2088,7 @@ class CursosController extends Controller {
                         $user = User::where('id', '=', $prof[0]->id_usuario)->get();
                         $data['nombre'] = $user[0]->nombre;
                         $data['apellido'] = $user[0]->apellido;
-                        $data['curso'] = $curso->nombre;
+                        $data['cursos'] = $curso->nombre;
                         $data['email'] = $user[0]->email;
                         if ($prof_curso->save()) {
 //                            Mail::send('emails.profesor', $data, function ($message) use ($data) {

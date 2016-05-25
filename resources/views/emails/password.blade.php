@@ -9,20 +9,12 @@
 	  <link rel="stylesheet" href="{{URL::to('/')}}/css/bootstrap.css">
 	  <link rel="stylesheet" href="{{URL::to('/')}}/css/bootstrap-3.3.5.css">
 
-
       <script src="{{URL::to('/')}}/js/jquery.js"></script>
       <script src="{{URL::to('/')}}/js/jquery-1.11.3.min.js"></script>
       <script src="{{URL::to('/')}}/js/jquery-ui.min.js"></script>
       {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>--}}
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
       <script src="{{URL::to('/')}}/js/generic.js"></script>
-      <!--<script>
-      $(document).ready(function(){
-        alert('Holaaaaaaaa');
-      });
-    </script>-->
-
 	</head>
 	<body>
 		<div class="container-fluid">
@@ -35,7 +27,7 @@
 
 						Haga click en el siguiente enlace para cambiar su contraseña: <br>
 					<form class="form-horizontal" role="form" method="GET" action="{{ url('password/reset/'.$token) }}">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+						<input type="hidden" name="_token" value="{{ $token }}">
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">

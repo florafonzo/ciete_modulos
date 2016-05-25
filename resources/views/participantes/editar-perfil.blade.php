@@ -105,48 +105,43 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="form-group localidad">
-                            <div class="form-group">
-                                {!!Form::label('estado', 'Estado:', array('class' => 'col-md-4 '))!!}
-                                <div class="col-sm-8">
-                                    <!--{!! Form::select('id_estado', $estados, null, array( 'class' => 'form-control', 'id'=>'id_est'))!!}-->
-                                    <select class="form-control col-sm-8" id="id_est" name="id_est">
-                                        <option value="0"  selected="selected"> Seleccione un estado</option>
-                                        @foreach ($estados as $index=>$estado)
-                                            <option value="{{$index}}">{{$estado}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            {!!Form::label('estado', 'Estado:', array('class' => 'col-md-4 '))!!}
+                            <div class="col-sm-8">
+                                <select class="form-control col-sm-8" id="id_est" name="id_est">
+                                    <option value="0"  selected="selected"> Seleccione un estado</option>
+                                    @foreach ($estados as $index=>$estado)
+                                        <option value="{{$index}}">{{$estado}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
+
                         <div class="form-group localidad1">
-                            <div class="form-group">
-                                {!!Form::label('ciudad', 'Ciudad:', array('class' => 'col-md-4 '))!!}
-                                <div class="col-sm-8">
-                                    <select class="form-control" id="ciudad" name="ciudad">
+                            {!!Form::label('ciudad', 'Ciudad:', array('class' => 'col-md-4 '))!!}
+                            <div class="col-sm-8">
+                                <select class="form-control" id="ciudad" name="ciudad">
 
-                                    </select>
-                                </div>
+                                </select>
                             </div>
                         </div>
+
                         <div class="form-group localidad2">
-                            <div class="form-group">
-                                {!!Form::label('municipio', 'Municipio:', array('class' => 'col-md-4 '))!!}
-                                <div class="col-sm-8">
-                                    <select class="form-control" id="municipio" name="municipio">
+                            {!!Form::label('municipio', 'Municipio:', array('class' => 'col-md-4 '))!!}
+                            <div class="col-sm-8">
+                                <select class="form-control" id="municipio" name="municipio">
 
-                                    </select>
-                                </div>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group localidad3">
-                            <div class="form-group">
-                                {!!Form::label('parroquia', 'Parroquia:', array('class' => 'col-md-4 '))!!}
-                                <div class="col-sm-8">
-                                    <select class="form-control" id="parroquia" name="parroquia">
 
-                                    </select>
-                                </div>
+                        <div class="form-group localidad3">
+                            {!!Form::label('parroquia', 'Parroquia:', array('class' => 'col-md-4 '))!!}
+                            <div class="col-sm-8">
+                                <select class="form-control" id="parroquia" name="parroquia">
+
+                                </select>
                             </div>
                         </div>
                     @endif

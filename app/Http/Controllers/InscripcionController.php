@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Banco;
 use App\Models\Curso;
 use App\Models\Pago;
 use App\Models\ModalidadPago;
@@ -50,6 +51,7 @@ class InscripcionController extends Controller {
                     $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
                     $usuario['curso_nombre'] = $curso[0]->nombre;
                     $usuario['modalidad'] = $modo[0]->nombre;
+                    $usuario['banco'] = Banco::find($usuario->id_banco);
 
                 }
 				$data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
@@ -94,6 +96,7 @@ class InscripcionController extends Controller {
                     $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
                     $usuario['curso_nombre'] = $curso[0]->nombre;
                     $usuario['modalidad'] = $modo[0]->nombre;
+                    $usuario['banco'] = Banco::find($usuario->id_banco);
 
                 }
 //                $data['tipos'] = ['Diplomado', 'Cápsula', 'Webinar'];
@@ -158,7 +161,7 @@ class InscripcionController extends Controller {
                         $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
                         $usuario['curso_nombre'] = $curso[0]->nombre;
                         $usuario['modalidad'] = $modo[0]->nombre;
-
+                        $usuario['banco'] = Banco::find($usuario->id_banco);
                     }
 				}
 				return view('inscripciones.inscripciones', $data);
@@ -205,7 +208,7 @@ class InscripcionController extends Controller {
                     $modo = ModalidadPago::where('id', '=', $usr->id_modalidad_pago)->get();
                     $usr['curso_nombre'] = $curso[0]->nombre;
                     $usr['modalidad'] = $modo[0]->nombre;
-
+                    $usr['banco'] = Banco::find($usr->id_banco);
                 }
                 $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
 
@@ -302,6 +305,7 @@ class InscripcionController extends Controller {
                             $pago->id_modalidad_pago = $usuario->id_modalidad_pago;
                             $pago->aprobado = true;
                             $pago->numero_pago = $usuario->numero_pago;
+                            $pago->id_banco = $usuario->id_banco;
                             $pago->save();
                         }
 
@@ -323,6 +327,7 @@ class InscripcionController extends Controller {
                             $modo = ModalidadPago::where('id', '=', $usr->id_modalidad_pago)->get();
                             $usr['curso_nombre'] = $curso[0]->nombre;
                             $usr['modalidad'] = $modo[0]->nombre;
+                            $usr['banco'] = Banco::find($usr->id_banco);
 
                         }
                         $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
@@ -390,6 +395,7 @@ class InscripcionController extends Controller {
                                     $pago->id_modalidad_pago = $usuario->id_modalidad_pago;
                                     $pago->aprobado = true;
                                     $pago->numero_pago = $usuario->numero_pago;
+                                    $pago->id_banco = $usuario->id_banco;
                                     $pago->save();
                                 }
 
@@ -410,7 +416,7 @@ class InscripcionController extends Controller {
                                     $modo = ModalidadPago::where('id', '=', $usr->id_modalidad_pago)->get();
                                     $usr['curso_nombre'] = $curso[0]->nombre;
                                     $usr['modalidad'] = $modo[0]->nombre;
-
+                                    $usr['banco'] = Banco::find($usr->id_banco);
                                 }
                                 $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                                 Session::set('mensaje', 'El usuario fue inscrito con éxito.');
@@ -565,6 +571,7 @@ class InscripcionController extends Controller {
                     $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
                     $usuario['curso_nombre'] = $curso[0]->nombre;
                     $usuario['modalidad'] = $modo[0]->nombre;
+                    $usuario['banco'] = Banco::find($usuario->id_banco);
 
                 }
 //                Mail::send('emails.rechazo', $data, function ($message) use ($data) {

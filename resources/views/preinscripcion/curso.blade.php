@@ -48,6 +48,15 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="tipo_pago">Banco desde el cual realizó el pago:</label>
+                                <select name="banco" id="banco" required>
+                                    <option value="0"  selected="selected">Seleccione el banco</option>
+                                    @foreach($bancos as $index => $banco)
+                                        <option value="{{$index}}"> {{$banco}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="numero_pago">Número de depósito o transferencia:</label>
                                 <input type="text" class="form-control" id="numero_pago" placeholder="Número de depósito o transferencia" name="numero_pago" value="{{old('monto')}}" required>
                             </div>

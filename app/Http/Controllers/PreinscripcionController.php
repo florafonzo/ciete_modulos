@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PreinscripcionRequest;
 use App\Http\Requests\PreinscripcionWebRequest;
 
+use App\Models\Banco;
 use App\Models\Curso;
 use App\Models\ModalidadPago;
 use App\Models\Preinscripcion;
@@ -126,6 +127,7 @@ class PreinscripcionController extends Controller {
         $data['errores'] = '';
         $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
         $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+        $data['bancos'] = Banco::all()->lists('nombre','id');
 
         return view('preinscripcion.curso', $data);
     }
@@ -147,17 +149,28 @@ class PreinscripcionController extends Controller {
             $data['errores'] = '';
             $id_curso = Input::get('curso');
             $id_modalidad = Input::get('tipo_pago');
+            $id_banco = Input::get('banco');
 
             if($id_curso == 0){
                 $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                 $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                $data['bancos'] = Banco::all()->lists('nombre','id');
                 Session::set('error', 'Debe seleccionar un curso de la lista');
                 return view('preinscripcion.curso', $data);
             }
             if($id_modalidad == 0){
                 $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                 $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                $data['bancos'] = Banco::all()->lists('nombre','id');
                 Session::set('error', 'Debe seleccionar una modalidad de pago');
+                return view('preinscripcion.curso', $data);
+            }
+
+            if($id_banco == 0){
+                $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
+                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                $data['bancos'] = Banco::all()->lists('nombre','id');
+                Session::set('error', 'Debe seleccionar el banco');
                 return view('preinscripcion.curso', $data);
             }
 
@@ -198,6 +211,7 @@ class PreinscripcionController extends Controller {
                         $curso = Curso::find($id_curso);
                         $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
                         $create2->tipo = $tipo[0]->nombre;
+                        $create2->id_banco = $request->banco;
                         $create2->save();
 
                         // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD
@@ -249,12 +263,14 @@ class PreinscripcionController extends Controller {
 
                         $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                         $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                        $data['bancos'] = Banco::all()->lists('nombre','id');
                         Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo');
                         return view('preinscripcion.curso', $data);
                     }else{
                         $curso = Curso::find($id_curso);
                         $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
                         $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                        $data['bancos'] = Banco::all()->lists('nombre','id');
                         Session::set('error', 'Usted ya se encuentra inscrito en el curso '.$curso->nombre);
                         return view('preinscripcion.curso', $data);
                     }
@@ -272,6 +288,7 @@ class PreinscripcionController extends Controller {
                     $curso = Curso::find($id_curso);
                     $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
                     $create2->tipo = $tipo[0]->nombre;
+                    $create2->id_banco = $request->banco;
                     $create2->save();
 
 //                    // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD
@@ -324,6 +341,7 @@ class PreinscripcionController extends Controller {
 
                     $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                     $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                    $data['bancos'] = Banco::all()->lists('nombre','id');
                     Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo.');
                     return view('preinscripcion.curso', $data);
                 }
@@ -333,6 +351,7 @@ class PreinscripcionController extends Controller {
                 $curso->save(); // se guarda
                 $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre','id');
                 $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                $data['bancos'] = Banco::all()->lists('nombre','id');
                 Session::set('error', 'Ya no quedan cupos disponibles para el curso '.$curso->nombre);
                 return view('preinscripcion.curso', $data);
 
@@ -394,6 +413,24 @@ class PreinscripcionController extends Controller {
 //                                ->to($data['email'], 'CIETE')
 //                                ->replyTo($data['email']);
 //                        });
+
+                        $usrs = User::all();
+                        $data['email2'] = [];
+                        foreach ($usrs as $usuario) {
+                            $roles = $usuario->roles()->get();
+                            $ya = true;
+                            foreach ($roles as $rol) {
+                                if(($rol->id == 1 || $rol->id == 2) && $ya){
+                                    $data['email2'][count($data['email2'])] = $usuario->email;
+                                    $ya = false;
+                                }
+                            }
+                        }
+//                    Mail::send('emails.nueva-preinscripcion', $data, function ($message) use ($data) {
+//                        $message->subject('CIETE - Nueva inscripción')
+//                            ->to($data['email2'], 'CIETE')
+//                            ->replyTo($data['email2']);
+//                    });
                         $data['webinars'] = Webinar::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
 
                         Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo.');
@@ -431,6 +468,24 @@ class PreinscripcionController extends Controller {
 //                        $message->subject('CIETE - Inscripción')
 //                            ->to($data['email'], 'CIETE')
 //                            ->replyTo($data['email']);
+//                    });
+
+                    $usrs = User::all();
+                    $data['email2'] = [];
+                    foreach ($usrs as $usuario) {
+                        $roles = $usuario->roles()->get();
+                        $ya = true;
+                        foreach ($roles as $rol) {
+                            if(($rol->id == 1 || $rol->id == 2) && $ya){
+                                $data['email2'][count($data['email2'])] = $usuario->email;
+                                $ya = false;
+                            }
+                        }
+                    }
+//                    Mail::send('emails.nueva-preinscripcion', $data, function ($message) use ($data) {
+//                        $message->subject('CIETE - Nueva inscripción')
+//                            ->to($data['email2'], 'CIETE')
+//                            ->replyTo($data['email2']);
 //                    });
                     $data['cursos'] = Webinar::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
 

@@ -552,7 +552,7 @@ class ProfesoresController extends Controller {
         }
     }
 
-    public function verParticipantesSeccion($id_curso, $modulo)
+    public function verParticipantesSeccion($id_curso, $modulo, $seccion)
     {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -567,10 +567,12 @@ class ProfesoresController extends Controller {
                 $data['errores'] = '';
                 $data['busq'] = false;
                 $data['busq_'] = false;
+                $data['seccion'] = $seccion;
+                $seccion = str_replace(' ', '', $seccion);
                 $data['curso'] = Curso::find($id_curso);
                 $data['modulo'] = Modulo::find($modulo);
                 $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->select('id_participante')->get();
-                dd($participantes);
+//                dd($participantes);
                 if($participantes != null) {
                     foreach ($participantes as $index => $part) {
                         $data['participantes'][$index] = Participante::where('id', '=', $part->id_participante)->get();
@@ -763,7 +765,7 @@ class ProfesoresController extends Controller {
 
                     if($notas->count()){
                         if($id == null) {
-                            dd("msiufsif");
+//                            dd("msiufsif");
                             $data['calificado'] = false;
                             Session::set('error', 'Ya calificó al participante para este módulo, edite la nota de ser necesario');
                             return view('profesores.cursos.notas', $data);

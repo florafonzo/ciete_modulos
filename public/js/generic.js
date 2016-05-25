@@ -146,8 +146,9 @@ $(document).ready(function() {
 
         var estado_id = e.target.value;
             //alert(estado_id);
+        var loc = $(location).attr('href');
         $.ajax({
-            url:        "/ciudad/"+estado_id,
+            url:        loc+"/ciudad/"+estado_id,
             dataType:   "json",
             success:    function(data){
                 $('#ciudad').empty();
@@ -169,7 +170,7 @@ $(document).ready(function() {
         });
 
         $.ajax({
-            url:        "/municipio/"+estado_id,
+            url:        loc+"/municipio/"+estado_id,
             dataType:   "json",
             success:    function(data){
                 $('#municipio').empty();
@@ -200,8 +201,9 @@ $(document).ready(function() {
         $(".localidad3").show();
         var municipio_id = e.target.value;
         //alert(municipio_id);
+        var loc = $(location).attr('href');
         $.ajax({
-            url:        "/parroquia/"+municipio_id,
+            url:        loc+"/parroquia/"+municipio_id,
             dataType:   "json",
             success:    function(data){
                 $('#parroquia').empty();
@@ -275,9 +277,10 @@ $(document).ready(function() {
         var curso = $(this).data('curso');
         var seccion = $(this).data('seccion');
         var part = $(this).data('part');
-
+        var loc = $(location).attr('href');
+        loc = loc.slice(0,-1);
         $.ajax({
-            url:        "/nota/"+id,
+            url:        loc+"/nota/"+id,
             dataType:   "json",
             success:    function(data){
                 $('#eval').empty();

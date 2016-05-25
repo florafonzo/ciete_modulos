@@ -16,6 +16,7 @@ class CreatePreinscripcionsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('id_curso')->unsigned();
+			$table->integer('id_banco')->unsigned();
 			$table->string('nombre');
 			$table->string('apellido');
 			$table->string('email');
@@ -27,6 +28,8 @@ class CreatePreinscripcionsTable extends Migration {
 
 
 			$table->foreign('id_curso')->references('id')->on('cursos')
+				->onUpdate('cascade')->onDelete('cascade');
+			$table->foreign('id_banco')->references('id')->on('bancos')
 				->onUpdate('cascade')->onDelete('cascade');
 		});
 	}

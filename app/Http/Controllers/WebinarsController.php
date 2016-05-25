@@ -1191,7 +1191,7 @@ class WebinarsController extends Controller {
                         $user = User::where('id', '=', $part[0]->id_usuario)->get();
                         $data['nombre'] = $user[0]->nombre;
                         $data['apellido'] = $user[0]->apellido;
-                        $data['curso'] = $webinar->nombre;
+                        $data['cursos'] = $webinar->nombre;
                         $data['email'] = $user[0]->email;
                         if ($part_web->save()) {
 //                            Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
@@ -1255,7 +1255,7 @@ class WebinarsController extends Controller {
                 $user = User::where('id', '=', $part[0]->id_usuario)->get();
                 $data['nombre'] = $user[0]->nombre;
                 $data['apellido'] = $user[0]->apellido;
-                $data['curso'] = $webinar->nombre;
+                $data['cursos'] = $webinar->nombre;
                 $data['email'] = $user[0]->email;
 //                Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
 //                    $message->subject('CIETE - Información')
@@ -1644,7 +1644,7 @@ class WebinarsController extends Controller {
                         $user = User::where('id', '=', $part[0]->id_usuario)->get();
                         $data['nombre'] = $user[0]->nombre;
                         $data['apellido'] = $user[0]->apellido;
-                        $data['curso'] = $webinar->nombre;
+                        $data['cursos'] = $webinar->nombre;
                         $data['email'] = $user[0]->email;
 
                         if ($prof_web->save()) {
@@ -1709,7 +1709,7 @@ class WebinarsController extends Controller {
                 $user = User::where('id', '=', $part[0]->id_usuario)->get();
                 $data['nombre'] = $user[0]->nombre;
                 $data['apellido'] = $user[0]->apellido;
-                $data['curso'] = $webinar->nombre;
+                $data['cursos'] = $webinar->nombre;
                 $data['email'] = $user[0]->email;
 //                Mail::send('emails.profesor-no', $data, function ($message) use ($data) {
 //                    $message->subject('CIETE - Información')

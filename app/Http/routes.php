@@ -171,7 +171,7 @@ Route::group([
     Route::resource('webinars','WebinarsController', ['only' => ['index','create','store','update','edit', 'destroy']]);
 
     //Rutas dirección participantes
-    Route::get('/ciudad/{id}', function(){
+    Route::get('participante/perfil/{id_part}/editar/ciudad/{id}', function(){
         $url = Request::url();
         $porciones = explode("ciudad/", $url);
         $id = $porciones[1];
@@ -180,7 +180,7 @@ Route::group([
         return Response::json($ciudades);
     });
 
-    Route::get('/municipio/{id}', function(){
+    Route::get('participante/perfil/{id_part}/editar/municipio/{id}', function(){
         $url = Request::url();
         $porciones = explode("municipio/", $url);
         $id = $porciones[1];
@@ -189,7 +189,7 @@ Route::group([
         return Response::json($municipios);
     });
 
-    Route::get('/parroquia/{id}', function(){
+    Route::get('participante/perfil/{id_part}/editar/parroquia/{id}', function(){
         $url = Request::url();
         $porciones = explode("parroquia/", $url);
         $municipio = $porciones[1];
@@ -317,7 +317,7 @@ Route::group([
     Route::delete('profesor/actividades/{id}/modulos/{modulo}/grupos/{seccion}/participantes/{id_alumno}/notas/{id_nota}','ProfesoresController@eliminarNotasParticipante');
 //    Route::get('profesor/webinars','ProfesoresController@verWebinars');
 //    Route::get('profesor/webinars/{id}/grupos','ProfesoresController@verSeccionesWebinar');
-    Route::get('/nota/{id}', function(){
+    Route::get('profesor/actividades/{id_curso}/modulos/{id_modulo}/grupos/{seccion}/participantes/{id_part}/notas/nota/{id}', function(){
         $url = Request::url();
         $porciones = explode("nota/", $url);
         $nota = $porciones[1];

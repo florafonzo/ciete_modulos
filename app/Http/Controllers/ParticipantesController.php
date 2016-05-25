@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Banco;
 use App\Models\Curso;
 use App\Models\ModalidadPago;
 use App\Models\Modulo;
@@ -416,19 +417,21 @@ class ParticipantesController extends Controller {
                 $data['pagos'] = $pagos = Pago::where('id_curso', '=', $id_curso)
                                                 ->where('id_participante', '=', $participante[0]->id)->paginate(5);
                 $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                $data['bancos'] = Banco::all()->lists('nombre','id');
                 $total = 0;
                 $data['completo'] = true;
                 if($pagos->count()){
                     foreach($data['pagos'] as $pago){
                         $total = $total + $pago->monto;
                         $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                        $pago['banco'] = Banco::find($pago->id_banco);
                         if($pago->aprobado){
                             $pago['estatus'] = 'Aprobado';
                         }else{
                             $pago['estatus'] = 'En espera';
                         }
                     }
-                    dd($total);
+//                    dd($total);
                     if($total < $curso->costo){
                         $data['completo'] = false;
                         $pagos_restantes = 3 - $pagos->count();
@@ -479,6 +482,7 @@ class ParticipantesController extends Controller {
                 $data['tipo'] = TipoCurso::find($curso->id_tipo);
                 $data['pago'] = Pago::find($id_pago);
                 $data['modalidad'] = ModalidadPago::find($data['pago']->id_modalidad_pago);
+                $data['banco'] = Banco::find($data['pago']->id_banco);
                 $data['participante'] = Participante::where('id_usuario', '=', $usuario_actual->id)->get();
 
                 if($data['pago']->count()){
@@ -518,12 +522,14 @@ class ParticipantesController extends Controller {
                 $data['pagos'] = $pagos = Pago::where('id_curso', '=', $id_curso)
                                                 ->where('id_participante', '=', $participante[0]->id)->get();
                 $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+                $data['bancos'] = Banco::all()->lists('nombre','id');
                 $total = 0;
                 $data['completo'] = true;
                 if($pagos->count()){
                     foreach($data['pagos'] as $pago){
                         $total = $total + $pago->monto;
                         $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                        $pago['banco'] = Banco::find($pago->id_banco);
                         if($pago->aprobado){
                             $pago['estatus'] = 'Aprobado';
                         }else{
@@ -575,6 +581,12 @@ class ParticipantesController extends Controller {
                     $id_modalidad = Input::get('tipo_pago');
                     if($id_modalidad == 0){
                         Session::set('error', 'Debe seleccionar una modalidad de pago');
+                        return $this->generarPagoCurso($id_curso);
+                    }
+
+                    $id_banco = Input::get('banco');
+                    if($id_banco == 0){
+                        Session::set('error', 'Debe seleccionar el banco');
                         return $this->generarPagoCurso($id_curso);
                     }
 
@@ -631,14 +643,15 @@ class ParticipantesController extends Controller {
                     $pago->id_modalidad_pago = $id_modalidad;
                     $pago->aprobado = false;
                     $pago->numero_pago = $request->numero_pago;
+                    $pago->id_banco = $request->banco;
                     $pago->save();
 
                     $data['pago_'] = $pago;
                     $data['participante'] = Participante::find($pago->id_participante);
                     $data['email'] = $usuario_actual->email;
-                    $data['curso'] = Curso::find($pago->id_curso);
+                    $data['cursos'] = Curso::find($pago->id_curso);
                     if($pago->save()){
-                        Mail::send('emails.pago-espera', $data, function ($message) use ($data) {
+                        Mail::send('emails.pago-aprobado', $data, function ($message) use ($data) {
                             $message->subject('CIETE - Pago aprobado')
                                 ->to($data['email'], 'CIETE')
                                 ->replyTo($data['email']);

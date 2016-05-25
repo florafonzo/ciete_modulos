@@ -3,9 +3,9 @@
 @section('content')
     <div class="row">
 
-        <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
+        <div class="col-md-12 col-sm-12 bienvenida">
             <h3>
-                Participantes de la actividad {{$curso->nombre}} - Módulo {{$modulo->nombre}}<br/> Grupo - {{$seccion}}
+                Participantes de la actividad {{$curso->nombre}}<br/> Módulo: {{$modulo->nombre}} - Grupo: {{$seccion}}
             </h3>
         </div>
 

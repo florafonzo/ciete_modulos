@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\Banco;
 use App\Models\Curso;
 use App\Models\ModalidadPago;
 use App\Models\Pago;
@@ -38,6 +39,7 @@ class PagosController extends Controller {
 					$pago['participante'] = Participante::find($pago->id_participante);
 					$pago['curso'] = Curso::find($pago->id_curso);
                     $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                    $pago['banco'] = Banco::find($pago->id_banco);
 				}
                 $data['tipos'] = ['Cápsula', 'Diplomado'];
 
@@ -75,6 +77,7 @@ class PagosController extends Controller {
                         $pago['participante'] = Participante::find($pago->id_participante);
                         $pago['curso'] = Curso::find($pago->id_curso);
                         $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                        $pago['banco'] = Banco::find($pago->id_banco);
                     }
                     Session::set('error', 'Debe seleccionar el parametro por el cual desea buscar');
                     return view('pagos.pagos', $data);
@@ -86,6 +89,7 @@ class PagosController extends Controller {
                             $pago['participante'] = Participante::find($pago->id_participante);
                             $pago['curso'] = Curso::find($pago->id_curso);
                             $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                            $pago['banco'] = Banco::find($pago->id_banco);
                         }
                         Session::set('error', 'Coloque el elemento que desea buscar');
                         return view('pagos.pagos', $data);
@@ -140,6 +144,7 @@ class PagosController extends Controller {
                         $pago['participante'] = Participante::find($pago->id_participante);
                         $pago['curso'] = Curso::find($pago->id_curso);
                         $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                        $pago['banco'] = Banco::find($pago->id_banco);
                     }
                 }
                 return view('pagos.pagos', $data);
@@ -183,6 +188,7 @@ class PagosController extends Controller {
                             $pago['participante'] = Participante::find($pago->id_participante);
                             $pago['curso'] = Curso::find($pago->id_curso);
                             $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                            $pago['banco'] = Banco::find($pago->id_banco);
                         }
                     }else{
                         $data['pagos'] = [];
@@ -208,6 +214,7 @@ class PagosController extends Controller {
                             $pago['participante'] = Participante::find($pago->id_participante);
                             $pago['curso'] = Curso::find($pago->id_curso);
                             $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                            $pago['banco'] = Banco::find($pago->id_banco);
                         }
                     }else{
                         $data['pagos'] = [];
@@ -258,7 +265,7 @@ class PagosController extends Controller {
                 $data['email'] = $usuario->email;
                 DB::table('pagos')->where('id', '=', $id_pago)->delete();
                 Mail::send('emails.rechazo', $data, function ($message) use ($data) {
-                    $message->subject('CIETE - Inscripción rechazada')
+                    $message->subject('CIETE - Pago rechazado')
                         ->to($data['email'], 'CIETE')
                         ->replyTo($data['email']);
                 });
