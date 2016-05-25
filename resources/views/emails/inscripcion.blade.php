@@ -33,12 +33,12 @@
                     <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" /><br>
                     Bienvenido estimado {{$nombre}} {{$apellido}} al CIETE.<br><br>
 
-                    Usted acaba de ser inscrito en la actividad {{$curso}}, ya puede ingresar a la página colocando los siguientes datos:<br>
+                    Usted acaba de ser inscrito en la actividad {{$curso}}, ya puede ingresar a la pÃ¡gina colocando los siguientes datos:<br>
                     <ul style="list-style: none;">
                         <li><strong>Correo: {{$email}}</strong></li>
-                        <li><strong>Contraseña: {{$clave}}</strong></li>
+                        <li><strong>ContraseÃ±a: {{$clave}}</strong></li>
                     </ul>
-                    Ingrese a la sección de <strong>Ver Perfil</strong> para cambiar su contraseña y completar sus datos.<br><br>
+                    Ingrese a la secciÃ³n de <strong>Ver Perfil</strong> para cambiar su contraseÃ±a y completar sus datos.<br><br>
                     Gracias por formar parte de nuestra comunidad.<br><br>
 
                     CIETE

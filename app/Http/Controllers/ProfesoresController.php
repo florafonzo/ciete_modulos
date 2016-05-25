@@ -552,7 +552,7 @@ class ProfesoresController extends Controller {
         }
     }
 
-    public function verParticipantesSeccion($id_curso, $modulo, $seccion)
+    public function verParticipantesSeccion($id_curso, $modulo)
     {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -569,10 +569,8 @@ class ProfesoresController extends Controller {
                 $data['busq_'] = false;
                 $data['curso'] = Curso::find($id_curso);
                 $data['modulo'] = Modulo::find($modulo);
-                $data['seccion'] = $seccion;
-                $seccion = str_replace(' ', '', $seccion);
-                $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->where('seccion', '=', $seccion)->select('id_participante')->get();
-//                dd($participantes);
+                $participantes = ParticipanteCurso::where('id_curso', '=', $id_curso)->select('id_participante')->get();
+                dd($participantes);
                 if($participantes != null) {
                     foreach ($participantes as $index => $part) {
                         $data['participantes'][$index] = Participante::where('id', '=', $part->id_participante)->get();
@@ -879,7 +877,7 @@ class ProfesoresController extends Controller {
                         $data['webinars'][$index] = $webinars;
                         $data['inicio'][$index] = new DateTime($webinars[0]->fecha_inicio);
                         $data['fin'][$index] = new DateTime($webinars[0]->fecha_fin);
-                        $data['seccion'][$index] = $web->seccion;
+//                        $data['seccion'][$index] = $web->seccion;
                     }
 //                    dd($);
                 }
@@ -928,7 +926,7 @@ class ProfesoresController extends Controller {
                             $data['webinars'][$index] = $webinars;
                             $data['inicio'][$index] = new DateTime($webinars[0]->fecha_inicio);
                             $data['fin'][$index] = new DateTime($webinars[0]->fecha_fin);
-                            $data['seccion'][$index] = $web->seccion;
+//                            $data['seccion'][$index] = $web->seccion;
                         }
                     }
                     Session::set('error', 'Debe seleccionar el parametro por el cual desea buscar');
@@ -944,7 +942,7 @@ class ProfesoresController extends Controller {
                             $data['webinars'][$index] = $webinars;
                             $data['inicio'][$index] = new DateTime($webinars[0]->fecha_inicio);
                             $data['fin'][$index] = new DateTime($webinars[0]->fecha_fin);
-                            $data['seccion'][$index] = $web->seccion;
+//                            $data['seccion'][$index] = $web->seccion;
                         }
                     }
                     Session::set('error', 'Coloque el elemento que desea buscar');
@@ -968,7 +966,7 @@ class ProfesoresController extends Controller {
                     foreach ($data['webinars'] as $index => $web) {
                         $data['inicio'][$index] = new DateTime($web->fecha_inicio);
                         $data['fin'][$index] = new DateTime($web->fecha_fin);
-                        $data['seccion'][$index] = $web->seccion;
+//                        $data['seccion'][$index] = $web->seccion;
                     }
 //                        dd($data['cursos']);
                 }
@@ -1023,7 +1021,7 @@ class ProfesoresController extends Controller {
         }
     }
 
-    public function verParticipantesWebinar($id, $seccion)
+    public function verParticipantesWebinar($id)
     {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
@@ -1039,9 +1037,7 @@ class ProfesoresController extends Controller {
                 $data['busq'] = false;
                 $data['busq_'] = false;
                 $data['webinar'] = Webinar::find($id);
-                $data['seccion'] = $seccion;
-                $seccion = str_replace(' ', '', $seccion);
-                $participantes = ParticipanteWebinar::where('id_webinar', '=', $id)->where('seccion', '=', $seccion)->select('id_participante')->get();
+                $participantes = ParticipanteWebinar::where('id_webinar', '=', $id)->select('id_participante')->get();
 //                dd($participantes);
                 if($participantes != null) {
                     foreach ($participantes as $index => $part) {
@@ -1069,7 +1065,7 @@ class ProfesoresController extends Controller {
      *
      * @return Retorna la vista de la lista de participantes deseados.
      */
-    public function buscarParticipanteW($id, $seccion) {
+    public function buscarParticipanteW($id) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1081,15 +1077,13 @@ class ProfesoresController extends Controller {
             if($usuario_actual->can('ver_usuarios')) {   // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['webinar'] = Webinar::find($id);
-                $data['seccion'] = $seccion;
                 $data['participantes'] = '';
-                $seccion = str_replace(' ', '', $seccion);
                 $param = Input::get('parametro');
                 $data['busq_'] = true;
                 $data['busq'] = true;
                 if($param == '0'){
                     $data['busq'] = false;
-                    $participantes = ParticipanteWebinar::where('id_webinar', '=', $id)->where('seccion', '=', $seccion)->select('id_participante')->get();
+                    $participantes = ParticipanteWebinar::where('id_webinar', '=', $id)->select('id_participante')->get();
                     if($participantes != null) {
                         foreach ($participantes as $index => $part) {
                             $data['participantes'][$index] = Participante::where('id', '=', $part->id_participante)->get();
@@ -1100,7 +1094,7 @@ class ProfesoresController extends Controller {
                 }
                 if (empty(Input::get('busqueda'))) {
                     $data['busq'] = false;
-                    $participantes = ParticipanteWebinar::where('id_webinar', '=', $id)->where('seccion', '=', $seccion)->select('id_participante')->get();
+                    $participantes = ParticipanteWebinar::where('id_webinar', '=', $id)->select('id_participante')->get();
                     if($participantes != null) {
                         foreach ($participantes as $index => $part) {
                             $data['participantes'][$index] = Participante::where('id', '=', $part->id_participante)->get();
@@ -1116,7 +1110,6 @@ class ProfesoresController extends Controller {
                 if($participantes != null) {
                     foreach ($participantes as $index => $part) {
                         $existe = ParticipanteWebinar::where('id_webinar', '=', $id)
-                            ->where('seccion', '=', $seccion)
                             ->where('id_participante', '=', $part->id)->get();
                         if($existe->count()) {
                             $data['participantes'][$index] = $part;
@@ -1193,7 +1186,7 @@ class ProfesoresController extends Controller {
         }
     }
 
-    public function generarListaW($id, $modulo, $seccion) {
+    public function generarListaW($id, $modulo) {
         try {
 
             $usuario_actual = Auth::user();
@@ -1206,11 +1199,9 @@ class ProfesoresController extends Controller {
             if($usuario_actual->can('listar_alumnos')) {// Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['webinar'] = Webinar::find($id);
-                $data['seccion'] = $seccion;
                 $data['modulo'] = Modulo::find($modulo);
                 $data['participantes'] = '';
-                $seccion = str_replace(' ', '', $seccion);
-                $participantes = ParticipanteWebinar::where('id_webinar', '=', $id)->where('seccion', '=', $seccion)->select('id_participante')->get();
+                $participantes = ParticipanteWebinar::where('id_webinar', '=', $id)->select('id_participante')->get();
                 if($participantes != null) {
                     foreach ($participantes as $index => $part) {
                         $data['participantes'][$index] = Participante::where('id', '=', $part->id_participante)->get();
@@ -1224,7 +1215,7 @@ class ProfesoresController extends Controller {
                 }
 
                 $pdf = PDF::loadView('profesores.webinars.lista',$data);
-                return $pdf->stream("Listado webinar - ".$data['webinar']->nombre." - seccion ".$seccion.".pdf", array('Attachment'=>0));
+                return $pdf->stream("Listado webinar - ".$data['webinar']->nombre.".pdf", array('Attachment'=>0));
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 
@@ -1313,7 +1304,7 @@ class ProfesoresController extends Controller {
                 $informe->id_profesor = $profesor[0]->id;;
                 $informe->id_usuario = $usuario_actual->id;
                 $informe->id_curso = $id_curso;
-                $informe->fecha_descarga = date('d-m-Y');
+                $informe->fecha_descarga = date("d-m-Y");
                 $informe->conclusion = $request->conclusion;
                 $informe->aspectos_positivos = $request->positivo;
                 $informe->aspectos_negativos = $request->negativo;

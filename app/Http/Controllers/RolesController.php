@@ -231,7 +231,7 @@ class RolesController extends Controller {
                     }
 
                     Session::set('mensaje','Rol creado con éxito.');
-                    return view('roles.roles');
+                    return view('roles.roles', $data);
 
                 }else{  // Si el rol no se ha creado bien se redirige al formulario de creación y se le indica al usuario
                     Session::set('error','Ha ocurrido un error inesperado');
@@ -371,11 +371,11 @@ class RolesController extends Controller {
                     }
 
                     Session::set('mensaje','Rol guardado con éxito.');
-                    return view('roles.roles');
+                    return view('roles.roles', $data);
 
                 }else{      // Si el rol no se ha creado bien se redirige al formulario de creación y se le indica al usuario el error
                     Session::set('error','Ha ocurrido un error inesperado');
-                    return view('roles.editar');
+                    return view('roles.editar', $data);
                 }
             }else{  // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 

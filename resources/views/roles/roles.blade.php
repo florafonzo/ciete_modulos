@@ -148,11 +148,6 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row">
-                    <div class="col-sm-8">
-                        <?php echo $roles->render(); ?>
-                    </div>
-                </div>
                 @if(Entrust::can('crear_roles'))
                     <div class="" style="text-align: center;">
                         <a href="{{URL::to('/')}}/roles/create" type="button" class="btn btn-success" >Crear Rol </a>

@@ -5,7 +5,7 @@
 
         <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
             <h3>
-                Participantes del webinar {{$webinar->nombre}} <br/> Grupo - {{$seccion}}
+                Participantes del webinar {{$webinar->nombre}}
             </h3>
         </div>
 
@@ -15,7 +15,7 @@
                 @include('partials.mensajes')
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/grupos/".$seccion."/participantes/buscar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/participantes/buscar",  "method" => "GET" ])!!}
                         {{--{!! Form::open(array('method' => 'get', 'route' => array('usuarios.buscar'), 'id' => 'form_busq')) !!}--}}
                         <div class="buscador">
                             <select class="form-control " name="parametro">
@@ -67,13 +67,13 @@
                                 <td> 0 resultados de la busqueda</td>
                             @else
                                 <td></td>
-                                <td>No existen webinars activos</td>
+                                <td>No existen participantes inscritos</td>
                             @endif
                         @endif
                     </table>
                 </div>
                 @if(Entrust::can('ver_perfil_prof'))
-                    <a href="{{URL::to("/")}}/profesor/webinars/{{$webinar->id}}/grupos" class="btn btn-default text-right"><span class="glyphicon glyphicon-remove"></span> Volver</a>
+                    <a href="{{URL::to("/")}}/profesor/webinars" class="btn btn-default text-right"><span class="glyphicon glyphicon-chevron-left"></span> Regresar</a>
                 @endif
             </div>
         @endif

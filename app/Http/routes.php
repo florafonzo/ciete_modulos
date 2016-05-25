@@ -331,12 +331,12 @@ Route::group([
         Route::get('profesor/webinars/buscar', [
             'as' => 'profesor.webinars.buscar', 'uses' => 'ProfesoresController@buscarWebinar'
         ]);
-    Route::get('profesor/webinars/{id}/grupos','ProfesoresController@verSeccionesWebinar');
-    Route::get('profesor/webinars/{id}/grupos/{seccion}/participantes','ProfesoresController@verParticipantesWebinar');
-        Route::get('profesor/webinars/{id}/grupos/{seccion}/participantes/buscar', [
+//    Route::get('profesor/webinars/{id}/grupos','ProfesoresController@verSeccionesWebinar');
+    Route::get('profesor/webinars/{id}/participantes','ProfesoresController@verParticipantesWebinar');
+        Route::get('profesor/webinars/{id}/participantes/buscar', [
             'as' => 'profesor.webinars.participantes.buscar', 'uses' => 'ProfesoresController@buscarParticipanteW'
         ]);
-    Route::get('profesor/webinars/{id}/grupos/{seccion}/lista','ProfesoresController@generarListaW');
+    Route::get('profesor/webinars/{id}/lista','ProfesoresController@generarListaW');
 
     Route::resource('/profesor','ProfesoresController');
 });

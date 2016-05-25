@@ -33,7 +33,7 @@
                     <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" />
                     Estimado usuario {{$nombre}} {{$apellido}}.<br>
 
-                    Su inscripción en la actividad {{$actividad}} fue rechazada debido al siguiente motivo:<br>
+                    Su inscripciÃ³n en la actividad {{$actividad}} fue rechazada debido al siguiente motivo:<br>
                     <ul>
                         <li>{{$motivo}}</li>
                     </ul>

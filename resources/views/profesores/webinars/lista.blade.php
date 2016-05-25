@@ -33,7 +33,7 @@
 <div class="titulo_">
     <img class="imagen_" src="{{URL::to('/')}}/images/ciete_logo.jpg">
     <h3>
-        Participantes del webinar: {{$webinar->nombre}} <br/> Grupo - {{$seccion}}
+        Participantes del webinar: {{$webinar->nombre}}
     </h3>
 </div>
 <div class="">

@@ -58,28 +58,28 @@
 <div style="z-index: 2">
     <div class="titulo_">
         <h3>
-            INFORME ACAD蒑ICO
+            INFORME ACADEMICO
         </h3>
     </div>
     <div style="width: 90%; padding-left: 5%;">
-        <h4 style="background-color: #FFC000;">Informaci髇 del tutor</h4>
+        <h4 style="background-color: #FFC000;">Informaci贸n del tutor</h4>
         <table class="tabla1" style="width:100%">
             <tr>
                 <td class="fila"><strong>Nombres y apellido:</strong> {{$nombre}} {{$apellido}}</td>
-                <td class="fila"><strong>C閐ula de identidad:</strong> {{$ci}}</td>
+                <td class="fila"><strong>C茅dula de identidad:</strong> {{$ci}}</td>
             </tr>
             <tr>
-                <td class="fila"><strong>Correo electr髇ico:</strong> {{$correo}}</td>
+                <td class="fila"><strong>Correo electr贸nico:</strong> {{$correo}}</td>
                 <td class="fila"><strong>Celular:</strong> {{$celular}}</td>
             </tr>
         </table>
 
     </div>
     <div style="width: 90%; padding-left: 5%;">
-        <h4 style="background-color: #BDD6EE;">Informaci髇 b醩ica</h4>
+        <h4 style="background-color: #BDD6EE;">Informaci贸n b谩sica</h4>
         <table class="tabla1" style="width:100%">
             <tr>
-                <td style="width: 30%;"><strong>Nombre del m骴ulo:</strong></td>
+                <td style="width: 30%;"><strong>Nombre del m贸dulo:</strong></td>
                 <td>{{$modulo->nombre}}</td>
                 <td style="border-left: none !important;"></td>
             </tr>
@@ -97,10 +97,10 @@
 
     </div>
     <div style="width: 90%; padding-left: 5%;">
-        <h4 style="background-color: #A8D08D;">Registro acad閙ico</h4>
+        <h4 style="background-color: #A8D08D;">Registro acad茅mico</h4>
         <table class="tabla1" style="width:100%">
             <tr>
-                <td><strong>Fecha de generaci髇: </strong> {{$fecha_descarga}}</td>
+                <td><strong>Fecha de generaci贸n: </strong> {{$fecha_descarga}}</td>
             </tr>
         </table>
     </div>
@@ -136,14 +136,14 @@
         </table>
     </div>
     <div style="width: 90%; padding-left: 5%;">
-        <h4 style="background-color: #F4B083;">Resultados acad閙icos</h4>
+        <h4 style="background-color: #F4B083;">Resultados acad茅micos</h4>
         <table class="tabla1" style="width:100%">
             <tr>
                 <td style="width: 30%;"><strong>Total estudiantes: </strong>{{$total}}</td>
                 <td ><strong>Aprobados: </strong>{{$aprobados}} <strong style="border-left:1px solid #000;height:500px">  Reprobados: </strong>{{$reprobados}} <strong style="border-left:1px solid #000;height:500px">  Ausentes: </strong>{{$ausentes}} <strong style="border-left:1px solid #000;height:500px">  Desertores: </strong>{{$desertores}}</td>
             </tr>
             <tr>
-                <td style="width: 30%;"><strong>Conclusi髇 del curso</strong> <br>(en relaci髇 a las competencias previstas)</td>
+                <td style="width: 30%;"><strong>Conclusi贸n del curso</strong> <br>(en relaci贸n a las competencias previstas)</td>
                 <td>{{$conclusion}}</td>
             </tr>
             <tr>
@@ -161,7 +161,7 @@
         </table>
     </div>
     <div style="width: 90%; padding-left: 5%;">
-        <h4 style="background-color: #8EAADB;">Infromaci髇 del documento</h4>
+        <h4 style="background-color: #8EAADB;">Infromaci贸n del documento</h4>
         <table class="tabla1" style="width:100%">
             <tr>
                 <td ><strong>Realizado por: </strong>{{$nombre}} {{$apellido}}</td>

@@ -33,8 +33,8 @@
                     <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" />
                     Estimado usuario {{$participante->nombre}} {{$participante->apellido}}.<br>
 
-                    Su pago de la actividad {{$curso->nombre}} por el monto de {{$pago_->monto}}Bs de la fecha {{$pago_->created_at->format('d-m-Y')}} se encunentra en proceso de parobaciÛn.<br>
-                    Recibir· un correo informandole si el pago fue aprobado o rechazado.<br><br>
+                    Su pago de la actividad {{$curso->nombre}} por el monto de {{$pago_->monto}}Bs de la fecha {{$pago_->created_at->format('d-m-Y')}} se encunentra en proceso de parobaci√≥n.<br>
+                    Recibir√° un correo informandole si el pago fue aprobado o rechazado.<br><br>
 
                     Gracias por formar parte de nuestra comunidad.
                 </div>

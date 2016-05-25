@@ -52,9 +52,9 @@
                                         <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/grupos",  "method" => "GET" ])!!}
-                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Grupos">
-                                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                                {!!Form::open(["url"=>"profesor/webinars/".$webinar->id."/participantes",  "method" => "GET" ])!!}
+                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Participantes">
+                                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                                 </button>
                                                 {!! Form::close() !!}
                                             @endif
@@ -71,9 +71,9 @@
                                         <td>{{ $fin[$index]->format('d-m-Y')  }}</td>
                                         <td>
                                             @if(Entrust::can('ver_notas_profe'))
-                                                {!!Form::open(["url"=>"profesor/webinars/".$webinar[0]->id."/grupos",  "method" => "GET" ])!!}
-                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Grupos">
-                                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                                {!!Form::open(["url"=>"profesor/webinars/".$webinar[0]->id."/participantes",  "method" => "GET" ])!!}
+                                                <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Participantes">
+                                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                                 </button>
                                                 {!! Form::close() !!}
                                             @endif
@@ -88,7 +88,7 @@
                                 <td> 0 resultados de la busqueda</td>
                             @else
                                 <td></td>
-                                <td>No est� dictando ning�n webinar</td>
+                                <td>No está dictando ningún webinar</td>
                             @endif
                         @endif
                     </table>
