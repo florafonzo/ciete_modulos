@@ -142,41 +142,40 @@ Route::group([
         Route::get('webinars/imagen/{id}','WebinarsController@cambiarImagen1');
         Route::post('webinars/procesar/{id}','WebinarsController@procesarImagen1');
 
-    Route::get('webinars/{id}/grupos', 'WebinarsController@seccionesMoodle');
-    Route::get('webinars/{id}/grupos/{seccion}/lista', 'WebinarsController@listaMoodle');
+//    Route::get('webinars/{id}/grupos', 'WebinarsController@seccionesMoodle');
+//    Route::get('webinars/{id}/grupos/{seccion}/lista', 'WebinarsController@listaMoodle');
 
-    Route::get('webinars/{id}/grupos/participantes', 'WebinarsController@WebinarSeccionesParts');
-    Route::get('webinars/{id}/grupos/{seccion}/participantes', 'WebinarsController@webinarParticipantes');
-        Route::get('webinars/{id_curso}/grupos/{seccion}/participantes/buscar', [
+//    Route::get('webinars/{id}/grupos/participantes', 'WebinarsController@WebinarSeccionesParts');
+    Route::get('webinars/{id}/participantes', 'WebinarsController@webinarParticipantes');
+        Route::get('webinars/{id_curso}/participantes/buscar', [
             'as' => 'webinars.participantes.buscar', 'uses' => 'WebinarsController@buscarParticipante'
         ]);
-    Route::get('webinars/{id}/grupos/{seccion}/participantes/agregar', 'WebinarsController@webinarParticipantesAgregar');
-        Route::get('webinars/{id_webinar}/grupos/{seccion}/participantes/agregar/buscar', [
+    Route::get('webinars/{id}/participantes/agregar', 'WebinarsController@webinarParticipantesAgregar');
+        Route::get('webinars/{id_webinar}/participantes/agregar/buscar', [
             'as' => 'webinars.participantes.buscar', 'uses' => 'WebinarsController@buscarParticipanteAgregar'
         ]);
-    Route::get('webinars/{id_webinar}/grupos/{seccion}/participantes/{id_part}/agregar', 'WebinarsController@webinarParticipantesGuardar');
-    Route::delete('webinars/{id_webinar}/grupos/{seccion}/participantes/{id_part}/eliminar', 'WebinarsController@webinarParticipantesEliminar');
+    Route::get('webinars/{id_webinar}/participantes/{id_part}/agregar', 'WebinarsController@webinarParticipantesGuardar');
+    Route::delete('webinars/{id_webinar}/participantes/{id_part}/eliminar', 'WebinarsController@webinarParticipantesEliminar');
 
-    Route::get('webinars/{id}/grupos/profesores', 'WebinarsController@WebinarSeccionesProfes');
-    Route::get('webinars/{id}/grupos/{seccion}/profesores', 'WebinarsController@webinarProfesores');
-        Route::get('webinars/{id_curso}/grupos/{seccion}/profesores/buscar', [
+//    Route::get('webinars/{id}/grupos/profesores', 'WebinarsController@WebinarSeccionesProfes');
+    Route::get('webinars/{id}/profesores', 'WebinarsController@webinarProfesores');
+        Route::get('webinars/{id_curso}/profesores/buscar', [
             'as' => 'webinars.profesores.buscar', 'uses' => 'WebinarsController@buscarProfesor'
         ]);
-    Route::get('webinars/{id}/grupos/{seccion}/profesores/agregar', 'WebinarsController@webinarProfesoresAgregar');
-        Route::get('webinars/{id_webinar}/grupos/{seccion}/profesores/agregar/buscar', [
+    Route::get('webinars/{id}/profesores/agregar', 'WebinarsController@webinarProfesoresAgregar');
+        Route::get('webinars/{id_webinar}/profesores/agregar/buscar', [
             'as' => 'webinars.profesores.buscar', 'uses' => 'WebinarsController@buscarProfesorAgregar'
         ]);
-    Route::get('webinars/{id_webinar}/grupos/{seccion}/profesores/{id_part}/agregar', 'WebinarsController@webinarProfesoresGuardar');
-    Route::delete('webinars/{id_webinar}secciones/{seccion}/profesores/{id_part}/eliminar', 'WebinarsController@webinarProfesoresEliminar');
+    Route::get('webinars/{id_webinar}/profesores/{id_part}/agregar', 'WebinarsController@webinarProfesoresGuardar');
+    Route::delete('webinars/{id_webinar}/profesores/{id_part}/eliminar', 'WebinarsController@webinarProfesoresEliminar');
     Route::resource('webinars','WebinarsController', ['only' => ['index','create','store','update','edit', 'destroy']]);
 
-    //Ruta dirección participantes
+    //Rutas dirección participantes
     Route::get('/ciudad/{id}', function(){
         $url = Request::url();
         $porciones = explode("ciudad/", $url);
         $id = $porciones[1];
         $ciudades = App\Models\Ciudad::where('id_estado', '=', $id )->get();
-        //$municipios = App\Models\Municipio::where('id_estado', '=', $id )->get();
 
         return Response::json($ciudades);
     });

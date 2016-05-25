@@ -215,9 +215,11 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('crear_webinars')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['activo_'] = false;
+                $data['busq_'] = false;
+                $data['busq'] = false;
 				// Se eliminan los datos guardados en sesion anteriormente
 				Session::forget('nombre');
-				Session::forget('secciones');
+//				Session::forget('secciones');
                 Session::forget('min');
                 Session::forget('max');
 				Session::forget('fecha_inicio');
@@ -261,6 +263,8 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('crear_webinars')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $data['busq_'] = false;
+                $data['busq'] = false;
 //                Imagen -------
 //                $img_nueva = Input::get('cortar');
 //                $img_cargada = Input::get('img_');
@@ -277,7 +281,7 @@ class WebinarsController extends Controller {
                 // Se guardan los datos ingresados por el usuario en sesion pra utilizarlos en caso de que se redirija
                 // al usuari al formulario por algún error y no se pierdan los datos ingresados
                 Session::set('nombre', $request->nombre);
-                Session::set('secciones', $request->secciones);
+//                Session::set('secciones', $request->secciones);
                 Session::set('min', $request->mini);
                 Session::set('max', $request->maxi);
                 Session::set('fecha_inicio', $request->fecha_inicio);
@@ -305,9 +309,9 @@ class WebinarsController extends Controller {
                     }
                 }
 
-                //se verifica que el MIN por seccion sea igual o menor al MAX
+                //se verifica que el MIN sea igual o menor al MAX
                 if (($request->mini) > ($request->maxi)) {
-                    Session::set('error', 'La cantidad mínima de cupos por seccion debe ser igual o menor a la canidad maxima');
+                    Session::set('error', 'La cantidad mínima de cupos debe ser igual o menor a la canidad maxima');
 //                    $data['errores'] = 'La cantidad minima de cupos por seccion debe ser igual o menor a la canidad maxima';
 
                     return view('webinars.crear', $data);
@@ -335,7 +339,7 @@ class WebinarsController extends Controller {
                 // Se crea el nuevo webinar con los datos ingresados
                 $create2 = Webinar::findOrNew($request->id);
                 $create2->webinar_activo = "true";
-                $create2->secciones = $request->secciones;
+//                $create2->secciones = $request->secciones;
                 $create2->min = $request->mini;
                 $create2->max = $request->maxi;
                 $create2->nombre = $request->nombre;
@@ -405,6 +409,8 @@ class WebinarsController extends Controller {
             if($usuario_actual->can('editar_webinars')) {  // Si el usuario posee los permisos necesarios continua con la acción // Si el usuario posee los permisos necesarios continua con la acción
 
                 $data['errores'] = '';
+                $data['busq_'] = false;
+                $data['busq'] = false;
                 $data['webinars'] = Webinar::find($id); // Se obtiene la información del webinar seleccionado
                 $data['activo_'] =  $data['webinars']->activo_carrusel;
 
@@ -444,6 +450,8 @@ class WebinarsController extends Controller {
             if($usuario_actual->can('editar_webinars')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['activo_'] =  true;
+                $data['busq_'] = false;
+                $data['busq'] = false;
                 $webinar = Webinar::find($id);
                 $data['webinars'] = Webinar::find($id);
 //                Imagen -------
@@ -472,9 +480,9 @@ class WebinarsController extends Controller {
                     }
                 }
 
-                //se verifica que el MIN por seccion sea igual o menor al MAX
+                //se verifica que el MIN sea igual o menor al MAX
                 if (($request->mini) > ($request->maxi)) {
-                    Session::set('error', 'La cantidad minima de cupos por seccion debe ser igual o menor a la canidad maxima');
+                    Session::set('error', 'La cantidad minima de cupos debe ser igual o menor a la canidad maxima');
                     $data['errores'] = '';
                     return view('webinars.editar', $data);
                 }
@@ -500,7 +508,7 @@ class WebinarsController extends Controller {
 //                }
 
                 // Se actualizan los datos del webinar seleccionado
-                $webinar->secciones = $request->secciones;
+//                $webinar->secciones = $request->secciones;
                 $webinar->min = $request->mini;
                 $webinar->max = $request->maxi;
                 $webinar->nombre = $request->nombre;
@@ -581,7 +589,7 @@ class WebinarsController extends Controller {
 
                 // Se redirige al usuario a la lista de webinars actualizada
                 $data['errores'] = '';
-                $data['webinars'] = Webinar::orderBy('created_at')->get();;
+                $data['webinars'] = Webinar::where('webinar_activo', '=', 'true')->orderBy('created_at')->get();;
                 foreach ($data['webinars'] as $web) {   //Formato fechas
                     $web['inicio'] = new DateTime($web->fecha_inicio);
                     $web['fin'] = new DateTime($web->fecha_fin);
@@ -657,7 +665,7 @@ class WebinarsController extends Controller {
 
                 // Se redirige al usuario a la lista de webinars actualizada
                 $data['errores'] = '';
-                $data['webinars'] = Webinar::orderBy('created_at')->get();
+                $data['webinars'] = Webinar::where('webinar_activo', '=', 'false')->orderBy('created_at')->get();
                 foreach ($data['webinars'] as $web) {   //Formato fechas
                     $web['inicio'] = new DateTime($web->fecha_inicio);
                     $web['fin'] = new DateTime($web->fecha_fin);
@@ -851,7 +859,7 @@ class WebinarsController extends Controller {
         }
     }
 
-    public function webinarParticipantes($id, $seccion) {
+    public function webinarParticipantes($id) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -866,10 +874,8 @@ class WebinarsController extends Controller {
                 $data['busq_'] = false;
                 $data['busq'] = false;
                 $data['participantes'] = [];
-                $data['seccion'] = $seccion;
-                $seccion = str_replace(' ', '', $seccion);
                 $data['webinar'] = Webinar::find($id);
-                $web_part = ParticipanteWebinar::where('id_webinar', '=', $id)->where('seccion', '=', $seccion)->get();
+                $web_part = ParticipanteWebinar::where('id_webinar', '=', $id)->get();
                 if($web_part->count()){
                     foreach ($web_part as $index => $web) {
                         $data['participantes'][$index] = Participante::where('id', '=', $web->id_participante)->orderBy('apellido')->get();
@@ -893,7 +899,7 @@ class WebinarsController extends Controller {
      *
      * @return Retorna la vista de la lista de participantes deseados.
      */
-    public function buscarParticipante($id_webinar, $seccion) {
+    public function buscarParticipante($id_webinar) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -905,15 +911,13 @@ class WebinarsController extends Controller {
             if($usuario_actual->can('ver_usuarios')) {   // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['webinar'] = Webinar::find($id_webinar);
-                $data['seccion'] = $seccion;
                 $data['participantes'] = '';
-                $seccion = str_replace(' ', '', $seccion);
                 $param = Input::get('parametro');
                 $data['busq_'] = true;
                 $data['busq'] = true;
                 if($param == '0'){
                     $data['busq'] = false;
-                    $participantes = ParticipanteWebinar::where('id_webinar', '=', $id_webinar)->where('seccion', '=', $seccion)->select('id_participante')->get();
+                    $participantes = ParticipanteWebinar::where('id_webinar', '=', $id_webinar)->select('id_participante')->get();
                     if($participantes != null) {
                         foreach ($participantes as $index => $part) {
                             $data['participantes'][$index] = Participante::where('id', '=', $part->id_participante)->get();
@@ -924,7 +928,7 @@ class WebinarsController extends Controller {
                 }
                 if (empty(Input::get('busqueda'))) {
                     $data['busq'] = false;
-                    $participantes = ParticipanteWebinar::where('id_webinar', '=', $id_webinar)->where('seccion', '=', $seccion)->select('id_participante')->get();
+                    $participantes = ParticipanteWebinar::where('id_webinar', '=', $id_webinar)->select('id_participante')->get();
                     if($participantes != null) {
                         foreach ($participantes as $index => $part) {
                             $data['participantes'][$index] = Participante::where('id', '=', $part->id_participante)->get();
@@ -940,7 +944,6 @@ class WebinarsController extends Controller {
                 if($participantes != null) {
                     foreach ($participantes as $index => $part) {
                         $existe = ParticipanteWebinar::where('id_webinar', '=', $id_webinar)
-                            ->where('seccion', '=', $seccion)
                             ->where('id_participante', '=', $part->id)->get();
                         if($existe->count()) {
                             $data['participantes'][$index] = $part;
@@ -961,7 +964,7 @@ class WebinarsController extends Controller {
 
     }
 
-    public function webinarParticipantesAgregar($id, $seccion) {
+    public function webinarParticipantesAgregar($id) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -973,8 +976,8 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('agregar_part_webinar')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
-                $data['seccion'] = $seccion;
-                $seccion = str_replace(' ', '', $seccion);
+                $data['busq_'] = false;
+                $data['busq'] = false;
                 $data['webinar'] = Webinar::find($id);
                 $arr = [];
                 $todos = DB::table('participante_webinars')->select('id_participante')->get();
@@ -1048,7 +1051,7 @@ class WebinarsController extends Controller {
      *
      * @return Retorna la vista de la lista de participantes deseados.
      */
-    public function buscarParticipanteAgregar($id_webinar, $seccion) {
+    public function buscarParticipanteAgregar($id_webinar) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1060,18 +1063,16 @@ class WebinarsController extends Controller {
             if($usuario_actual->can('ver_usuarios')) {   // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['webinar'] = Webinar::find($id_webinar);
-                $data['seccion'] = $seccion;
                 $data['participantes'] = '';
-                $seccion = str_replace(' ', '', $seccion);
                 $param = Input::get('parametro');
                 $data['busq_'] = true;
                 if($param == '0'){
                     Session::set('error', 'Debe seleccionar el parametro por el cual desea buscar');
-                    return $this->webinarParticipantesAgregar($id_webinar, $seccion);
+                    return $this->webinarParticipantesAgregar($id_webinar);
                 }
                 if (empty(Input::get('busqueda'))) {
                     Session::set('error', 'Coloque el elemento que desea buscar');
-                    return $this->webinarParticipantesAgregar($id_webinar, $seccion);
+                    return $this->webinarParticipantesAgregar($id_webinar);
                 }else{
                     $busq = Input::get('busqueda');
                 }
@@ -1153,7 +1154,7 @@ class WebinarsController extends Controller {
 
     }
 
-    public function webinarParticipantesGuardar($id_webinar, $seccion, $id_part) {
+    public function webinarParticipantesGuardar($id_webinar, $id_part) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1165,46 +1166,44 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('agregar_part_webinar')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
-                $data['seccion'] = $seccion;
-                $seccion = str_replace(' ', '', $seccion);
+                $data['busq_'] = false;
+                $data['busq'] = false;
                 $webinar = Webinar::find($id_webinar);
                 $participante = Participante::find($id_part);
                 $existe = ParticipanteWebinar::where('id_participante', '=', $id_part)->where('id_webinar', '=', $id_webinar)->get();
 
                 if($existe->count()) {
                     Session::set('error', 'Ya existe el registro en la base de datos');
-                    return $this->webinarParticipantesAgregar($id_webinar, $seccion);
+                    return $this->webinarParticipantesAgregar($id_webinar);
                 }else{
                     if ($webinar != null && $participante != null) {
                         $part_web = new ParticipanteWebinar;
                         $part_web->id_participante = $id_part;
                         $part_web->id_webinar = $id_webinar;
-                        $part_web->seccion = 'B';
 
 //                        $part_web = ParticipanteWebinar::create([
 //                            'id_participante' => $id_part,
 //                            'id_webinar' => $id_webinar,
-//                            'seccion' => 'B',
 //                        ]);
                         $part_web->save();
 
                         $part = Participante::where('id', '=', $part_web->id_participante)->get();
-                        $user = User::where('id', '=', $part->id_usuario)->get();
-                        $data['nombre'] = $user->nombre;
-                        $data['apellido'] = $user->apellido;
+                        $user = User::where('id', '=', $part[0]->id_usuario)->get();
+                        $data['nombre'] = $user[0]->nombre;
+                        $data['apellido'] = $user[0]->apellido;
                         $data['curso'] = $webinar->nombre;
-                        $data['email'] = $user->email;
+                        $data['email'] = $user[0]->email;
                         if ($part_web->save()) {
-                            Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
-                                $message->subject('CIETE - Dictado de actividad')
-                                    ->to($data['email'], 'CIETE')
-                                    ->replyTo($data['email']);
-                            });
+//                            Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
+//                                $message->subject('CIETE - Inscripción extemporánea')
+//                                    ->to($data['email'], 'CIETE')
+//                                    ->replyTo($data['email']);
+//                            });
                             Session::set('mensaje', 'Participante agregado con éxito');
-                            return $this->webinarParticipantesAgregar($id_webinar, $seccion);
+                            return $this->webinarParticipantesAgregar($id_webinar);
                         } else {
                             Session::set('error', 'Ha ocurrido un error inesperado');
-                            return $this->webinarParticipantesAgregar($id_webinar, $seccion);
+                            return $this->webinarParticipantesAgregar($id_webinar);
                         }
                     } else {
                         Session::set('error', 'Ha ocurrido un error inesperado');
@@ -1236,6 +1235,8 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('eliminar_part_webinar')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $data['busq_'] = false;
+                $data['busq'] = false;
                 $webinar = Webinar::find($id_webinar);
                 $part_web = ParticipanteWebinar::where('id_webinar', '=', $id_webinar)->where('id_participante', '=', $id_part)->first();
 
@@ -1251,16 +1252,16 @@ class WebinarsController extends Controller {
                 }
 
                 $part = Participante::where('id', '=', $part_web->id_participante)->get();
-                $user = User::where('id', '=', $part->id_usuario)->get();
-                $data['nombre'] = $user->nombre;
-                $data['apellido'] = $user->apellido;
+                $user = User::where('id', '=', $part[0]->id_usuario)->get();
+                $data['nombre'] = $user[0]->nombre;
+                $data['apellido'] = $user[0]->apellido;
                 $data['curso'] = $webinar->nombre;
-                $data['email'] = $user->email;
-                Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
-                    $message->subject('CIETE - Dictado de actividad')
-                        ->to($data['email'], 'CIETE')
-                        ->replyTo($data['email']);
-                });
+                $data['email'] = $user[0]->email;
+//                Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
+//                    $message->subject('CIETE - Información')
+//                        ->to($data['email'], 'CIETE')
+//                        ->replyTo($data['email']);
+//                });
                 Session::set('mensaje', 'Usuario eliminado con éxito');
                 return view('webinars.participantes.participantes', $data);
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
@@ -1310,7 +1311,7 @@ class WebinarsController extends Controller {
         }
     }
 
-    public function webinarProfesores($id, $seccion) {
+    public function webinarProfesores($id) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1325,10 +1326,8 @@ class WebinarsController extends Controller {
                 $data['busq_'] = false;
                 $data['busq'] = false;
                 $data['profesores'] = [];
-                $data['seccion'] = $seccion;
-                $seccion = str_replace(' ', '', $seccion);
                 $data['webinar'] = Webinar::find($id);
-                $web_prof = ProfesorWebinar::where('id_webinar', '=', $id)->where('seccion', '=', $seccion)->get();
+                $web_prof = ProfesorWebinar::where('id_webinar', '=', $id)->get();
                 if($web_prof->count()){
                     foreach ($web_prof as $index => $web) {
                         $data['profesores'][$index] = Profesor::where('id', '=', $web->id_profesor)->orderBy('apellido')->get();
@@ -1352,7 +1351,7 @@ class WebinarsController extends Controller {
      *
      * @return Retorna la vista de la lista de profesores deseados.
      */
-    public function buscarProfesor($id_webinar, $seccion) {
+    public function buscarProfesor($id_webinar) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1364,15 +1363,13 @@ class WebinarsController extends Controller {
             if($usuario_actual->can('ver_usuarios')) {   // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['webinar'] = Webinar::find($id_webinar);
-                $data['seccion'] = $seccion;
                 $data['profesores'] = '';
-                $seccion = str_replace(' ', '', $seccion);
                 $param = Input::get('parametro');
                 $data['busq_'] = true;
                 $data['busq'] = true;
                 if($param == '0'){
                     $data['busq'] = false;
-                    $profesores = ProfesorWebinar::where('id_webinar', '=', $id_webinar)->where('seccion', '=', $seccion)->select('id_profesor')->get();
+                    $profesores = ProfesorWebinar::where('id_webinar', '=', $id_webinar)->select('id_profesor')->get();
                     if($profesores != null) {
                         foreach ($profesores as $index => $prof) {
                             $data['profesores'][$index] = Profesor::where('id', '=', $prof->id_profesor)->get();
@@ -1383,7 +1380,7 @@ class WebinarsController extends Controller {
                 }
                 if (empty(Input::get('busqueda'))) {
                     $data['busq'] = false;
-                    $profesores = ProfesorWebinar::where('id_webinar', '=', $id_webinar)->where('seccion', '=', $seccion)->select('id_profesor')->get();
+                    $profesores = ProfesorWebinar::where('id_webinar', '=', $id_webinar)->select('id_profesor')->get();
                     if($profesores != null) {
                         foreach ($profesores as $index => $prof) {
                             $data['profesores'][$index] = Profesor::where('id', '=', $prof->id_profesor)->get();
@@ -1399,7 +1396,6 @@ class WebinarsController extends Controller {
                 if($profesores != null) {
                     foreach ($profesores as $index => $prof) {
                         $existe = ProfesorWebinar::where('id_webinar', '=', $id_webinar)
-                            ->where('seccion', '=', $seccion)
                             ->where('id_profesor', '=', $prof->id)->get();
                         if($existe->count()) {
                             $data['profesores'][$index] = $prof;
@@ -1420,7 +1416,7 @@ class WebinarsController extends Controller {
 
     }
 
-    public function webinarProfesoresAgregar($id, $seccion) {
+    public function webinarProfesoresAgregar($id) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1432,10 +1428,10 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('agregar_prof_webinar')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $data['busq_'] = false;
+                $data['busq'] = false;
                 $data['webinar'] = Webinar::find($id);
-                $data['seccion'] = $seccion;
                 $data['profesores'] = '';
-                $seccion = str_replace(' ', '', $seccion);
                 $arr = [];
                 $todos = DB::table('profesor_webinars')->select('id_profesor')->get();
                 foreach ($todos as $index => $todo) {
@@ -1508,7 +1504,7 @@ class WebinarsController extends Controller {
      *
      * @return Retorna la vista de la lista de profesores deseados.
      */
-    public function buscarProfesorAgregar($id_webinar, $seccion) {
+    public function buscarProfesorAgregar($id_webinar) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1520,19 +1516,17 @@ class WebinarsController extends Controller {
             if($usuario_actual->can('ver_usuarios')) {   // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
                 $data['webinar'] = Webinar::find($id_webinar);
-                $data['seccion'] = $seccion;
                 $data['profesores'] = '';
-                $seccion = str_replace(' ', '', $seccion);
                 $param = Input::get('parametro');
                 $data['busq_'] = true;
                 $data['busq'] = true;
                 if($param == '0'){
                     Session::set('error', 'Debe seleccionar el parametro por el cual desea buscar');
-                    return $this->webinarProfesoresAgregar($id_webinar, $seccion);
+                    return $this->webinarProfesoresAgregar($id_webinar);
                 }
                 if (empty(Input::get('busqueda'))) {
                     Session::set('error', 'Coloque el elemento que desea buscar');
-                    return $this->webinarProfesoresAgregar($id_webinar, $seccion);
+                    return $this->webinarProfesoresAgregar($id_webinar);
                 }else{
                     $busq = Input::get('busqueda');
                 }
@@ -1613,7 +1607,7 @@ class WebinarsController extends Controller {
 
     }
 
-    public function webinarProfesoresGuardar($id_web,$seccion, $id_profesor) {
+    public function webinarProfesoresGuardar($id_web, $id_profesor) {
         try{
             //Verificación de los permisos del usuario para poder realizar esta acción
             $usuario_actual = Auth::user();
@@ -1625,15 +1619,15 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('agregar_prof_webinar')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
-                $data['seccion'] = $seccion;
-                $seccion = str_replace(' ', '', $seccion);
+                $data['busq_'] = false;
+                $data['busq'] = false;
                 $webinar = Webinar::find($id_web);
                 $profesor = Profesor::find($id_profesor);
                 $existe = ProfesorWebinar::where('id_profesor', '=', $id_profesor)->where('id_webinar', '=', $id_web)->get();
 
                 if($existe->count()) {
                     Session::set('error', 'Ya existe el registro en la base de datos');
-                    return $this->webinarProfesoresAgregar($id_web, $seccion);
+                    return $this->webinarProfesoresAgregar($id_web);
                 }else{
                     if ($webinar != null || $profesor != null) {
 
@@ -1646,24 +1640,24 @@ class WebinarsController extends Controller {
 //                        ]);
                         $prof_web->save();
 
-                        $part = Participante::where('id', '=', $prof_web->id_profesor)->get();
-                        $user = User::where('id', '=', $part->id_usuario)->get();
-                        $data['nombre'] = $user->nombre;
-                        $data['apellido'] = $user->apellido;
+                        $part = Profesor::where('id', '=', $prof_web->id_profesor)->get();
+                        $user = User::where('id', '=', $part[0]->id_usuario)->get();
+                        $data['nombre'] = $user[0]->nombre;
+                        $data['apellido'] = $user[0]->apellido;
                         $data['curso'] = $webinar->nombre;
-                        $data['email'] = $user->email;
+                        $data['email'] = $user[0]->email;
 
                         if ($prof_web->save()) {
-                            Mail::send('emails.profesor', $data, function ($message) use ($data) {
-                                $message->subject('CIETE - Dictado de actividad')
-                                    ->to($data['email'], 'CIETE')
-                                    ->replyTo($data['email']);
-                            });
+//                            Mail::send('emails.profesor', $data, function ($message) use ($data) {
+//                                $message->subject('CIETE - Dictado de actividad')
+//                                    ->to($data['email'], 'CIETE')
+//                                    ->replyTo($data['email']);
+//                            });
                             Session::set('mensaje', 'Profesor agregado con éxito');
-                            return $this->webinarProfesoresAgregar($id_web, $seccion);
+                            return $this->webinarProfesoresAgregar($id_web);
                         } else {
                             Session::set('error', 'Ha ocurrido un error inesperado');
-                            return $this->webinarProfesoresAgregar($id_web, $seccion);
+                            return $this->webinarProfesoresAgregar($id_web);
                         }
                     } else {
                         Session::set('error', 'Ha ocurrido un error inesperado');
@@ -1695,6 +1689,8 @@ class WebinarsController extends Controller {
 
             if($usuario_actual->can('eliminar_prof_webinar')) {  // Si el usuario posee los permisos necesarios continua con la acción
                 $data['errores'] = '';
+                $data['busq_'] = false;
+                $data['busq'] = false;
                 $webinar = Webinar::find($id_web);
                 $prof_web = ProfesorWebinar::where('id_webinar', '=', $id_web)->where('id_profesor', '=', $id_profesor)->first();
 
@@ -1709,19 +1705,19 @@ class WebinarsController extends Controller {
                     }
                 }
 
-                $part = Participante::where('id', '=', $prof_web->id_profesor)->get();
-                $user = User::where('id', '=', $part->id_usuario)->get();
-                $data['nombre'] = $user->nombre;
-                $data['apellido'] = $user->apellido;
+                $part = Profesor::where('id', '=', $prof_web->id_profesor)->get();
+                $user = User::where('id', '=', $part[0]->id_usuario)->get();
+                $data['nombre'] = $user[0]->nombre;
+                $data['apellido'] = $user[0]->apellido;
                 $data['curso'] = $webinar->nombre;
-                $data['email'] = $user->email;
-                Mail::send('emails.profesor', $data, function ($message) use ($data) {
-                    $message->subject('CIETE - Dictado de actividad')
-                        ->to($data['email'], 'CIETE')
-                        ->replyTo($data['email']);
-                });
+                $data['email'] = $user[0]->email;
+//                Mail::send('emails.profesor-no', $data, function ($message) use ($data) {
+//                    $message->subject('CIETE - Información')
+//                        ->to($data['email'], 'CIETE')
+//                        ->replyTo($data['email']);
+//                });
 
-                Session::set('mensaje', 'Usuario eliminado con éxito');
+                Session::set('mensaje', 'Profesor eliminado con éxito');
                 return view('webinars.profesores.profesores', $data);
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 

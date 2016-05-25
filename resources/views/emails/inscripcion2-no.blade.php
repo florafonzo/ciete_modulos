@@ -33,7 +33,7 @@
                     <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" />
                     Bienvenido estimado {{$nombre}} {{$apellido}} al CIETE.<br>
 
-                    Usted ya no se encuentra cursando la actividad {{$curso}}, ingrese con su correo y clave habitual a la página
+                    Usted ya no se encuentra cursando la actividad {{$cursos}}, ingrese con su correo y clave habitual a la página
                     y podrá ver sus actividades inscritas.<br><br>
                     Gracias por formar parte de nuestra comunidad.
                 </div>

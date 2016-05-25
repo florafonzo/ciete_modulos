@@ -16,7 +16,7 @@
                 {{--Seleccione los participantes que desee agregar al webinar:--}}
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!!Form::open(["url"=>"webinars/".$webinar->id."/grupos/".$seccion."/participantes/agregar/buscar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"webinars/".$webinar->id."/participantes/agregar/buscar",  "method" => "GET" ])!!}
                         {{--{!! Form::open(array('method' => 'get', 'route' => array('usuarios.buscar'), 'id' => 'form_busq')) !!}--}}
                         <div class="buscador">
                             <select class="form-control " name="parametro">
@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('participantes_webinar'))
-                        <a href="{{URL::to('/')}}/webinars/{{$webinar->id}}/grupos/{{$seccion}}/participantes" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-chevron-left"></span> Regresar </a>
+                        <a href="{{URL::to('/')}}/webinars/{{$webinar->id}}/participantes" type="button" class="btn btn-default" style="text-decoration: none"> <span class="glyphicon glyphicon-chevron-left"></span> Regresar </a>
                     @endif
                 </div>
             </div>

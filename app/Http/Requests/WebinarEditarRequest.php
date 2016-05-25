@@ -30,7 +30,7 @@ class WebinarEditarRequest extends Request {
 //        dd();
         return [
             'nombre' => 'required|max:255',
-            'secciones' => 'required|integer|min:1',
+//            'secciones' => 'required|integer|min:1',
             'maxi' => 'required|integer|min:1',
             'mini' => 'required|integer|min:1|max:maxi',
             'fecha_inicio' => 'required|date',

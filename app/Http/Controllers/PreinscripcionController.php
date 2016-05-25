@@ -220,14 +220,14 @@ class PreinscripcionController extends Controller {
 
                         $data['nombre'] = $request->nombre;
                         $data['apellido'] = $request->apellido;
-                        $data['curso'] = $preins->getCursoName($id_curso); // aquí se retorna el nombre del curso
+                        $data['curso'] = $curso->nombre;//$preins->getCursoName($id_curso); // aquí se retorna el nombre del curso
                         $data['email'] = $request->email;
 
-                        Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                            $message->subject('CIETE - Inscripción')
-                                ->to($data['email'], 'CIETE')
-                                ->replyTo($data['email']);
-                        });
+//                        Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
+//                            $message->subject('CIETE - Inscripción')
+//                                ->to($data['email'], 'CIETE')
+//                                ->replyTo($data['email']);
+//                        });
 
                         $usrs = User::all();
                         $data['email2'] = [];
@@ -241,11 +241,11 @@ class PreinscripcionController extends Controller {
                                 }
                             }
                         }
-                        Mail::send('emails.nueva-preinscripcion', $data, function ($message) use ($data) {
-                            $message->subject('CIETE - Nueva inscripción')
-                                ->to($data['email2'], 'CIETE')
-                                ->replyTo($data['email2']);
-                        });
+//                        Mail::send('emails.nueva-preinscripcion', $data, function ($message) use ($data) {
+//                            $message->subject('CIETE - Nueva inscripción')
+//                                ->to($data['email2'], 'CIETE')
+//                                ->replyTo($data['email2']);
+//                        });
 
                         $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                         $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
@@ -298,11 +298,11 @@ class PreinscripcionController extends Controller {
                     $data['curso'] = $preins->getCursoName($id_curso); // aquí se retorna el nombre del curso
                     $data['email'] = $request->email;
 
-                    Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                        $message->subject('CIETE - Inscripción')
-                            ->to($data['email'], 'CIETE')
-                            ->replyTo($data['email']);
-                    });
+//                    Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
+//                        $message->subject('CIETE - Inscripción')
+//                            ->to($data['email'], 'CIETE')
+//                            ->replyTo($data['email']);
+//                    });
 
                     $usrs = User::all();
                     $data['email2'] = [];
@@ -311,16 +311,16 @@ class PreinscripcionController extends Controller {
                         $ya = true;
                         foreach ($roles as $rol) {
                             if(($rol->id == 1 || $rol->id == 2) && $ya){
-                                $data['email2'][count($data['email2'])] = $data['email2'].$usuario->email;
+                                $data['email2'][count($data['email2'])] = $usuario->email;
                                 $ya = false;
                             }
                         }
                     }
-                    Mail::send('emails.nueva-preinscripcion', $data, function ($message) use ($data) {
-                        $message->subject('CIETE - Nueva inscripción')
-                            ->to($data['email2'], 'CIETE')
-                            ->replyTo($data['email2']);
-                    });
+//                    Mail::send('emails.nueva-preinscripcion', $data, function ($message) use ($data) {
+//                        $message->subject('CIETE - Nueva inscripción')
+//                            ->to($data['email2'], 'CIETE')
+//                            ->replyTo($data['email2']);
+//                    });
 
                     $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
                     $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
@@ -388,12 +388,12 @@ class PreinscripcionController extends Controller {
                         $data['curso'] = $preins->getWebName($id); // aquí se retorna el nombre del webinar
 
                         $data['email'] = $request->email;
-
-                        Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                            $message->subject('CIETE - Inscripción')
-                                ->to($data['email'], 'CIETE')
-                                ->replyTo($data['email']);
-                        });
+//
+//                        Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
+//                            $message->subject('CIETE - Inscripción')
+//                                ->to($data['email'], 'CIETE')
+//                                ->replyTo($data['email']);
+//                        });
                         $data['webinars'] = Webinar::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
 
                         Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo.');
@@ -427,11 +427,11 @@ class PreinscripcionController extends Controller {
 
                     $data['email'] = $request->email;
 
-                    Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
-                        $message->subject('CIETE - Inscripción')
-                            ->to($data['email'], 'CIETE')
-                            ->replyTo($data['email']);
-                    });
+//                    Mail::send('emails.preinscripcion', $data, function ($message) use ($data) {
+//                        $message->subject('CIETE - Inscripción')
+//                            ->to($data['email'], 'CIETE')
+//                            ->replyTo($data['email']);
+//                    });
                     $data['cursos'] = Webinar::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
 
                     Session::set('mensaje', 'Le hemos enviado un mensaje de confirmación a su correo.');
@@ -492,7 +492,7 @@ class PreinscripcionController extends Controller {
                     }
                 }
 
-
+                Session::set('mensaje', 'Actividad activada con éxito.');
                 return view('preinscripcion.preinscripcion-cursos', $data);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
@@ -541,7 +541,7 @@ class PreinscripcionController extends Controller {
                     }
                 }
 
-
+                Session::set('mensaje', 'Actividad desactivado con éxito.');
                 return view('preinscripcion.preinscripcion-cursos', $data);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
@@ -589,6 +589,7 @@ class PreinscripcionController extends Controller {
                         }
                     }
                 }
+                Session::set('mensaje', 'Webinar activado con éxito.');
                 return view('preinscripcion.preinscripcion-webinars', $data);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
@@ -637,6 +638,7 @@ class PreinscripcionController extends Controller {
                     }
                 }
 
+                Session::set('mensaje', 'Webinar desactivado con éxito.');
                 return view('preinscripcion.preinscripcion-webinars', $data);
 
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error

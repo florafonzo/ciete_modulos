@@ -534,7 +534,7 @@ class ProfesoresController extends Controller {
                 $data['curso'] = Curso::find($id_curso);
                 $data['modulo'] = Modulo::find($modulo);
                 $cant_secciones = $data['curso']->secciones;
-                $arr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                $arr = ['1','2','3','4','5','6','7','8','9'];
                 for ($i = 0; $i < $cant_secciones; $i++) {
                     $data['secciones'][$i] = $arr[$i];
                 }
@@ -1175,7 +1175,7 @@ class ProfesoresController extends Controller {
                     return $pdf->stream("Listado curso - ".$data['curso']->nombre." - seccion ".$seccion.".pdf", array('Attachment'=>0));
                 }else{
                     $cant_secciones = $data['curso']->secciones;
-                    $arr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                    $arr = ['1','2','3','4','5','6','7','8','9'];
                     for ($i = 0; $i < $cant_secciones; $i++) {
                         $data['secciones'][$i] = $arr[$i];
                     }

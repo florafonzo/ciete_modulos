@@ -15,7 +15,7 @@
                 @include('partials.mensajes'){{--Errores--}}
                 <div class="row">
                     <div class="col-md-6 col-md-offset-6">
-                        {!!Form::open(["url"=>"webinars/".$webinar->id."/grupos/".$seccion."/participantes/buscar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"webinars/".$webinar->id."/participantes/buscar",  "method" => "GET" ])!!}
                         <div class="buscador">
                             <select class="form-control " name="parametro">
                                 <option value="0"  selected="selected">Buscar por</option>
@@ -67,7 +67,7 @@
                                             <td>{{ $participante[0]->documento_identidad  }}</td>
                                             <td>
                                                 @if(Entrust::can('eliminar_part_webinar'))
-                                                    {!!Form::open(["url"=>"webinars/".$webinar->id."/grupos/".$seccion."participantes/".$participante[0]->id."/eliminar",  "method" => "delete", "id" => "eliminar_part_web".$participante[0]->id ])!!}
+                                                    {!!Form::open(["url"=>"webinars/".$webinar->id."/participantes/".$participante[0]->id."/eliminar",  "method" => "delete", "id" => "eliminar_part_web".$participante[0]->id ])!!}
                                                     <button type="button" onclick="eliminarPartW('{{$participante[0]->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar">
                                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                     </button>
@@ -91,12 +91,12 @@
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('ver_webinars'))
-                        <a href="{{URL::to('/')}}/webinars/{{$webinar->id}}/grupos/participantes" type="button" class="btn btn-default" style="text-decoration: none"><span class="glyphicon glyphicon-chevron-left"></span> Regresar </a>
+                        <a href="{{URL::to('/')}}/webinars" type="button" class="btn btn-default" style="text-decoration: none"><span class="glyphicon glyphicon-chevron-left"></span> Regresar </a>
                     @endif
                 </div>
                 <div class="col-md-2 " style="">
                     @if(Entrust::can('agregar_part_webinar'))
-                        {!!Form::open(["url"=>"webinars/".$webinar->id."/grupos/".$seccion."/participantes/agregar",  "method" => "GET" ])!!}
+                        {!!Form::open(["url"=>"webinars/".$webinar->id."/participantes/agregar",  "method" => "GET" ])!!}
                         <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Agregar participante al webinar" >
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Agregar
                         </button>

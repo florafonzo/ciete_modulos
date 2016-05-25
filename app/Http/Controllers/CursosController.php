@@ -1253,18 +1253,11 @@ class CursosController extends Controller {
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id);
                 $cant_secciones = $data['curso']->secciones;
-                $arr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                $arr = ['1','2','3','4','5','6','7','8','9'];
 
                 for ($i = 0; $i < $cant_secciones; $i++) {
                     $data['secciones'][$i] = $arr[$i];
                 }
-
-//                $secciones = ParticipanteCurso::where('id_curso', '=', $id)->select('seccion')->get();
-//                foreach ($secciones as $index => $seccion) {
-//                    $arr[$index] = $seccion->seccion;
-//                }
-//                sort($arr);
-//                $data['secciones'] = array_unique($arr);
 
                 return view('cursos.participantes.secciones', $data);
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
@@ -1599,6 +1592,7 @@ class CursosController extends Controller {
                 $data['busq'] = false;
                 $curso = Curso::find($id_curso);
                 $data['seccion'] = $seccion;
+                $data['curso'] = Curso::find($id_curso);
                 $seccion = str_replace(' ', '', $seccion);
                 $participante = Participante::find($id_part);
                 $existe = ParticipanteCurso::where('id_participante', '=', $id_part)->where('id_curso', '=', $id_curso)->get();
@@ -1626,14 +1620,14 @@ class CursosController extends Controller {
                             $user = User::where('id', '=', $part[0]->id_usuario)->get();
                             $data['nombre'] = $user[0]->nombre;
                             $data['apellido'] = $user[0]->apellido;
-                            $data['curso'] = $curso->nombre;
+                            $data['cursos'] = $curso->nombre;
                             $data['email'] = $user[0]->email;
                             if ($part_curso->save()) {
-                                Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
-                                    $message->subject('CIETE - Inscripción')
-                                        ->to($data['email'], 'CIETE')
-                                        ->replyTo($data['email']);
-                                });
+//                                Mail::send('emails.inscripcion2', $data, function ($message) use ($data) {
+//                                    $message->subject('CIETE - Inscripción')
+//                                        ->to($data['email'], 'CIETE')
+//                                        ->replyTo($data['email']);
+//                                });
                                 Session::set('mensaje', 'Participante agregado con éxito');
                                 return $this->cursoParticipantesAgregar($id_curso, $seccion);
                             } else {
@@ -1695,13 +1689,13 @@ class CursosController extends Controller {
                 $user = User::where('id', '=', $part[0]->id_usuario)->get();
                 $data['nombre'] = $user[0]->nombre;
                 $data['apellido'] = $user[0]->apellido;
-                $data['curso'] = $curso->nombre;
+                $data['cursos'] = $curso->nombre;
                 $data['email'] = $user[0]->email;
-                Mail::send('emails.inscripcion2-no', $data, function ($message) use ($data) {
-                    $message->subject('CIETE - Dictado de actividad')
-                        ->to($data['email'], 'CIETE')
-                        ->replyTo($data['email']);
-                });
+//                Mail::send('emails.inscripcion2-no', $data, function ($message) use ($data) {
+//                    $message->subject('CIETE - Dictado de actividad')
+//                        ->to($data['email'], 'CIETE')
+//                        ->replyTo($data['email']);
+//                });
 
                 Session::set('mensaje', 'Usuario eliminado con éxito');
                 return view('cursos.participantes.participantes', $data);
@@ -2097,11 +2091,11 @@ class CursosController extends Controller {
                         $data['curso'] = $curso->nombre;
                         $data['email'] = $user[0]->email;
                         if ($prof_curso->save()) {
-                            Mail::send('emails.profesor', $data, function ($message) use ($data) {
-                                $message->subject('CIETE - Dictado de actividad')
-                                    ->to($data['email'], 'CIETE')
-                                    ->replyTo($data['email']);
-                            });
+//                            Mail::send('emails.profesor', $data, function ($message) use ($data) {
+//                                $message->subject('CIETE - Dictado de actividad')
+//                                    ->to($data['email'], 'CIETE')
+//                                    ->replyTo($data['email']);
+//                            });
                             Session::set('mensaje', 'Profesor agregado con éxito');
                             return $this->cursoProfesoresAgregar($id_curso, $modulo);
                         } else {
@@ -2157,15 +2151,16 @@ class CursosController extends Controller {
                 $user = User::where('id', '=', $prof[0]->id_usuario)->get();
                 $data['nombre'] = $user[0]->nombre;
                 $data['apellido'] = $user[0]->apellido;
-                $data['curso'] = $curso->nombre;
+                $data['cursos'] =  $data['curso']->nombre;
                 $data['email'] = $user[0]->email;
 
-                Mail::send('emails.profesor-no', $data, function ($message) use ($data) {
-                    $message->subject('CIETE - Dictado de actividad')
-                        ->to($data['email'], 'CIETE')
-                        ->replyTo($data['email']);
-                });
-                Session::set('mensaje', 'Usuario eliminado con éxito');
+//                Mail::send('emails.profesor-no', $data, function ($message) use ($data) {
+//                    $message->subject('CIETE - Dictado de actividad')
+//                        ->to($data['email'], 'CIETE')
+//                        ->replyTo($data['email']);
+//                });
+
+                Session::set('mensaje', 'Profesor eliminado con éxito');
                 return view('cursos.profesores.profesores', $data);
             }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
 

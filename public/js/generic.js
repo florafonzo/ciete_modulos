@@ -473,8 +473,8 @@ function mostrarModal(id) {
 
 function desactivarCurso(id) {
     swal({
-            title: "¿Está seguro que desea desactivar el curso?",
-            text: "Si lo desactiva, se eliminará de la lista de cursos disponibles",
+            title: "¿Está seguro que desea desactivar la actividad?",
+            text: "Si lo desactiva, se eliminará de la lista de actividades disponibles",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -493,7 +493,7 @@ function desactivarCurso(id) {
 function activarCurso(id) {
     swal({
             title: "¿Está seguro que desea activarlo?",
-            text: "Si lo activa, aparecerá en la lista de cursos disponibles",
+            text: "Si lo activa, aparecerá en la lista de actividades disponibles",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: 'green',
@@ -526,11 +526,30 @@ function activarWebinar(id) {
 }
 //------------------------------------------------------------------------------//
 
+// ------------------------Función para desactivar webinar --------------------------------------------//
+
+function desactivarWebinar(id) {
+    swal({
+            title: "¿Está seguro que desea desactivarlo?",
+            text: "Si lo desactiva, se eliminará de la lista de la lista de webinars disponibles",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: "Desactivar",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false
+        },
+        function(){
+            $('#webinar_activar'+id).submit();
+        })
+}
+//------------------------------------------------------------------------------//
+
 //------------------------Función para eliminar participante de un curso --------------------------------------------//
 function eliminarPart(id) {
     swal({
-            title: "¿Está seguro que desea eliminar el participante del curso?",
-            text: "Si lo elimina no aparecerá en la lista de alumnos del curso y se eliminará su historial",
+            title: "¿Está seguro que desea eliminar el participante de la actividad?",
+            text: "Si lo elimina no aparecerá en la lista de alumnos de la actividad y se eliminará su historial",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -549,8 +568,8 @@ function eliminarPart(id) {
 
 function agregarPart(id) {
     swal({
-            title: "¿Está seguro que desea agregar el participante al curso?",
-            text: "Si lo agrega, aparecerá en la lista de participantes del curso",
+            title: "¿Está seguro que desea agregar el participante a la actividad?",
+            text: "Si lo agrega, aparecerá en la lista de participantes de la actividad",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: 'green',
@@ -567,8 +586,8 @@ function agregarPart(id) {
 //------------------------Función para eliminar profesores de un curso --------------------------------------------//
 function eliminarProf(id) {
     swal({
-            title: "¿Está seguro que desea eliminar el profesor del curso?",
-            text: "Si lo elimina no aparecerá en la lista de profesores que dictan el curso",
+            title: "¿Está seguro que desea eliminar el profesor de la actividad?",
+            text: "Si lo elimina no aparecerá en la lista de profesores que dictan la actividad",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -587,8 +606,8 @@ function eliminarProf(id) {
 
 function agregarProf(id) {
     swal({
-            title: "¿Está seguro que desea agregar el profesor al curso?",
-            text: "Si lo agrega, aparecerá en la lista de profesores que dictan el curso",
+            title: "¿Está seguro que desea agregar el profesor a la activiadad?",
+            text: "Si lo agrega, aparecerá en la lista de profesores que dictan la actividad",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: 'green',
@@ -680,8 +699,8 @@ function agregarProfW(id) {
 
 function desactivarPrecurso(id) {
     swal({
-            title: "¿Está seguro que desea desactivar el curso?",
-            text: "Si lo desactiva, no estará disponible en la preinscripción",
+            title: "¿Está seguro que desea desactivar la actividad para la inscripción?",
+            text: "Si la desactiva, no estará disponible en la inscripción",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: '#DD6B55',
@@ -699,8 +718,8 @@ function desactivarPrecurso(id) {
 
 function activarPrecurso(id) {
     swal({
-            title: "¿Está seguro que desea activarlo?",
-            text: "Si lo activa, aparecerá en la lista de cursos disponibles",
+            title: "¿Está seguro que desea activar la acttividad para la inscripción?",
+            text: "Si la activa, aparecerá disponible en la inscripción",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: 'green',
@@ -713,7 +732,7 @@ function activarPrecurso(id) {
         })
 }
 //------------------------------------------------------------------------------//
-//------------------------Función para activar preinscripcion ------------------//
+//------------------------Función para activar inscripcion ------------------//
 
 function activarInscripcion(id) {
     swal({

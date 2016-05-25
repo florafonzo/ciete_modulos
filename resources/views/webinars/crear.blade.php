@@ -23,31 +23,31 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group" id="imagen_carrusel">
-                    {!!Form::label('imagen_carrusel', 'Imagen carrusel: ',  array( 'class' => 'col-md-4 '))!!}
-                    <div class="col-sm-8" id="borde">
-                        @if(!(Session::has('img_carg')))
-                            {!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
-                            {!!Form::hidden('img_carg',null)!!}
-                        @else
-                            @if (Session::has('imagen'))
-                                {!!Form::file('file_perfil',[ 'id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
-                                {!!Form::hidden('img_carg','yes')!!}
-                                {!!Form::hidden('img_',null)!!}
-                            @else
-                                @if (Session::has('cortar'))
-                                    <br>
-                                    {!!Form::hidden('img_carg','yes')!!}
-                                    {!!Form::hidden('img_','yes')!!}
-                                    {!!Form::hidden('cortar','yes')!!}
-                                    {!!Form::hidden('dir',$ruta)!!}
-                                    <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                    <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/webinars/imagen">Cambiar</a>
-                                @endif
-                            @endif
-                        @endif
-                    </div>
-                </div>
+                {{--<div class="form-group" id="imagen_carrusel">--}}
+                    {{--{!!Form::label('imagen_carrusel', 'Imagen carrusel: ',  array( 'class' => 'col-md-4 '))!!}--}}
+                    {{--<div class="col-sm-8" id="borde">--}}
+                        {{--@if(!(Session::has('img_carg')))--}}
+                            {{--{!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}--}}
+                            {{--{!!Form::hidden('img_carg',null)!!}--}}
+                        {{--@else--}}
+                            {{--@if (Session::has('imagen'))--}}
+                                {{--{!!Form::file('file_perfil',[ 'id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}--}}
+                                {{--{!!Form::hidden('img_carg','yes')!!}--}}
+                                {{--{!!Form::hidden('img_',null)!!}--}}
+                            {{--@else--}}
+                                {{--@if (Session::has('cortar'))--}}
+                                    {{--<br>--}}
+                                    {{--{!!Form::hidden('img_carg','yes')!!}--}}
+                                    {{--{!!Form::hidden('img_','yes')!!}--}}
+                                    {{--{!!Form::hidden('cortar','yes')!!}--}}
+                                    {{--{!!Form::hidden('dir',$ruta)!!}--}}
+                                    {{--<img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>--}}
+                                    {{--<a class="btn btn-success btn-xs" href="{{URL::to('/')}}/webinars/imagen">Cambiar</a>--}}
+                                {{--@endif--}}
+                            {{--@endif--}}
+                        {{--@endif--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 <img class="" id="imagen2" src="" alt="">
                 <div class="form-group" id="descripcion_carrusel">
                     {!!Form::label('desc_carrusel', 'Titulo de la imagen en el carrusel:',  array( 'class' => 'col-md-4'))!!}
@@ -73,12 +73,12 @@
                         {!!Form::input('date', 'fecha_fin', Session::get('fecha_fin') ,array('required','class' => 'form-control'))!!}
                     </div>
                 </div>
-                <div class="form-group">
-                    {!!Form::label('secciones', 'Cantidad de grupos:',  array( 'class' => 'col-md-4'))!!}
-                    <div class="col-sm-8">
-                        {!!Form::text('secciones', Session::get('secciones') ,array('required','class' => 'form-control'))!!}
-                    </div>
-                </div>
+                {{--<div class="form-group">--}}
+                    {{--{!!Form::label('secciones', 'Cantidad de grupos:',  array( 'class' => 'col-md-4'))!!}--}}
+                    {{--<div class="col-sm-8">--}}
+                        {{--{!!Form::text('secciones', Session::get('secciones') ,array('required','class' => 'form-control'))!!}--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 <div class="form-group">
                     {!!Form::label('mini', 'Cantidad de cupos MIN:',  array( 'class' => 'col-md-4'))!!}
                     <div class="col-sm-8">

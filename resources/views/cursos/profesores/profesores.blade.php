@@ -3,7 +3,7 @@
 @section('content')
     <div class="row" xmlns="http://www.w3.org/1999/html">
 
-        <div class="col-md-12 col-sm-12 col-md-offset-2 bienvenida">
+        <div class="col-md-12 col-sm-12 bienvenida">
             <h3>
                 Profesores que dictan el módulo {{$modulo->nombre}}<br> de la actividad {{$curso->nombre}}
             </h3>

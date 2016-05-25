@@ -25,42 +25,42 @@
                             @endif
                         </div>
                     </div>
-                    <div class="form-group" id="imagen_carrusel">
-                        {!!Form::label('imagen_perfil', 'Imagen de Perfil: ',  array( 'class' => 'col-md-4 '))!!}
-                        <div class="col-sm-8" id="borde">
-                            @if($webinars->imagen_carrusel == null && !(Session::has('img_carg')))
-                                {!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
-                                {!!Form::hidden('img_carg',null)!!}
-                                {!!Form::hidden('img_',null)!!}
-                                {!!Form::hidden('file_viejo',$webinars->imagen_carrusel)!!}
-                            @else
-                                @if (Session::has('imagen'))
-                                    {!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}
-                                    {!!Form::hidden('img_carg','yes',['id' => 'oculto'])!!}
-                                    {!!Form::hidden('img_',null)!!}
-                                    {!!Form::hidden('file_viejo',$webinars->imagen_carrusel)!!}
-                                @else
-                                    @if (Session::get('cortar') == "yes")
-                                        <br>
-                                        {!!Form::hidden('img_carg','yes')!!}
-                                        {!!Form::hidden('img_','yes')!!}
-                                        {!!Form::hidden('cortar','yes')!!}
-                                        {!!Form::hidden('dir',$ruta)!!}
-                                        {!!Form::hidden('file_viejo',$webinars->imagen_carrusel)!!}
-                                        <img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                        <a class="btn btn-success btn-xs" href="{{URL::to('/')}}/webinars/imagen/{{$webinars->id}}">Cambiar</a>
-                                    @else
-                                        <br>
-                                        {!!Form::hidden('img_carg','yes')!!}
-                                        {!!Form::hidden('img_','yes')!!}
-                                        {!!Form::hidden('cortar',null)!!}
-                                        <img src="{{URL::to('/')}}/images/images_carrusel/webinars/{{$webinars->imagen_carrusel}}" id="imagen_cortada" width="150" height="150"><br><br>
-                                        <a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/webinars/imagen/{{$webinars->id}}" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>
-                                    @endif
-                                @endif
-                            @endif
-                        </div>
-                    </div>
+                    {{--<div class="form-group" id="imagen_carrusel">--}}
+                        {{--{!!Form::label('imagen_perfil', 'Imagen de Perfil: ',  array( 'class' => 'col-md-4 '))!!}--}}
+                        {{--<div class="col-sm-8" id="borde">--}}
+                            {{--@if($webinars->imagen_carrusel == null && !(Session::has('img_carg')))--}}
+                                {{--{!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}--}}
+                                {{--{!!Form::hidden('img_carg',null)!!}--}}
+                                {{--{!!Form::hidden('img_',null)!!}--}}
+                                {{--{!!Form::hidden('file_viejo',$webinars->imagen_carrusel)!!}--}}
+                            {{--@else--}}
+                                {{--@if (Session::has('imagen'))--}}
+                                    {{--{!!Form::file('file_perfil',['id' => 'file_perfil', 'accept' => 'image/jpeg'])!!}--}}
+                                    {{--{!!Form::hidden('img_carg','yes',['id' => 'oculto'])!!}--}}
+                                    {{--{!!Form::hidden('img_',null)!!}--}}
+                                    {{--{!!Form::hidden('file_viejo',$webinars->imagen_carrusel)!!}--}}
+                                {{--@else--}}
+                                    {{--@if (Session::get('cortar') == "yes")--}}
+                                        {{--<br>--}}
+                                        {{--{!!Form::hidden('img_carg','yes')!!}--}}
+                                        {{--{!!Form::hidden('img_','yes')!!}--}}
+                                        {{--{!!Form::hidden('cortar','yes')!!}--}}
+                                        {{--{!!Form::hidden('dir',$ruta)!!}--}}
+                                        {{--{!!Form::hidden('file_viejo',$webinars->imagen_carrusel)!!}--}}
+                                        {{--<img src="{{$ruta}}" id="imagen_cortada" width="150" height="150"><br><br>--}}
+                                        {{--<a class="btn btn-success btn-xs" href="{{URL::to('/')}}/webinars/imagen/{{$webinars->id}}">Cambiar</a>--}}
+                                    {{--@else--}}
+                                        {{--<br>--}}
+                                        {{--{!!Form::hidden('img_carg','yes')!!}--}}
+                                        {{--{!!Form::hidden('img_','yes')!!}--}}
+                                        {{--{!!Form::hidden('cortar',null)!!}--}}
+                                        {{--<img src="{{URL::to('/')}}/images/images_carrusel/webinars/{{$webinars->imagen_carrusel}}" id="imagen_cortada" width="150" height="150"><br><br>--}}
+                                        {{--<a class="btn btn-warning btn-sm" href="{{URL::to('/')}}/webinars/imagen/{{$webinars->id}}" title="Cambiar foto" data-toggle="tooltip" data-placement="bottom" aria-hidden="true" style="text-decoration: none">Cambiar</a>--}}
+                                    {{--@endif--}}
+                                {{--@endif--}}
+                            {{--@endif--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                     <img class="" id="imagen2" src="" alt="">
                     {!!Form::hidden('file_viejo',$webinars->imagen_carrusel)!!}
                     <div class="form-group" id="descripcion_carrusel">
@@ -87,12 +87,12 @@
                             {!!Form::input('date', 'fecha_fin', $webinars->fecha_fin ,array('required','class' => 'form-control'))!!}
                         </div>
                     </div>
-                    <div class="form-group">
-                        {!!Form::label('secciones_l', 'Cantidad de grupos:',  array( 'class' => 'col-md-4'))!!}
-                        <div class="col-sm-8">
-                            {!!Form::text('secciones', $webinars->secciones ,array('required','class' => 'form-control'))!!}
-                        </div>
-                    </div>
+                    {{--<div class="form-group">--}}
+                        {{--{!!Form::label('secciones_l', 'Cantidad de grupos:',  array( 'class' => 'col-md-4'))!!}--}}
+                        {{--<div class="col-sm-8">--}}
+                            {{--{!!Form::text('secciones', $webinars->secciones ,array('required','class' => 'form-control'))!!}--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                     <div class="form-group">
                         {!!Form::label('mini_l', 'Cantidad de cupos MIN:',  array( 'class' => 'col-md-4'))!!}
                         <div class="col-sm-8">
