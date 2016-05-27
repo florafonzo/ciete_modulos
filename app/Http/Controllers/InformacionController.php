@@ -67,12 +67,15 @@ class InformacionController extends Controller {
     	//return back()->withSuccess("Gracias por tu mensaje. Ha sido enviado");
   	}
 
-    public function ayuda()
-    {
+    public function ayuda() {
         return view('informacion.ayuda');
     }
-    public function descargarAyuda()
-    {
+
+	public function tutorial() {
+        return view('informacion.tutorial');
+    }
+
+    public function descargarAyuda(){
         $path = public_path() . '/documentos/ayuda.pdf';
 
         return Response::make(file_get_contents($path), 200, [

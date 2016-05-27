@@ -497,12 +497,14 @@ class ProfesoresController extends Controller {
 
                 $data['errores'] = '';
                 $data['curso'] = Curso::find($id_curso);
-                $modulos = ProfesorCurso::where('id_profesor', '=', $usuario_actual->id)
+                $profe = Profesor::where('id_usuario', '=', $usuario_actual->id)->get();
+                $modulos = ProfesorCurso::where('id_profesor', '=', $profe[0]->id)
                                         ->where('id_curso', '=', $id_curso)->get();
 
                 foreach ($modulos as $index => $modulo) {
                     $data['modulos'][$index] = Modulo::find($modulo->id_modulo);
                 }
+
 
                 return view('profesores.cursos.modulos', $data);
 

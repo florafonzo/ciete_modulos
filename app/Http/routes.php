@@ -23,7 +23,8 @@ Route::get('estructura','InformacionController@estructura');
 Route::get('servicios','InformacionController@servicios');
 Route::get('equipo','InformacionController@equipo');
 Route::get('creditos','InformacionController@creditos');
-Route::get('ayuda','InformacionController@ayuda');
+Route::get('ayuda/preguntas','InformacionController@ayuda');
+Route::get('ayuda/tutorial','InformacionController@tutorial');
 Route::get('ayuda/manual', 'InformacionController@descargarAyuda');
 
 //Rutas de correo

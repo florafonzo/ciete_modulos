@@ -75,7 +75,16 @@
                     <a class="lista-menu" href="{{URL::to('/')}}/creditos">Créditos</a>
                 </li>
                 <li class="fondo borde_no">
-                    <a class="lista-menu" href="{{URL::to('/')}}/ayuda">Ayuda  <span class="glyphicon glyphicon-question-sign"></span></a>
+                    {{--<a class="lista-menu" href="{{URL::to('/')}}/ayuda">Ayuda  <span class="glyphicon glyphicon-question-sign"></span></a>--}}
+                    <a class="lista-menu dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Ayuda <span class="caret"></span></a>
+                    <ul class="dropdown-menu menu_bajo">
+                        <li >
+                            <a href="{{URL::to('/')}}/ayuda/preguntas"> Preguntas frecuentes</a>
+                        </li>
+                        <li>
+                            <a href="{{URL::to('/')}}/ayuda/tutorial"> Video tutorial</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="margin-right: -1%">
