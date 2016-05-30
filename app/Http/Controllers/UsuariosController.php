@@ -14,6 +14,7 @@ use App\Models\Parroquia;
 use App\Http\Requests\UsuarioRequest;
 use App\Http\Requests\UsuarioEditarRequest;
 use Illuminate\Support\Facades\Validator;
+use Mail;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -500,6 +501,10 @@ class UsuariosController extends Controller {
                     }
                 }
 
+                $data['nombre'] = $create->nombre;
+                $data['apellido'] = $create->apellido;
+                $data['email1'] = $create->email;
+                $data['clave'] = $request->password;
                 // Se verifica que se haya creado el de forma correcta
                 if ($create->save()) {
                     if ($create2->save()) {
@@ -513,6 +518,12 @@ class UsuariosController extends Controller {
                                 $usuario->attachRole($role->id);
                             }
                         }
+                        Mail::send('emails.nuevoUsuario', $data, function ($message) use ($data) {
+                            $message->subject('CIETE - Registro')
+                                ->to($data['email1'], 'CIETE')
+                                ->replyTo($data['email1']);
+                        });
+
                         Session::set('mensaje', 'Usuario creado con éxito.');
                         return redirect('/usuarios');
                     } else {    // Si el usuario no se ha creado bien se redirige al formulario de creación y se le indica al usuario el error

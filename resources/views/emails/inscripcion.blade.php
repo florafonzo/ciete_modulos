@@ -31,17 +31,33 @@
             <div class="panel panel-login">
                 <div class="panel-body">
                     <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" /><br>
-                    Bienvenido estimado {{$nombre}} {{$apellido}} al CIETE.<br><br>
+                    Bienvenid@ estimad@ {{$nombre}} {{$apellido}} al CIETE.<br><br>
 
-                    Usted acaba de ser inscrito en la actividad {{$curso}}, ya puede ingresar a la p�gina colocando los siguientes datos:<br>
+                    Hemos confirmado su inscripción en la actividad académica: {{$curso}},
+                    ya puede ingresar al sistema en línea usando los datos que se detallan a continuación:<br>
+
                     <ul style="list-style: none;">
                         <li><strong>Correo: {{$email}}</strong></li>
-                        <li><strong>Contrase�a: {{$clave}}</strong></li>
+                        <li><strong>Contraseña: {{$clave}}</strong></li>
                     </ul>
-                    Ingrese a la secci�n de <strong>Ver Perfil</strong> para cambiar su contrase�a y completar sus datos.<br><br>
-                    Gracias por formar parte de nuestra comunidad.<br><br>
 
-                    CIETE
+                    En este sistema usted tendrá acceso al registro de pagos realizados y calificaciones obtenidas. Podrá ademas subir los
+
+                    recaudos solicitados por el Centro para su expediente académico (Cédula de Identidad y último titulo académico obtenido)
+
+                    Luego de ingresar al sistema, le sugerimos ir a la sección de <strong>Ver Perfil</strong> para cambiar su contraseña y completar sus datos.
+
+                    Gracias por formar parte de nuestra comunidad.
+
+                    Coordinación Administrativa del CIETE
+
+                    Web informativa: www.cieteula.org
+
+                    Twitter; @cieteula
+
+                    Instagram: ciete.ula
+
+                    Facebook: ciete.fhe.ula
                 </div>
             </div>
         </div>

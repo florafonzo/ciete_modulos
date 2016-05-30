@@ -30,11 +30,17 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-login">
                 <div class="panel-body">
-                    <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" />
-                    Bienvenido estimado {{$nombre}} {{$apellido}} al CIETE.<br>
+                    <img src="{{ $message->embed(public_path() . '/images/ciete_logo.jpg') }}" width="60" height="80" /><br>
+                    Bienvenid@ estimad@ {{$nombre}} {{$apellido}} al CIETE.<br><br>
+                    Usted ha sido registrado en nuestro sistema en línea y ya puede ingresar usando los datos que se detallan a continuación:<br>
 
-                    Usted acaba de ser inscrito en la actividad {{$cursos}}, ingrese con su correo y clave habitual a la página
-                    y podrá ver sus nuevas actividades inscritas.<br><br>
+                    <ul style="list-style: none;">
+                        <li><strong>Correo: {{$email1}}</strong></li>
+                        <li><strong>Contraseña: {{$clave}}</strong></li>
+                    </ul>
+                    <br>
+
+
                     Gracias por formar parte de nuestra comunidad.
 
                     Coordinación Administrativa del CIETE
