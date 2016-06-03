@@ -35,7 +35,7 @@ class RolesController extends Controller {
                 $data['errores'] = '';
                 $data['busq'] = false;
                 $data['busq_'] = false;
-                $data['roles'] = Role::orderBy('name')->paginate(2);   // Se obtienen todos los roles
+                $data['roles'] = Role::orderBy('name')->get();   // Se obtienen todos los roles
                 foreach ($data['roles'] as $rol) {
                     $rol['permisos'] = $rol->perms()->get();    //Se obtienen los permisos asociados a cada rol
                     $i = count($rol['permisos']);
@@ -97,7 +97,7 @@ class RolesController extends Controller {
                 }
                 if ($param == 'name'){
                     if (empty(Input::get('busqueda'))) {
-                        $data['roles'] = Role::orderBy('name')->paginate(5);
+                        $data['roles'] = Role::orderBy('name')->get();
                         foreach ($data['roles'] as $rol) {
                             $rol['permisos'] = $rol->perms()->get();    //Se obtienen los permisos asociados a cada rol
                         }
@@ -109,7 +109,7 @@ class RolesController extends Controller {
                 }
                 if(($param == 'name')){
                     $data['roles'] = Role::where($param, 'ilike', '%'.$busq.'%')
-                        ->orderBy('name')->paginate(5);
+                        ->orderBy('name')->get();
                     foreach ($data['roles'] as $rol) {
                         $rol['permisos'] = $rol->perms()->get();    //Se obtienen los permisos asociados a cada rol
                     }
@@ -440,7 +440,7 @@ class RolesController extends Controller {
                 DB::table('permission_role')->where('role_id', '=', $id)->delete();
                 Role::destroy($id);
 
-                $data['roles'] = Role::paginate(2);
+                $data['roles'] = Role::all();
                 $data['errores'] = '';
 
                 foreach ($data['roles'] as $rol) {

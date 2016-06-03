@@ -240,18 +240,34 @@ class InscripcionController extends Controller {
                     if(ParticipanteCurso::all()->count() != 0) {
                         $max_secc = $actividad->max;
                         $todo = ParticipanteCurso::where('id_curso', '=', $actividad->id)->orderBy('created_at')->get();
-                        $todo = end($todo);
-                        $ultimo = end($todo);
-                        $cuantos = ParticipanteCurso::where('id_curso', '=', $actividad->id)->where('seccion', '=', $ultimo->seccion)->count();
-                        if ($cuantos < $max_secc) {
-                            $seccion = $ultimo->seccion;
-                        } else {
-                            for ($i = 0; $i < count($secc); $i++) {
-                                if ($secc[$i] == $ultimo->seccion) {
-                                    $seccion = $secc[$i + 1];
+                        if($todo->count() != 0){
+                            $todo = end($todo);
+                            $ultimo = end($todo);
+                            $cuantos = ParticipanteCurso::where('id_curso', '=', $actividad->id)->where('seccion', '=', $ultimo->seccion)->count();
+                            if ($cuantos < $max_secc) {
+                                $seccion = $ultimo->seccion;
+                            } else {
+                                for ($i = 0; $i < count($secc); $i++) {
+                                    if ($secc[$i] == $ultimo->seccion) {
+                                        $seccion = $secc[$i + 1];
+                                    }
                                 }
                             }
+                        }else{
+                            $seccion = '1';
                         }
+//                        $todo = end($todo);
+//                        $ultimo = end($todo);
+//                        $cuantos = ParticipanteCurso::where('id_curso', '=', $actividad->id)->where('seccion', '=', $ultimo->seccion)->count();
+//                        if ($cuantos < $max_secc) {
+//                            $seccion = $ultimo->seccion;
+//                        } else {
+//                            for ($i = 0; $i < count($secc); $i++) {
+//                                if ($secc[$i] == $ultimo->seccion) {
+//                                    $seccion = $secc[$i + 1];
+//                                }
+//                            }
+//                        }
                     }else{
                         $seccion = '1';
                     }

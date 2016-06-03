@@ -397,6 +397,7 @@ class PreinscripcionController extends Controller {
                         $create2->monto = '';
                         $create2->id_modalidad_pago = 1;
                         $create2->numero_pago = '';
+                        $create2->id_banco = '1';
                         $create2->tipo = 'Webinar';
 
                         $create2->save();

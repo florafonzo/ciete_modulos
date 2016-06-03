@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12 col-md-offset-2 col-xs-12 bienvenida">
             <h3>
-                Bienvenido {{Auth::user()->nombre}} {{ Auth::user()->apellido }}
+                Bienvenid@ {{Auth::user()->nombre}} {{ Auth::user()->apellido }}
             </h3>
         </div>
         @include('partials.menu_usuarios')
