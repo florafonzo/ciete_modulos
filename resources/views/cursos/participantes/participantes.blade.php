@@ -83,6 +83,15 @@
                                                     {!! Form::close() !!}
                                                 @endif
                                             </td>
+                                            <td>
+                                                @if(Entrust::can('participantes_curso'))
+                                                    {!!Form::open(["url"=>"actividades/".$curso->id."/grupos/".$seccion."/participantes/".$participante[0]->id."/ver",  "method" => "get" ])!!}
+                                                    <button type="submit" class='btn btn-primary' data-toggle='tooltip' data-placement="bottom" title="Ver participante">
+                                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                                    </button>
+                                                    {!! Form::close() !!}
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endif
                                 @endforeach

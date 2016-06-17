@@ -323,11 +323,12 @@ class PreinscripcionController extends Controller {
 
                     $usrs = User::all();
                     $data['email2'] = [];
+                    $data['email2'][0] = "marquina.raymond@gmail.com";
                     foreach ($usrs as $usuario) {
                         $roles = $usuario->roles()->get();
                         $ya = true;
                         foreach ($roles as $rol) {
-                            if(($rol->id == 1 || $rol->id == 2) && $ya){
+                            if(($rol->name == "Soporte Administrativo") && $ya){
                                 $data['email2'][count($data['email2'])] = $usuario->email;
                                 $ya = false;
                             }

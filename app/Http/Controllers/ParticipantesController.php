@@ -299,7 +299,7 @@ class ParticipantesController extends Controller {
                 $usuario->nombre = $request->nombre;
                 $usuario->apellido = $request->apellido;
                 $usuario->email = $email;
-                $usuario_actual->password = bcrypt($request->password);
+                $usuario->password = bcrypt($request->password);
                 $usuario->save();   // Se guardan los nuevos datos en la tabla Users
 
                 // Se editan los datos del participante deseado con los datos ingresados en el formulario

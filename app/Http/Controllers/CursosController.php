@@ -5,7 +5,15 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CursoRequest;
 
+
+use App\Models\Banco;
 use App\Models\CursoModalidadPago;
+use App\Models\Estado;
+use App\Models\Municipio;
+use App\Models\Pago;
+use App\Models\Pais;
+use App\Models\Parroquia;
+use App\Models\Ciudad;
 use App\Models\ModalidadCurso;
 use App\Models\Participante;
 use App\Models\Curso;
@@ -27,6 +35,7 @@ use Maatwebsite\Excel\Facades\Excel as Excel;
 use DateTime;
 use Exception;
 use Mail;
+use Response;
 
 
 
@@ -1308,6 +1317,98 @@ class CursosController extends Controller {
         }
     }
 
+    public function cursoParticipanteVer($id_curso, $seccion, $id_participante) {
+        try{
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if($usuario_actual->can('participantes_curso')) {  // Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['busq'] = false;
+                $data['busq_'] = false;
+                $data['participantes'] = [];
+                $data['curso'] = Curso::find($id_curso);
+                $data['seccion'] = $seccion;
+                $seccion = str_replace(' ', '', $seccion);
+                $part = Participante::find($id_participante);
+                if($part->count()){
+                    $usr = User::find($part->id_usuario);
+                    $data['participante'] = $part;
+                    $data['usuario'] = $usr;
+                }
+
+                $data['pais'] = '';
+                $data['estado'] = '';
+                $data['ciudad'] = '';
+                $data['municipio'] = '';
+                $data['parroquia'] = '';
+
+                $dir = $data['participante']->direccion;
+                if($dir != '') {
+                    $dir = explode("-", $dir);
+                    //                dd($dir);
+                    $data['pais'] = Pais::find($dir[0]);
+                    if($dir[1]) {
+                        $data['estado'] = Estado::where('id_estado', '=', $dir[1])->first();
+                        $data['ciudad'] = Ciudad::where('id_ciudad', '=', $dir[2])->first();
+                        $data['municipio'] = Municipio::where('id_municipio', '=', $dir[3])->first();
+                        $data['parroquia'] = Parroquia::where('id_parroquia', '=', $dir[4])->first();
+                    }
+                }
+
+                $data['pagos'] = Pago::where('id_participante', '=', $id_participante)->where('id_curso', '=', $id_curso)->get();
+                foreach ($data['pagos'] as $index => $pago) {
+                    $pago['modalidad'] = ModalidadPago::find($pago->id_modalidad_pago);
+                    $pago['banco'] = Banco::find($pago->id_banco);
+                    $pago['fechas'] = new DateTime($pago->fecha);
+                }
+
+                return view('cursos.participantes.ver', $data);
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+
+    public function verPdf($id_curso, $seccion, $part, $doc) {
+        try {
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if ($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            } else {
+                $data['foto'] = 'foto_participante.png';
+            }
+
+            if ($usuario_actual->can('participantes_curso')) {
+                $data['errores'] = '';
+                $data['busq_'] = false;
+                $path = public_path() . '/documentos/participantes/' . $doc;
+
+                return Response::make(file_get_contents($path), 200, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; ' . $doc,
+                ]);
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+
     /**
      * Permite la busqueda segun los paraemetros dados por el usuario.
      *
@@ -2271,7 +2372,66 @@ class CursosController extends Controller {
         }
     }
 //-----------------------------------------------------------------------------------------------
+//--------------------------------Reporte de pagos por actividad---------------------------------
+    public function reportePagos($id_curso) {
+        try{
+            //Verificación de los permisos del usuario para poder realizar esta acción
+            $usuario_actual = Auth::user();
+            if($usuario_actual->foto != null) {
+                $data['foto'] = $usuario_actual->foto;
+            }else{
+                $data['foto'] = 'foto_participante.png';
+            }
 
+            if($usuario_actual->can('gestionar_pagos')) {// Si el usuario posee los permisos necesarios continua con la acción
+                $data['errores'] = '';
+                $data['curso'] = $curso = Curso::find($id_curso);
+//                $data['tipo'] = TipoCurso::find($curso->id_tipo);
+                $data['pagos'] = Pago::where('id_curso', '=', $id_curso)->orderBy('id_participante')->get();
+                $id_part = 0;
+//                dd($data['pagos']->count());
+                foreach ($data['pagos'] as $index => $pago) {
+                    if($id_part != $pago->id_participante) {
+                        if($id_part == 0) {
+                            $data['participantes'][0] = Participante::find($pago->id_participante);
+                        }else{
+                            $data['participantes'][(count($data['participantes']))] = Participante::find($pago->id_participante);
+                        }
+                    }
+                    $id_part = $pago->id_participante;
+                }
+                foreach ($data['participantes'] as $index => $part) {
+//                    dd($data['participantes']);
+                    $part['pagos_part'] = Pago::where('id_curso', '=', $id_curso)->where('id_participante', '=', $part->id)->get();
+                    $num_pagos = 0;
+                    $suma = 0;
+                    foreach ($part['pagos_part'] as $index1 => $pag) {
+                        $num_pagos = $num_pagos + 1;
+                        $suma = $suma + $pag->monto;
+                    }
+                    $part['num_pagos'] = $num_pagos;
+                    $part['suma'] = $suma;
+                }
+                dd($data['participantes']);
 
+                if($data['pagos']->count()){
+                    $pdf = PDF::loadView('cursos.reporte',$data);
+                    return $pdf->stream("Reporte de pago-".$curso->nombre.".pdf", array('Attachment'=>0));
+                }else{
+                    Session::set('error', 'Disculpe, no existen participantes en el modulo '.$data['modulo']->nombre);
+                    return $this->index();
+                }
 
+            }else{ // Si el usuario no posee los permisos necesarios se le mostrará un mensaje de error
+
+                return view('errors.sin_permiso');
+            }
+        }
+        catch (Exception $e) {
+
+            return view('errors.error')->with('error',$e->getMessage());
+        }
+    }
+
+//-----------------------------------------------------------------------------------------------
 }

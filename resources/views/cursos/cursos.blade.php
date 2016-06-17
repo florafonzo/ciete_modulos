@@ -57,7 +57,7 @@
                                         <td>{{ $curso->inicio->format('d-m-Y') }}</td>
                                         <td>{{ $curso->fin->format('d-m-Y')  }}</td>
 
-                                        <td class="boton_">
+                                        <td class="" style="width: 40px !important;">
                                             @if(Entrust::can('editar_cursos'))
                                                 {!! Form::open(array('method' => 'GET','route' => array('actividades.edit', $curso->id))) !!}
                                                     <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Editar" >
@@ -66,7 +66,7 @@
                                                 {!! Form::close() !!}
                                             @endif
                                         </td>
-                                        <td class="boton_">
+                                        <td class="">
                                             @if(Entrust::can('eliminar_cursos'))
                                                 {!! Form::open(array('method' => 'DELETE', 'route' => array('actividades.destroy', $curso->id), 'id' => 'form_desactivar'.$curso->id)) !!}
                                                     <button type="button" onclick="desactivarCurso('{{$curso->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Eliminar">
@@ -75,7 +75,7 @@
                                                 {!! Form::close() !!}
                                             @endif
                                         </td>
-                                        <td class="boton_">
+                                        <td class="">
                                             @if(Entrust::can('participantes_curso'))
                                                 {!!Form::open(["url"=>"actividades/".$curso->id."/grupos/participantes",  "method" => "GET" ])!!}
                                                     <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Participantes">
@@ -84,7 +84,7 @@
                                                 {!! Form::close() !!}
                                             @endif
                                         </td>
-                                        <td class="boton_">
+                                        <td class="">
                                             @if(Entrust::can('profesores_curso'))
                                                 {!!Form::open(["url"=>"actividades/".$curso->id."/modulos/profesores",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Profesores">
@@ -93,11 +93,20 @@
                                                 {!! Form::close() !!}
                                             @endif
                                         </td>
-                                        <td class="boton_">
+                                        <td class="">
                                             @if(Entrust::can('lista_moodle'))
                                                 {!!Form::open(["url"=>"actividades/".$curso->id."/grupos",  "method" => "GET" ])!!}
                                                 <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Lista Moodle">
                                                     <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                                                </button>
+                                                {!! Form::close() !!}
+                                            @endif
+                                        </td>
+                                        <td class="">
+                                            @if(Entrust::can('gestionar_pagos'))
+                                                {!!Form::open(["url"=>"actividades/".$curso->id."/reporte",  "method" => "GET" , "target" => "_blank"])!!}
+                                                <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Reporte de pagos">
+                                                    <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
                                                 </button>
                                                 {!! Form::close() !!}
                                             @endif

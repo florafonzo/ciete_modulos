@@ -96,8 +96,12 @@ Route::group([
     Route::get('actividades/{id}/grupos', 'CursosController@seccionesMoodle');
     Route::get('actividades/{id}/grupos/{seccion}/lista', 'CursosController@listaMoodle');
 
+    Route::get('actividades/{id}/reporte', 'CursosController@reportePagos');
+
     Route::get('actividades/{id}/grupos/participantes', 'CursosController@cursoSeccionesParts');
     Route::get('actividades/{id_curso}/grupos/{seccion}/participantes', 'CursosController@cursoParticipantes');
+    Route::get('actividades/{id_curso}/grupos/{seccion}/participantes/{id_part}/ver', 'CursosController@cursoParticipanteVer');
+    Route::get('actividades/{id_curso}/grupos/{seccion}/participantes/{id_part}/archivo/{doc}/ver', 'CursosController@verPdf');
         Route::get('actividades/{id_curso}/grupos/{seccion}/participantes/buscar', [
             'as' => 'cursos.participantes.buscar', 'uses' => 'CursosController@buscarParticipante'
         ]);

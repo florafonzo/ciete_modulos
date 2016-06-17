@@ -55,6 +55,28 @@ header .container{
     top:10px;
 }
 
+.logo_princ1{
+    position: relative;
+    /*margin: 0 auto;*/
+    float: left;
+    display: inline-block;
+    top:10px;
+}
+
+.logo_princ2{
+    position: relative;
+    /*margin: 0 auto;*/
+    float: right;
+    display: inline-block;
+    top:10px;
+}
+
+.logo_princ1, .logo_princ2 img{
+    vertical-align: middle;
+    width: 180px;
+    height: auto;
+}
+
 .derecha{
     text-align: right;
     padding: 5px 15px 5px 0;

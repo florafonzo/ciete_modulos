@@ -22,8 +22,14 @@
             </span>
         </div>
         <div class="row centro">
+            <div class="logo_princ1">
+                <a href="/"><img class="img-responsive" src="{{URL::to('/')}}/images/ula_logo.png"></a>
+            </div>
             <div class="logo_princ">
                 <a href="/"><img class="img-responsive" src="{{URL::to('/')}}/images/ciete_logo.jpg"></a>
+            </div>
+            <div class="logo_princ2">
+                <a href="/"><img class="img-responsive" src="{{URL::to('/')}}/images/logo_ula.png"></a>
             </div>
         </div>
     </div>

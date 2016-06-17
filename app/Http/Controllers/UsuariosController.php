@@ -721,7 +721,7 @@ class UsuariosController extends Controller {
                 $roles = Input::get('id_rol');
 
                 if ($es_participante) {
-                    $tipo_usuario = Participante::find(1)->where('id_usuario', '=', $id)->first();
+                    $tipo_usuario = Participante::where('id_usuario', '=', $id)->first();
 
                     // Se editan los datos del usuario deseado de la tabla Users con los datos ingresados en el formulario
                     $usuario->nombre = $request->nombre;

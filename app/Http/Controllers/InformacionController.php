@@ -58,7 +58,7 @@ class InformacionController extends Controller {
 
 	    Mail::send('emails.contacto', $data, function ($message) use ($data) {
 	      $message->subject('Contacto:'.$data['nombre'])
-	      		  ->to('ciete.app@gmail.com', 'CIETE')
+	      		  ->to('app@cieteula.org', 'CIETE')
 	              ->replyTo($data['correo']);
 	    });
 
