@@ -400,6 +400,40 @@ $(document).ready(function() {
     }
 //-----------------------------------------------------------------------------------------//
 
+//  --------  Validar si el usuario está becado ---------- ///
+
+    var becado = $('input[name=beca]:checked').val();
+    var mostrar = document.getElementsByClassName('beca');
+
+    //alert("mostrar: " + mostrar.length);
+
+    if(becado == 'si'){
+        for(var i = 0; i < mostrar.length; i++) {
+            $('.beca').hide();
+        }
+    }else{
+        for(var i = 0; i < mostrar.length; i++) {
+            $('.beca').show();
+        }
+    }
+
+    $( 'input[name=beca]:radio' ).change(
+        function() {
+            var es_beca = $('input[name=beca]:checked').val();
+            if (es_beca == 'si') {
+                for (var i = 0; i < mostrar.length; i++) {
+                    $('.beca').hide();
+                }
+            } else {
+                for (var i = 0; i < mostrar.length; i++) {
+                    $('.beca').show();
+                }
+            }
+        }
+    );
+
+//-------------------------------------------------------------------------//
+
 // --------------------------------- Imagen Crop ------------------------------------------//
 
     $('#enviar').hide();
@@ -774,7 +808,7 @@ function activarInscripcion(id) {
                     return false
                 }
                 //swal("Genial!", "Usted escribió: " + inputValue, "success");
-                $('#motivo').append('<input type="hidden" name="motivo" value="'+inputValue+'">');
+                $('.motivo').append('<input type="hidden" name="motivo1" value="'+inputValue+'">');
                 $('#form_inscripcion2'+id).submit();
             });
     }

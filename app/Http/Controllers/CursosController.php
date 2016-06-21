@@ -36,6 +36,7 @@ use DateTime;
 use Exception;
 use Mail;
 use Response;
+use Barryvdh\DomPDF\Facade as PDF;
 
 
 
@@ -2406,19 +2407,22 @@ class CursosController extends Controller {
                     $num_pagos = 0;
                     $suma = 0;
                     foreach ($part['pagos_part'] as $index1 => $pag) {
+                        $pag['banco'] = Banco::find($pag->id_banco);
+                        $pag['fechas'] = new DateTime($pag->fecha);
                         $num_pagos = $num_pagos + 1;
                         $suma = $suma + $pag->monto;
                     }
                     $part['num_pagos'] = $num_pagos;
                     $part['suma'] = $suma;
                 }
-                dd($data['participantes']);
+                $data['fecha_hoy'] = date('d-m-Y');
+//                dd($data['participantes']);
 
-                if($data['pagos']->count()){
+                if($data['participantes'] != null){
                     $pdf = PDF::loadView('cursos.reporte',$data);
                     return $pdf->stream("Reporte de pago-".$curso->nombre.".pdf", array('Attachment'=>0));
                 }else{
-                    Session::set('error', 'Disculpe, no existen participantes en el modulo '.$data['modulo']->nombre);
+                    Session::set('error', 'Disculpe, no existen pagos para esta actividad'.$data['modulo']->nombre);
                     return $this->index();
                 }
 

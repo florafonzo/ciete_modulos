@@ -32,10 +32,11 @@ class PreinscripcionRequest extends Request {
             'apellido' => 'required|max:255',
             'di' => 'required|max:100|min:2',
             'email' => 'required|email|max:255',
-            'tipo_pago' => 'required',
-            'banco' => 'required',
-            'monto' => 'required|integer',
-            'numero_pago' => 'required',
+            'beca' => 'required',
+//            'tipo_pago' => 'required',
+//            'banco' => 'required',
+            'monto' => 'integer',
+//            'numero_pago' => 'required',
         ];
     }
 

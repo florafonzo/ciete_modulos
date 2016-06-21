@@ -36,33 +36,40 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label>Está usted becado?:</label>
+                                <div>
+                                    <input type="radio" name="beca" value="si" > Si<br>
+                                    <input type="radio" name="beca" value="no" checked> No<br>
+                                </div>
+                            </div>
+                            <div class="form-group beca">
                                 <label>A continuación complete los datos del pago:</label>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group beca">
                                 <label for="tipo_pago">Modalidad de pago:</label>
-                                <select name="tipo_pago" id="tipo_pago" required>
+                                <select name="tipo_pago" id="tipo_pago" >
                                     <option value="0"  selected="selected">Seleccione la modalidad de pago</option>
                                     @foreach($tipo_pago as $index=>$pago)
                                         <option value="{{$index}}">{{$pago}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group beca">
                                 <label for="tipo_pago">Banco desde el cual realizó el pago:</label>
-                                <select name="banco" id="banco" required>
+                                <select name="banco" id="banco" >
                                     <option value="0"  selected="selected">Seleccione el banco</option>
                                     @foreach($bancos as $index => $banco)
                                         <option value="{{$index}}"> {{$banco}} </option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group beca">
                                 <label for="numero_pago">Número de depósito o transferencia:</label>
-                                <input type="text" class="form-control" id="numero_pago" placeholder="Número de depósito o transferencia" name="numero_pago" value="{{old('monto')}}" required>
+                                <input type="text" class="form-control" id="numero_pago" placeholder="Número de depósito o transferencia" name="numero_pago" value="{{old('monto')}}" >
                             </div>
-                            <div class="form-group">
+                            <div class="form-group beca">
                                 <label for="monto">Monto del pago:</label>
-                                <input type="text" class="form-control" id="monto" placeholder="Monto del pago" name="monto" value="{{old('monto')}}" required>
+                                <input type="text" class="form-control" id="monto" placeholder="Monto del pago" name="monto" value="{{old('monto')}}" >
                             </div>
                             <button type="submit" class="btn btn-primary">Enviar</button>
                         </form>

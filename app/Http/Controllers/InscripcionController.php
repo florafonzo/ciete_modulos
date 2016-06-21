@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Storage;
 use Response;
 use Mail;
 
+use App\Http\Requests\InscripcionElimRequest;
+
 use App\Models\Preinscripcion;
 use Illuminate\Http\Request;
 
@@ -553,9 +555,22 @@ class InscripcionController extends Controller {
                 $data['errores'] = '';
                 $data['busq_'] = false;
                 $usuario = Preinscripcion::find($id);
-                $data['motivo'] = Input::get('motivo');
+                $data['motivo'] = Input::get('motivo1');
+                dd(Input::get('motivo1'));
                 if($data['motivo'] == null){
                     $data['usuarios'] = Preinscripcion::all();
+                    foreach ($data['usuarios'] as $usuario) {   // Se asocia el tipo a cada curso (Cápsulo o Diplomado)
+                        if($usuario->tipo != 'Webinar') {
+                            $curso = Curso::where('id', '=', $usuario->id_curso)->get();
+                        }else{
+                            $curso = Webinar::where('id', '=', $usuario->id_curso)->get();
+                        }
+                        $modo = ModalidadPago::where('id', '=', $usuario->id_modalidad_pago)->get();
+                        $usuario['curso_nombre'] = $curso[0]->nombre;
+                        $usuario['modalidad'] = $modo[0]->nombre;
+                        $usuario['banco'] = Banco::find($usuario->id_banco);
+
+                    }
                     $data['tipos'] = ['Cápsula', 'Diplomado', 'Webinar'];
                     Session::set('error', 'El motivo no puede estar vacío');
                     return view('inscripciones.inscripciones', $data);

@@ -150,6 +150,8 @@ class PreinscripcionController extends Controller {
             $id_curso = Input::get('curso');
             $id_modalidad = Input::get('tipo_pago');
             $id_banco = Input::get('banco');
+            $num_pago = Input::get('numero_pago');
+            $monto = $request->monto;
 
             if($id_curso == 0){
                 $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
@@ -158,20 +160,27 @@ class PreinscripcionController extends Controller {
                 Session::set('error', 'Debe seleccionar un curso de la lista');
                 return view('preinscripcion.curso', $data);
             }
-            if($id_modalidad == 0){
-                $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
-                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
-                $data['bancos'] = Banco::all()->lists('nombre','id');
-                Session::set('error', 'Debe seleccionar una modalidad de pago');
-                return view('preinscripcion.curso', $data);
-            }
+//            if($id_modalidad == 0){
+//                $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
+//                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
+//                $data['bancos'] = Banco::all()->lists('nombre','id');
+//                Session::set('error', 'Debe seleccionar una modalidad de pago');
+//                return view('preinscripcion.curso', $data);
+//            }
 
-            if($id_banco == 0){
-                $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
-                $data['tipo_pago'] = ModalidadPago::all()->lists('nombre','id');
-                $data['bancos'] = Banco::all()->lists('nombre','id');
-                Session::set('error', 'Debe seleccionar el banco');
-                return view('preinscripcion.curso', $data);
+            if($request->beca == 'no') {
+                if (($id_banco == 0) || ($id_modalidad == 0) || ($num_pago == null)) {
+                    $data['cursos'] = Curso::where('activo_preinscripcion', true)->orderBy('nombre')->lists('nombre', 'id');
+                    $data['tipo_pago'] = ModalidadPago::all()->lists('nombre', 'id');
+                    $data['bancos'] = Banco::all()->lists('nombre', 'id');
+                    Session::set('error', 'Debe completar todos los datos de pago');
+                    return view('preinscripcion.curso', $data);
+                }
+            }else{
+                $id_modalidad = '10';
+                $id_banco = '50';
+                $num_pago = '0';
+                $monto = '0';
             }
 
             //  Se valida que los archivos esten en formato PDF
@@ -205,13 +214,13 @@ class PreinscripcionController extends Controller {
                         $create2->apellido = $request->apellido;
                         $create2->di = $request->di;
                         $create2->email = $request->email;
-                        $create2->id_modalidad_pago = $request->tipo_pago;
-                        $create2->monto = $request->monto;
-                        $create2->numero_pago = $request->numero_pago;
+                        $create2->id_modalidad_pago = $id_modalidad;
+                        $create2->monto = $monto;
+                        $create2->numero_pago = $num_pago;
                         $curso = Curso::find($id_curso);
                         $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
                         $create2->tipo = $tipo[0]->nombre;
-                        $create2->id_banco = $request->banco;
+                        $create2->id_banco = $id_banco;
                         $create2->save();
 
                         // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD
@@ -282,13 +291,13 @@ class PreinscripcionController extends Controller {
                     $create2->apellido = $request->apellido;
                     $create2->di = $request->di;
                     $create2->email = $request->email;
-                    $create2->id_modalidad_pago = $request->tipo_pago;
-                    $create2->monto = $request->monto;
-                    $create2->numero_pago = $request->numero_pago;
+                    $create2->id_modalidad_pago = $id_modalidad;
+                    $create2->monto = $monto;
+                    $create2->numero_pago = $num_pago;
                     $curso = Curso::find($id_curso);
                     $tipo = TipoCurso::where('id', '=', $curso->id_tipo)->get();
                     $create2->tipo = $tipo[0]->nombre;
-                    $create2->id_banco = $request->banco;
+                    $create2->id_banco = $id_banco;
                     $create2->save();
 
 //                    // Se crean los nombres de los archivos que se van a guardar y se guardan en la BD

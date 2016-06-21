@@ -107,7 +107,7 @@
                                                     <button type="button" onclick="rechazarModal('{{$user->id}}')" class='btn btn-danger' data-toggle='tooltip' data-placement="bottom" title="Rechazar" aria-hidden="true">
                                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                                     </button>
-                                                    <div id="motivo"></div>
+                                                <div class="motivo"></div>
                                                 {!! Form::close() !!}
                                             @endif
                                         </td>
